@@ -1,8 +1,9 @@
 {
   "name": "konfigurator",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "0.0.0",
+  "description": "NestJS-baserad webbtjänst för att konfigurera OpenShift-miljöer",
+  "author": "mblomdahl",
+  "homepage": "https://github.com/mkdevops-se/konfigurator",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
