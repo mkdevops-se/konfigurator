@@ -1,16 +1,30 @@
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { CreateEnvironmentDto, UpdateEnvironmentDto } from './dto';
 
 @Controller('environments')
 export class EnvironmentsController {
   @Post()
-  create(): string {
+  create(@Body() createEnvironmentDto: CreateEnvironmentDto): string {
+    console.log(
+      `Creating environment ${
+        createEnvironmentDto.name
+      } with body ${JSON.stringify(createEnvironmentDto)}`,
+    );
     return 'environment added';
   }
 
   @Get(':id')
-  get(@Param() params): string {
-    console.log(`Getting environment ${params.id}`);
-    return `here are the environment with ID ${params.id}`;
+  get(@Param('id') id: string): string {
+    console.log(`Getting environment ${id}`);
+    return `here are the environment with ID ${id}`;
   }
 
   @Get()
@@ -19,14 +33,21 @@ export class EnvironmentsController {
   }
 
   @Put(':id')
-  update(@Param() params): string {
-    console.log(`Updating environment ${params.id}`);
-    return `here is the updated environment with ID ${params.id}`;
+  update(
+    @Param('id') id: string,
+    @Body() updateEnvironmentDto: UpdateEnvironmentDto,
+  ): string {
+    console.log(
+      `Updating environment ${id} with body ${JSON.stringify(
+        updateEnvironmentDto,
+      )}`,
+    );
+    return `here is the updated environment with ID ${id}`;
   }
 
   @Delete(':id')
-  remove(@Param() params): string {
-    console.log(`Deleting environment ${params.id}`);
-    return `environment with ID ${params.id} deleted`;
+  remove(@Param('id') id: string): string {
+    console.log(`Deleting environment ${id}`);
+    return `environment with ID ${id} deleted`;
   }
 }

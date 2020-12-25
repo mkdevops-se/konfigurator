@@ -25,6 +25,14 @@ describe('AppController (e2e)', () => {
   it('/environments (POST)', () => {
     return request(app.getHttpServer())
       .post('/environments')
+      .send({
+        name: 'app-backend-utv',
+        ocp_tenant_domain: 'test.ocp.github.org',
+        ocp_namespace_front: 'front',
+        ocp_namespace_backend: 'backend',
+        ocp_namespace_restricted: 'restricted',
+        default_spring_profiles: 'test',
+      })
       .expect(201)
       .expect('environment added');
   });
@@ -46,6 +54,9 @@ describe('AppController (e2e)', () => {
   it('/environments/:id (PUT)', () => {
     return request(app.getHttpServer())
       .put('/environments/foo')
+      .send({
+        default_spring_profiles: 'test',
+      })
       .expect(200)
       .expect('here is the updated environment with ID foo');
   });
