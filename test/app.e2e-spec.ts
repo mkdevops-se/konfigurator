@@ -23,18 +23,19 @@ describe('AppController (e2e)', () => {
   });
 
   it('/environments (POST)', () => {
+    const newEnvironment = {
+      name: 'app-backend-utv',
+      ocp_tenant_domain: 'test.ocp.github.org',
+      ocp_namespace_front: 'front',
+      ocp_namespace_backend: 'backend',
+      ocp_namespace_restricted: 'restricted',
+      default_spring_profiles: 'test',
+    };
     return request(app.getHttpServer())
       .post('/environments')
-      .send({
-        name: 'app-backend-utv',
-        ocp_tenant_domain: 'test.ocp.github.org',
-        ocp_namespace_front: 'front',
-        ocp_namespace_backend: 'backend',
-        ocp_namespace_restricted: 'restricted',
-        default_spring_profiles: 'test',
-      })
+      .send(newEnvironment)
       .expect(201)
-      .expect('environment added');
+      .expect(JSON.stringify(newEnvironment));
   });
 
   it('/environments/:id (GET)', () => {
@@ -48,7 +49,7 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/environments')
       .expect(200)
-      .expect('here are all environments');
+      .expect('[]');
   });
 
   it('/environments/:id (PUT)', () => {

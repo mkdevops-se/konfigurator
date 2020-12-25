@@ -8,17 +8,24 @@ import {
   Put,
 } from '@nestjs/common';
 import { CreateEnvironmentDto, UpdateEnvironmentDto } from './dto';
+import { EnvironmentsService } from './environments.service';
+import { Environment } from '../interfaces/environment.interface';
 
 @Controller('environments')
 export class EnvironmentsController {
+  constructor(private environmentsService: EnvironmentsService) {}
+
   @Post()
-  create(@Body() createEnvironmentDto: CreateEnvironmentDto): string {
+  async create(
+    @Body() createEnvironmentDto: CreateEnvironmentDto,
+  ): Promise<Environment> {
     console.log(
       `Creating environment ${
         createEnvironmentDto.name
       } with body ${JSON.stringify(createEnvironmentDto)}`,
     );
-    return 'environment added';
+    this.environmentsService.create(createEnvironmentDto);
+    return createEnvironmentDto;
   }
 
   @Get(':id')
@@ -28,8 +35,8 @@ export class EnvironmentsController {
   }
 
   @Get()
-  getAll(): string {
-    return 'here are all environments';
+  async getAll(): Promise<Environment[]> {
+    return this.environmentsService.getAll();
   }
 
   @Put(':id')

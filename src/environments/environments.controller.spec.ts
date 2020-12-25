@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EnvironmentsController } from './environments.controller';
-import { Param } from '@nestjs/common';
+import { EnvironmentsService } from './environments.service';
 
 describe('EnvironmentsController', () => {
   let controller: EnvironmentsController;
@@ -8,6 +8,7 @@ describe('EnvironmentsController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [EnvironmentsController],
+      providers: [EnvironmentsService],
     }).compile();
 
     controller = module.get<EnvironmentsController>(EnvironmentsController);
@@ -18,17 +19,16 @@ describe('EnvironmentsController', () => {
   });
 
   describe('POST /environments', () => {
-    it('should return "environment added"', () => {
-      expect(
-        controller.create({
-          name: 'app-backend-utv',
-          ocp_tenant_domain: 'test.ocp.github.org',
-          ocp_namespace_front: 'front',
-          ocp_namespace_backend: 'backend',
-          ocp_namespace_restricted: 'restricted',
-          default_spring_profiles: 'test',
-        }),
-      ).toBe('environment added');
+    it('should return the newly created environment', async () => {
+      const newEnvironment = {
+        name: 'app-backend-utv',
+        ocp_tenant_domain: 'test.ocp.github.org',
+        ocp_namespace_front: 'front',
+        ocp_namespace_backend: 'backend',
+        ocp_namespace_restricted: 'restricted',
+        default_spring_profiles: 'test',
+      };
+      expect(await controller.create(newEnvironment)).toBe(newEnvironment);
     });
   });
 
@@ -41,8 +41,8 @@ describe('EnvironmentsController', () => {
   });
 
   describe('GET /environments', () => {
-    it('should return "here are all environments"', () => {
-      expect(controller.getAll()).toBe('here are all environments');
+    it('should return an empty list of all environments', async () => {
+      expect(await controller.getAll()).toStrictEqual([]);
     });
   });
 
