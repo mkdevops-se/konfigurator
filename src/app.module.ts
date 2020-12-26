@@ -1,12 +1,25 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EnvironmentsController } from './environments/environments.controller';
-import { EnvironmentsService } from './environments/environments.service';
+import { Environment } from './environments/environment.entity';
+import { EnvironmentsModule } from './environments/environments.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController, EnvironmentsController],
-  providers: [AppService, EnvironmentsService],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: ':memory:',
+      dropSchema: true,
+      entities: [Environment],
+      synchronize: true,
+    }),
+    EnvironmentsModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private connection: Connection) {}
+}

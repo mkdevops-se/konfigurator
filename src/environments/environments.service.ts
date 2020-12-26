@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Environment } from '../interfaces/environment.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Environment } from './environment.entity';
 
 @Injectable()
 export class EnvironmentsService {
+  constructor(
+    @InjectRepository(Environment)
+    private environmentsRepository: Repository<Environment>,
+  ) {}
+
   private readonly environments: Environment[] = [];
 
   create(environment: Environment) {
