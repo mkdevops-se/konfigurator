@@ -1,12 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentsController } from './environments.controller';
 import { EnvironmentsService } from './environments.service';
+import { Environment } from './environment.entity';
 
 describe('EnvironmentsController', () => {
   let controller: EnvironmentsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [TypeOrmModule.forFeature([Environment])],
       controllers: [EnvironmentsController],
       providers: [EnvironmentsService],
     }).compile();
