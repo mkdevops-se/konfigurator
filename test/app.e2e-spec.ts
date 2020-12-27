@@ -1,14 +1,26 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
+import { Environment } from '../src/environments/environment.entity';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        TypeOrmModule.forRoot({
+          type: 'sqlite',
+          database: ':memory:',
+          dropSchema: false,
+          entities: [Environment],
+          keepConnectionAlive: true,
+          synchronize: true,
+        }),
+        AppModule,
+      ],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -20,52 +32,5 @@ describe('AppController (e2e)', () => {
       .get('/')
       .expect(200)
       .expect('Hello World!');
-  });
-
-  it('/environments (POST)', () => {
-    const newEnvironment = {
-      name: 'app-backend-utv',
-      ocp_tenant_domain: 'test.ocp.github.org',
-      ocp_namespace_front: 'front',
-      ocp_namespace_backend: 'backend',
-      ocp_namespace_restricted: 'restricted',
-      default_spring_profiles: 'test',
-    };
-    return request(app.getHttpServer())
-      .post('/environments')
-      .send(newEnvironment)
-      .expect(201)
-      .expect(JSON.stringify(newEnvironment));
-  });
-
-  it('/environments/:id (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/environments/foo')
-      .expect(200)
-      .expect('here are the environment with ID foo');
-  });
-
-  it('/environments (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/environments')
-      .expect(200)
-      .expect('[]');
-  });
-
-  it('/environments/:id (PUT)', () => {
-    return request(app.getHttpServer())
-      .put('/environments/foo')
-      .send({
-        default_spring_profiles: 'test',
-      })
-      .expect(200)
-      .expect('here is the updated environment with ID foo');
-  });
-
-  it('/environments/:id (DELETE)', () => {
-    return request(app.getHttpServer())
-      .delete('/environments/foo')
-      .expect(200)
-      .expect('environment with ID foo deleted');
   });
 });

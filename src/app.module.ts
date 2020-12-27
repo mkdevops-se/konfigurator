@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Environment } from './environments/environment.entity';
@@ -11,8 +10,9 @@ import { EnvironmentsModule } from './environments/environments.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: ':memory:',
-      dropSchema: true,
+      dropSchema: false,
       entities: [Environment],
+      keepConnectionAlive: true,
       synchronize: true,
     }),
     EnvironmentsModule,
@@ -20,6 +20,4 @@ import { EnvironmentsModule } from './environments/environments.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  constructor(private connection: Connection) {}
-}
+export class AppModule {}

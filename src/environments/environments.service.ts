@@ -33,6 +33,7 @@ export class EnvironmentsService {
 
   async delete(name: string): Promise<Environment> {
     const deletedEnv = await this.environmentsRepository.removeEntity(name);
+    deletedEnv.name = name;
     return deletedEnv;
   }
 }
