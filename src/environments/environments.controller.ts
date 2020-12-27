@@ -16,11 +16,11 @@ import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
 
 @Controller('environments')
+@UseFilters(HttpExceptionFilter)
 export class EnvironmentsController {
   constructor(private environmentsService: EnvironmentsService) {}
 
   @Post()
-  @UseFilters(new HttpExceptionFilter())
   async create(
     @Body(new ValidationPipe())
     createEnvDto: CreateEnvironmentDto,
@@ -36,7 +36,6 @@ export class EnvironmentsController {
   }
 
   @Get(':name')
-  @UseFilters(new HttpExceptionFilter())
   async get(@Param('name') name: string): Promise<Environment> {
     console.log(`Getting environment ${name} ...`);
     const oneEnv = await this.environmentsService.getOne(name);
@@ -45,7 +44,6 @@ export class EnvironmentsController {
   }
 
   @Get()
-  @UseFilters(new HttpExceptionFilter())
   async getAll(): Promise<Environment[]> {
     console.log(`Getting all environments ...`);
     const allEnvs = await this.environmentsService.getAll();
@@ -54,7 +52,6 @@ export class EnvironmentsController {
   }
 
   @Put(':name')
-  @UseFilters(new HttpExceptionFilter())
   async update(
     @Param('name') name: string,
     @Body(new ValidationPipe()) updateEnvDto: UpdateEnvironmentDto,
@@ -71,7 +68,6 @@ export class EnvironmentsController {
   }
 
   @Delete(':name')
-  @UseFilters(new HttpExceptionFilter())
   async delete(@Param('name') name: string): Promise<Environment> {
     console.log(`Deleting environment ${name} ...`);
     const deletedEnv = await this.environmentsService.delete(name);
