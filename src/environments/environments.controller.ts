@@ -7,7 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateEnvironmentDto, UpdateEnvironmentDto } from './dto';
+import { CreateEnvironmentDto } from './dto/create-environment.dto';
+import { UpdateEnvironmentDto } from './dto/update-environment.dto';
 import { EnvironmentsService } from './environments.service';
 import { Environment } from '../interfaces/environment.interface';
 
@@ -17,15 +18,15 @@ export class EnvironmentsController {
 
   @Post()
   async create(
-    @Body() createEnvironmentDto: CreateEnvironmentDto,
+    @Body() createEnvDto: CreateEnvironmentDto,
   ): Promise<Environment> {
     console.log(
-      `Creating environment ${
-        createEnvironmentDto.name
-      } with body ${JSON.stringify(createEnvironmentDto)}`,
+      `Creating environment '${createEnvDto.name}' with body ${JSON.stringify(
+        createEnvDto,
+      )}`,
     );
-    this.environmentsService.create(createEnvironmentDto);
-    return createEnvironmentDto;
+    const newEnv = await this.environmentsService.create(createEnvDto);
+    return newEnv;
   }
 
   @Get(':id')
@@ -40,16 +41,15 @@ export class EnvironmentsController {
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
-    @Body() updateEnvironmentDto: UpdateEnvironmentDto,
-  ): string {
+    @Body() updateEnvDto: UpdateEnvironmentDto,
+  ): Promise<Environment> {
     console.log(
-      `Updating environment ${id} with body ${JSON.stringify(
-        updateEnvironmentDto,
-      )}`,
+      `Updating environment ${id} with body ${JSON.stringify(updateEnvDto)}`,
     );
-    return `here is the updated environment with ID ${id}`;
+    const updatedEnv = await this.environmentsService.update(id, updateEnvDto);
+    return updatedEnv;
   }
 
   @Delete(':id')
