@@ -1,9 +1,14 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { Environment } from './environment.entity';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 
 @EntityRepository(Environment)
 export class EnvironmentRepository extends Repository<Environment> {
   async insertEntity(item: Environment): Promise<Environment> {
+    const entity = await this.findOne(item.name);
+    if (entity) {
+      throw new ConflictException(`Environment ${item.name} already exist`);
+    }
     return await this.save(item);
   }
 
@@ -16,7 +21,11 @@ export class EnvironmentRepository extends Repository<Environment> {
   }
 
   async findEntity(name: string): Promise<Environment> {
-    return await this.findOneOrFail(name);
+    const entity = await this.findOne(name);
+    if (!entity) {
+      throw new NotFoundException(`There's no environment named ${name}`);
+    }
+    return entity;
   }
 
   async removeEntity(name: string): Promise<Environment> {
