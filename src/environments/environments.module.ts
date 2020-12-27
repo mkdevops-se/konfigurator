@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentsController } from './environments.controller';
 import { EnvironmentsService } from './environments.service';
-import { Environment } from './environment.entity';
+import { EnvironmentRepository } from './environment.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Environment])],
+  imports: [TypeOrmModule.forFeature([EnvironmentRepository])],
   controllers: [EnvironmentsController],
   providers: [EnvironmentsService],
 })

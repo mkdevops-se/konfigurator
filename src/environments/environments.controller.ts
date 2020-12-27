@@ -30,14 +30,17 @@ export class EnvironmentsController {
   }
 
   @Get(':id')
-  get(@Param('id') id: string): string {
-    console.log(`Getting environment ${id}`);
-    return `here are the environment with ID ${id}`;
+  async get(@Param('id') id: string): Promise<Environment> {
+    console.log(`Getting environment ${id} ...`);
+    const oneEnv = await this.environmentsService.getOne(id);
+    return oneEnv;
   }
 
   @Get()
   async getAll(): Promise<Environment[]> {
-    return this.environmentsService.getAll();
+    const allEnvs = await this.environmentsService.getAll();
+    console.log(`Getting all ${allEnvs.length} environments`);
+    return allEnvs;
   }
 
   @Put(':id')
@@ -53,8 +56,9 @@ export class EnvironmentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): string {
+  async delete(@Param('id') id: string): Promise<Environment> {
     console.log(`Deleting environment ${id}`);
-    return `environment with ID ${id} deleted`;
+    const deletedEnv = await this.environmentsService.delete(id);
+    return deletedEnv;
   }
 }
