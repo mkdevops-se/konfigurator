@@ -8,12 +8,12 @@ import {
   Put,
   UseFilters,
 } from '@nestjs/common';
+import { HttpExceptionFilter } from '../http-exception.filter';
+import { ValidationPipe } from '../validation.pipe';
 import { CreateEnvironmentDto } from './dto/create-environment.dto';
 import { UpdateEnvironmentDto } from './dto/update-environment.dto';
 import { EnvironmentsService } from './environments.service';
-import { Environment } from '../interfaces/environment.interface';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { ValidationPipe } from '../validation.pipe';
+import { Environment } from './environment.entity';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
