@@ -26,48 +26,56 @@ export class EnvironmentsController {
     createEnvDto: CreateEnvironmentDto,
   ): Promise<Environment> {
     console.log(
-      `Creating environment '${createEnvDto.name}' with body ${JSON.stringify(
+      `Creating environment '${createEnvDto.name}' with ${JSON.stringify(
         createEnvDto,
-      )}`,
+      )} ...`,
     );
     const newEnv = await this.environmentsService.create(createEnvDto);
+    console.debug(`Created environment: ${JSON.stringify(newEnv)}`);
     return newEnv;
   }
 
-  @Get(':id')
+  @Get(':name')
   @UseFilters(new HttpExceptionFilter())
-  async get(@Param('id') id: string): Promise<Environment> {
-    console.log(`Getting environment ${id} ...`);
-    const oneEnv = await this.environmentsService.getOne(id);
+  async get(@Param('name') name: string): Promise<Environment> {
+    console.log(`Getting environment ${name} ...`);
+    const oneEnv = await this.environmentsService.getOne(name);
+    console.debug(`Got one environment: ${JSON.stringify(oneEnv)}`);
     return oneEnv;
   }
 
   @Get()
   @UseFilters(new HttpExceptionFilter())
   async getAll(): Promise<Environment[]> {
+    console.log(`Getting all environments ...`);
     const allEnvs = await this.environmentsService.getAll();
-    console.log(`Getting all ${allEnvs.length} environments`);
+    console.debug(`Got all environments: ${JSON.stringify(allEnvs)}`);
     return allEnvs;
   }
 
-  @Put(':id')
+  @Put(':name')
   @UseFilters(new HttpExceptionFilter())
   async update(
-    @Param('id') id: string,
+    @Param('name') name: string,
     @Body(new ValidationPipe()) updateEnvDto: UpdateEnvironmentDto,
   ): Promise<Environment> {
     console.log(
-      `Updating environment ${id} with body ${JSON.stringify(updateEnvDto)}`,
+      `Updating environment ${name} with ${JSON.stringify(updateEnvDto)} ...`,
     );
-    const updatedEnv = await this.environmentsService.update(id, updateEnvDto);
+    const updatedEnv = await this.environmentsService.update(
+      name,
+      updateEnvDto,
+    );
+    console.debug(`Updated environment: ${JSON.stringify(updatedEnv)}`);
     return updatedEnv;
   }
 
-  @Delete(':id')
+  @Delete(':name')
   @UseFilters(new HttpExceptionFilter())
-  async delete(@Param('id') id: string): Promise<Environment> {
-    console.log(`Deleting environment ${id}`);
-    const deletedEnv = await this.environmentsService.delete(id);
+  async delete(@Param('name') name: string): Promise<Environment> {
+    console.log(`Deleting environment ${name} ...`);
+    const deletedEnv = await this.environmentsService.delete(name);
+    console.debug(`Deleted environment: ${JSON.stringify(deletedEnv)}`);
     return deletedEnv;
   }
 }
