@@ -3,13 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentsController } from './environments.controller';
 import { EnvironmentsService } from './environments.service';
 import { Environment } from './environment.entity';
+import { EnvironmentRepository } from './environment.repository';
+import { EnvironmentsModule } from './environments.module';
 
 describe('EnvironmentsController', () => {
   let controller: EnvironmentsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [TypeOrmModule.forFeature([Environment])],
       controllers: [EnvironmentsController],
       providers: [EnvironmentsService],
     }).compile();
@@ -61,7 +62,7 @@ describe('EnvironmentsController', () => {
 
   describe('DELETE /environments/:id', () => {
     it('should return "environment with ID ... deleted"', () => {
-      expect(controller.remove('foo')).toBe('environment with ID foo deleted');
+      expect(controller.delete('foo')).toBe('environment with ID foo deleted');
     });
   });
 });
