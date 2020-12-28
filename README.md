@@ -1,4 +1,4 @@
-# `konfigurator` – Ordning och reda i OpenShift-miljöerna
+# `konfigurator` – Ordning och reda i OpenShift
 
 En webbtjänst för att spåra och rekonfigurera vad som körs i dina OpenShift-miljöer.
 
