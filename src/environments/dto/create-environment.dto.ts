@@ -53,5 +53,10 @@ export class CreateEnvironmentDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
+  login_url?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
   comment?: string;
 }

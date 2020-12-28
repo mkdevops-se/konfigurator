@@ -37,6 +37,7 @@ describe('EnvironmentsController (e2e)', () => {
           mq_url: null,
           mq_namespace: null,
           db_url: null,
+          login_url: null,
           comment: null,
         });
     });
@@ -101,6 +102,7 @@ describe('EnvironmentsController (e2e)', () => {
           mq_namespace: null,
           db_url: null,
           default_spring_profiles: 'test',
+          login_url: null,
           comment: null,
         });
     });
@@ -128,6 +130,7 @@ describe('EnvironmentsController (e2e)', () => {
             mq_namespace: null,
             db_url: null,
             default_spring_profiles: 'test',
+            login_url: null,
             comment: null,
           },
         ]);
@@ -141,6 +144,7 @@ describe('EnvironmentsController (e2e)', () => {
         .send({
           rank: 1000,
           default_spring_profiles: 'prod',
+          login_url: 'https://honeypots-for-free.dot.com',
           comment: 'Mats was here',
         })
         .expect(200)
@@ -156,6 +160,7 @@ describe('EnvironmentsController (e2e)', () => {
           mq_namespace: null,
           db_url: null,
           default_spring_profiles: 'prod',
+          login_url: 'https://honeypots-for-free.dot.com',
           comment: 'Mats was here',
         });
     });
@@ -213,6 +218,7 @@ describe('EnvironmentsController (e2e)', () => {
           mq_namespace: null,
           db_url: null,
           default_spring_profiles: 'prod',
+          login_url: 'https://honeypots-for-free.dot.com',
           comment: 'Mats was here',
         });
     });

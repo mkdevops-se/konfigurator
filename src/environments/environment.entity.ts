@@ -69,5 +69,11 @@ export class Environment {
     type: 'varying character',
     nullable: true,
   })
+  login_url?: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
   comment?: string;
 }

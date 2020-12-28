@@ -53,5 +53,10 @@ export class UpdateEnvironmentDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
+  login_url?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
   comment?: string;
 }
