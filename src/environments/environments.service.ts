@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { CreateEnvironmentDto } from './dto/create-environment.dto';
 import { EnvironmentRepository } from './environment.repository';
 import { Environment } from './environment.entity';
 
@@ -8,8 +9,10 @@ export class EnvironmentsService {
 
   constructor(private environmentsRepository: EnvironmentRepository) {}
 
-  async create(environment: Environment) {
-    return await this.environmentsRepository.insertEntity(environment);
+  async create(environment: CreateEnvironmentDto) {
+    return await this.environmentsRepository.insertEntity(
+      environment as Environment,
+    );
   }
 
   async getOne(name: string): Promise<Environment> {
