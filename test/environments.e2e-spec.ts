@@ -1,9 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { Environment } from '../src/environments/environment.entity';
 import { EnvironmentsModule } from '../src/environments/environments.module';
 
 describe('EnvironmentsController (e2e)', () => {
@@ -11,18 +9,7 @@ describe('EnvironmentsController (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
-          dropSchema: false,
-          entities: [Environment],
-          keepConnectionAlive: true,
-          synchronize: true,
-        }),
-        EnvironmentsModule,
-        AppModule,
-      ],
+      imports: [AppModule, EnvironmentsModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
