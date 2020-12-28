@@ -32,6 +32,7 @@ describe('EnvironmentsController (e2e)', () => {
         .expect(201)
         .expect({
           ...newEnvironment,
+          rank: 0,
           ocp_namespace_public: null,
           mq_url: null,
           mq_namespace: null,
@@ -90,6 +91,7 @@ describe('EnvironmentsController (e2e)', () => {
         .expect(200)
         .expect({
           name: 'katla-utv',
+          rank: 0,
           ocp_tenant_domain: 'test.ocp.github.org',
           ocp_namespace_front: 'front',
           ocp_namespace_backend: 'backend',
@@ -116,6 +118,7 @@ describe('EnvironmentsController (e2e)', () => {
         .expect([
           {
             name: 'katla-utv',
+            rank: 0,
             ocp_tenant_domain: 'test.ocp.github.org',
             ocp_namespace_front: 'front',
             ocp_namespace_backend: 'backend',
@@ -136,12 +139,14 @@ describe('EnvironmentsController (e2e)', () => {
       return request(app.getHttpServer())
         .put('/environments/katla-utv')
         .send({
+          rank: 1000,
           default_spring_profiles: 'prod',
           comment: 'Mats was here',
         })
         .expect(200)
         .expect({
           name: 'katla-utv',
+          rank: 1000,
           ocp_tenant_domain: 'test.ocp.github.org',
           ocp_namespace_front: 'front',
           ocp_namespace_backend: 'backend',
@@ -198,6 +203,7 @@ describe('EnvironmentsController (e2e)', () => {
         .expect(200)
         .expect({
           name: 'katla-utv',
+          rank: 1000,
           ocp_tenant_domain: 'test.ocp.github.org',
           ocp_namespace_front: 'front',
           ocp_namespace_backend: 'backend',

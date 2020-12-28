@@ -6,6 +6,12 @@ export class Environment {
   name: string;
 
   @Column({
+    type: 'integer',
+    default: 0,
+  })
+  rank: number;
+
+  @Column({
     type: 'varying character',
     nullable: false,
   })

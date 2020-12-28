@@ -1,6 +1,10 @@
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsInt } from 'class-validator';
 
 export class UpdateEnvironmentDto {
+  @IsInt()
+  @IsOptional()
+  rank?: number;
+
   @IsString()
   @IsNotEmpty()
   @IsOptional()

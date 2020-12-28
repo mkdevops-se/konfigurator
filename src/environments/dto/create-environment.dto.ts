@@ -1,9 +1,13 @@
-import { IsString, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsInt } from 'class-validator';
 
 export class CreateEnvironmentDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsInt()
+  @IsOptional()
+  rank?: number;
 
   @IsString()
   @IsNotEmpty()
