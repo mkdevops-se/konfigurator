@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Put,
@@ -18,6 +19,8 @@ import { Environment } from './environment.entity';
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
 export class EnvironmentsController {
+  private readonly logger = new Logger(EnvironmentsController.name);
+
   constructor(private environmentsService: EnvironmentsService) {}
 
   @Post()
@@ -25,29 +28,29 @@ export class EnvironmentsController {
     @Body(new ValidationPipe())
     createEnvDto: CreateEnvironmentDto,
   ): Promise<Environment> {
-    console.log(
+    this.logger.log(
       `Creating environment '${createEnvDto.name}' with ${JSON.stringify(
         createEnvDto,
       )} ...`,
     );
     const newEnv = await this.environmentsService.create(createEnvDto);
-    console.debug(`Created environment: ${JSON.stringify(newEnv)}`);
+    this.logger.debug(`Created environment: ${JSON.stringify(newEnv)}`);
     return newEnv;
   }
 
   @Get(':name')
   async get(@Param('name') name: string): Promise<Environment> {
-    console.log(`Getting environment ${name} ...`);
+    this.logger.log(`Getting environment ${name} ...`);
     const oneEnv = await this.environmentsService.getOne(name);
-    console.debug(`Got one environment: ${JSON.stringify(oneEnv)}`);
+    this.logger.debug(`Got one environment: ${JSON.stringify(oneEnv)}`);
     return oneEnv;
   }
 
   @Get()
   async getAll(): Promise<Environment[]> {
-    console.log(`Getting all environments ...`);
+    this.logger.log(`Getting all environments ...`);
     const allEnvs = await this.environmentsService.getAll();
-    console.debug(`Got all environments: ${JSON.stringify(allEnvs)}`);
+    this.logger.debug(`Got all environments: ${JSON.stringify(allEnvs)}`);
     return allEnvs;
   }
 
@@ -56,22 +59,22 @@ export class EnvironmentsController {
     @Param('name') name: string,
     @Body(new ValidationPipe()) updateEnvDto: UpdateEnvironmentDto,
   ): Promise<Environment> {
-    console.log(
+    this.logger.log(
       `Updating environment ${name} with ${JSON.stringify(updateEnvDto)} ...`,
     );
     const updatedEnv = await this.environmentsService.update(
       name,
       updateEnvDto,
     );
-    console.debug(`Updated environment: ${JSON.stringify(updatedEnv)}`);
+    this.logger.debug(`Updated environment: ${JSON.stringify(updatedEnv)}`);
     return updatedEnv;
   }
 
   @Delete(':name')
   async delete(@Param('name') name: string): Promise<Environment> {
-    console.log(`Deleting environment ${name} ...`);
+    this.logger.log(`Deleting environment ${name} ...`);
     const deletedEnv = await this.environmentsService.delete(name);
-    console.debug(`Deleted environment: ${JSON.stringify(deletedEnv)}`);
+    this.logger.debug(`Deleted environment: ${JSON.stringify(deletedEnv)}`);
     return deletedEnv;
   }
 }

@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Environment } from './environments/environment.entity';
 import { EnvironmentsModule } from './environments/environments.module';
+import { HeartbeatsService } from './heartbeats/heartbeats.service';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { EnvironmentsModule } from './environments/environments.module';
       }`,
       expandVariables: true,
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: process.env.DATABASE_URL,
@@ -26,6 +29,6 @@ import { EnvironmentsModule } from './environments/environments.module';
     EnvironmentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, HeartbeatsService],
 })
 export class AppModule {}

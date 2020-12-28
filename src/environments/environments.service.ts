@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { EnvironmentRepository } from './environment.repository';
 import { Environment } from './environment.entity';
 
 @Injectable()
 export class EnvironmentsService {
+  private readonly logger = new Logger(EnvironmentsService.name);
+
   constructor(private environmentsRepository: EnvironmentRepository) {}
 
   async create(environment: Environment) {
-    const newEnv = await this.environmentsRepository.insertEntity(environment);
-    return newEnv;
+    return await this.environmentsRepository.insertEntity(environment);
   }
 
   async getOne(name: string): Promise<Environment> {
@@ -23,12 +24,8 @@ export class EnvironmentsService {
     name: string,
     partialEnv: Partial<Environment>,
   ): Promise<Environment> {
-    console.log(`Updating with ${JSON.stringify(partialEnv)}`);
-    const updatedEnv = await this.environmentsRepository.updateEntity(
-      name,
-      partialEnv,
-    );
-    return updatedEnv;
+    this.logger.debug(`Updating with ${JSON.stringify(partialEnv)}`);
+    return await this.environmentsRepository.updateEntity(name, partialEnv);
   }
 
   async delete(name: string): Promise<Environment> {
