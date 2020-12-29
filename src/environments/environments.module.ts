@@ -8,5 +8,6 @@ import { EnvironmentRepository } from './environment.repository';
   imports: [TypeOrmModule.forFeature([EnvironmentRepository])],
   controllers: [EnvironmentsController],
   providers: [EnvironmentsService],
+  exports: [EnvironmentsService],
 })
 export class EnvironmentsModule {}

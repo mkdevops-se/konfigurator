@@ -1,6 +1,12 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity({
+  orderBy: {
+    environment: 'ASC',
+    ocp_namespace: 'ASC',
+    name: 'ASC',
+  },
+})
 export class Deployment {
   @PrimaryColumn('varying character')
   environment: string;

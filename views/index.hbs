@@ -5,6 +5,77 @@
   <title>{{ title }}</title>
 </head>
 <body>
-"{{ message }}", in a Handlebars template.
+<h1>Översikt av miljökonfigurationer i OpenShift</h1>
+<p>{{ message }}</p>
+{{#each environments}}
+  <hr>
+  <h2 id="{{ this.name }}"><pre>{{this.name}}<sup><small><a href="#{{ this.name }}">#</a><a href="#">↑</a></small></sup></pre></h2>
+  <h3>Environment Overview</h3>
+  <p>
+    Login-URL: <a href="{{ this.login_url }}">{{ this.login_url }}</a>
+  </p>
+  <p>
+    Comment: {{#if this.comment }}{{ this.comment }}{{else}}N/A{{/if}}
+  </p>
+  <table border="1px" cellspacing="2px" cellpadding="4px">
+    <thead>
+    <tr>
+      <th>Namespace</th>
+      <th>Deployments</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each this.ocp_namespaces }}
+    <tr>
+      <th id="{{ this.ocp_namespace }}">
+        <pre>{{ this.ocp_namespace }}<sup><small><a href="#{{ this.ocp_namespace }}">#</a></small></sup></pre>
+<!--        <br/>-->
+<!--        <a href="#{{ this.ocp_namespace }}">Sidankare</a>-->
+        <small><a href="{{ this.ocp_console_url }}" target="_blank">Visa i OCP-konsollen</a></small>
+      </th>
+      <td>
+        <table border="1px" cellspacing="2px" cellpadding="4px">
+          <thead>
+          <tr>
+            <th rowspan="2">Deployment</th>
+            <th colspan="2">Memory</th>
+            <th colspan="2">CPU</th>
+            <th colspan="2">Replicas/Pods</th>
+            <th rowspan="2">Spring Profiles</th>
+            <th rowspan="2">Current Image</th>
+            <th rowspan="2">Status Refreshed</th>
+          </tr>
+          <tr>
+            <td>Min</td>
+            <td>Max</td>
+            <td>Min</td>
+            <td>Max</td>
+            <td>Target</td>
+            <td>Current</td>
+          </tr>
+          </thead>
+          <tbody>
+          {{#each this.deployments }}
+          <tr>
+            <td>{{#if this.name }}<pre>{{ this.name }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.memory_min }}<pre>{{ this.memory_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.memory_max }}<pre>{{ this.memory_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.cpu_min }}<pre>{{ this.cpu_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.cpu_max }}<pre>{{ this.cpu_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.replicas_target }}<pre>{{ this.replicas_target }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.replicas_current }}<pre>{{ this.replicas_current }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.spring_profiles }}<pre>{{ this.spring_profiles }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.image_current }}<pre>{{ this.image_current }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.updated_at }}<pre>{{ this.updated_at }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+          </tr>
+          {{/each}}
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    {{/each}}
+    </tbody>
+  </table>
+{{/each}}
 </body>
 </html>

@@ -1,5 +1,6 @@
 export interface Environment {
   name: string;
+  rank: number;
   ocp_tenant_domain: string;
   ocp_namespace_front: string;
   ocp_namespace_backend: string;
@@ -9,5 +10,6 @@ export interface Environment {
   mq_namespace?: string;
   db_url?: string;
   default_spring_profiles?: string;
+  login_url?: string;
   comment?: string;
 }

@@ -1,6 +1,11 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity({
+  orderBy: {
+    rank: 'DESC',
+    name: 'ASC',
+  },
+})
 export class Environment {
   @PrimaryColumn('varying character')
   name: string;

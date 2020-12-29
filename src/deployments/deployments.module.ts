@@ -13,5 +13,6 @@ import { EnvironmentsModule } from '../environments/environments.module';
   ],
   controllers: [DeploymentsController],
   providers: [DeploymentsService],
+  exports: [DeploymentsService],
 })
 export class DeploymentsModule {}
