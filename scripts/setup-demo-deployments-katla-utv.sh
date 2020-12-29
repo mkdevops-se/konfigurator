@@ -1,7 +1,6 @@
 #!/bin/bash
 
 ## UTV-Front ####
-echo ""
 echo "Creating api-gateway in UTV-Front"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "api-gateway",
