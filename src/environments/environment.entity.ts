@@ -80,5 +80,11 @@ export class Environment {
     type: 'varying character',
     nullable: true,
   })
+  gateway_url?: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
   comment?: string;
 }

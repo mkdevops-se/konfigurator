@@ -38,6 +38,7 @@ describe('EnvironmentsController (e2e)', () => {
           mq_namespace: null,
           db_url: null,
           login_url: null,
+          gateway_url: null,
           comment: null,
         });
     });
@@ -103,6 +104,7 @@ describe('EnvironmentsController (e2e)', () => {
           db_url: null,
           default_spring_profiles: 'test',
           login_url: null,
+          gateway_url: null,
           comment: null,
         });
     });
@@ -131,6 +133,7 @@ describe('EnvironmentsController (e2e)', () => {
             db_url: null,
             default_spring_profiles: 'test',
             login_url: null,
+            gateway_url: null,
             comment: null,
           },
         ]);
@@ -145,6 +148,7 @@ describe('EnvironmentsController (e2e)', () => {
           rank: 1000,
           default_spring_profiles: 'prod',
           login_url: 'https://honeypots-for-free.dot.com',
+          gateway_url: 'https://the-gateway-takes-you-there.travel',
           comment: 'Mats was here',
         })
         .expect(200)
@@ -161,6 +165,7 @@ describe('EnvironmentsController (e2e)', () => {
           db_url: null,
           default_spring_profiles: 'prod',
           login_url: 'https://honeypots-for-free.dot.com',
+          gateway_url: 'https://the-gateway-takes-you-there.travel',
           comment: 'Mats was here',
         });
     });
@@ -219,6 +224,7 @@ describe('EnvironmentsController (e2e)', () => {
           db_url: null,
           default_spring_profiles: 'prod',
           login_url: 'https://honeypots-for-free.dot.com',
+          gateway_url: 'https://the-gateway-takes-you-there.travel',
           comment: 'Mats was here',
         });
     });

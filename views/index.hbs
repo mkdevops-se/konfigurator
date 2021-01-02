@@ -12,7 +12,8 @@
   <h2 id="{{ this.name }}"><pre>{{this.name}}<sup><small><a href="#{{ this.name }}">#</a><a href="#">↑</a></small></sup></pre></h2>
   <h3>Environment Overview</h3>
   <p>
-    Login-URL: <a href="{{ this.login_url }}">{{ this.login_url }}</a>
+    Login-URL: <a href="{{ this.login_url }}">{{ this.login_url }}</a><br/>
+    Gateway URL: <a href="{{ this.gateway_url }}">{{ this.gateway_url }}</a><br/>
   </p>
   <p>
     Comment: {{#if this.comment }}{{ this.comment }}{{else}}N/A{{/if}}

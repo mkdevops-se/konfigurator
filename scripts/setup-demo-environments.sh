@@ -13,6 +13,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "db_url": null,
   "default_spring_profiles": "test",
   "login_url": "https://honeypots-for-free.dot.com",
+  "gateway_url": "https://post-credentials-here.i-am-a-gateway.co.uk",
   "comment": "Mats was here"
 }'
 
@@ -29,7 +30,8 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "mq_namespace": null,
   "db_url": null,
   "default_spring_profiles": "test",
-  "login_url": "https://frontend-kattla-slarvkatterna-utv.test.ocp.github.org"
+  "login_url": "https://frontend-kattla-slarvkatterna-utv.test.ocp.github.org",
+  "gateway_url": "https://api-gw-kattla-slarvkatterna-utv.test.ocp.github.org"
 }'
 
 echo ""
@@ -45,7 +47,8 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "mq_namespace": null,
   "db_url": null,
   "default_spring_profiles": "test",
-  "login_url": "https://frontend-kattla-drakryttarna-utv.test.ocp.github.org"
+  "login_url": "https://frontend-kattla-drakryttarna-utv.test.ocp.github.org",
+  "gateway_url": "https://api-gw-kattla-drakryttarna-utv.test.ocp.github.org"
 }'
 
 echo ""
@@ -62,6 +65,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "db_url": null,
   "default_spring_profiles": "test",
   "login_url": "https://work-it.system-integration-tests.dot.com/login/unauthenticated",
+  "gateway_url": "https://here-i-come.openapi.com",
   "comment": "Nothing gets past here."
 }'
 

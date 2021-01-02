@@ -58,5 +58,10 @@ export class UpdateEnvironmentDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
+  gateway_url?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
   comment?: string;
 }
