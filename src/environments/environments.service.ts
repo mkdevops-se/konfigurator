@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateEnvironmentDto } from './dto/create-environment.dto';
-import { EnvironmentRepository } from './environment.repository';
-import { Environment } from './environment.entity';
+import { EnvironmentRepository } from './entities/environment.repository';
+import { Environment } from './entities/environment.entity';
 
 @Injectable()
 export class EnvironmentsService {
@@ -15,12 +15,12 @@ export class EnvironmentsService {
     );
   }
 
-  async getOne(name: string): Promise<Environment> {
-    return await this.environmentsRepository.findEntity(name);
-  }
-
   async getAll(): Promise<Environment[]> {
     return await this.environmentsRepository.find();
+  }
+
+  async getOne(name: string): Promise<Environment> {
+    return await this.environmentsRepository.findEntity(name);
   }
 
   async update(

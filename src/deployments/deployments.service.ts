@@ -1,10 +1,11 @@
 import * as path from 'path';
 import { Injectable, Logger } from '@nestjs/common';
-import { DeploymentRepository } from './deployment.repository';
-import { Deployment } from './deployment.entity';
-import { Deployment as DeploymentInterface } from '../interfaces/deployment.interface';
-import { CreateDeploymentDto } from './dto/create-deployment.dto';
 import { Environment } from '../interfaces/environment.interface';
+import { Deployment as DeploymentInterface } from '../interfaces/deployment.interface';
+import { DeploymentRepository } from './entities/deployment.repository';
+import { Deployment } from './entities/deployment.entity';
+import { CreateDeploymentDto } from './dto/create-deployment.dto';
+import { UpdateDeploymentDto } from './dto/update-deployment.dto';
 
 @Injectable()
 export class DeploymentsService {
@@ -17,10 +18,6 @@ export class DeploymentsService {
       environment,
       ...deployment,
     } as Deployment);
-  }
-
-  async getOne(environment: string, name: string): Promise<Deployment> {
-    return await this.deploymentsRepository.findEntity(environment, name);
   }
 
   async getAll(): Promise<Deployment[]> {
@@ -58,10 +55,14 @@ export class DeploymentsService {
     return deployments;
   }
 
+  async getOne(environment: string, name: string): Promise<Deployment> {
+    return await this.deploymentsRepository.findEntity(environment, name);
+  }
+
   async update(
     environment: string,
     name: string,
-    partialEnv: Partial<Deployment>,
+    partialEnv: UpdateDeploymentDto,
   ): Promise<Deployment> {
     this.logger.debug(`Updating with ${JSON.stringify(partialEnv)}`);
     return await this.deploymentsRepository.updateEntity(

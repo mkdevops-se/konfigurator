@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
+import { DeploymentsService } from './deployments.service';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
 import { UpdateDeploymentDto } from './dto/update-deployment.dto';
-import { DeploymentsService } from './deployments.service';
-import { Deployment } from './deployment.entity';
+import { Deployment } from './entities/deployment.entity';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
@@ -45,7 +45,7 @@ export class DeploymentsController {
   }
 
   @Get(':environment/deployments/:name')
-  async get(
+  async getOne(
     @Param('environment') environment: string,
     @Param('name') name: string,
   ): Promise<Deployment> {

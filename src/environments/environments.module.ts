@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentsController } from './environments.controller';
 import { EnvironmentsService } from './environments.service';
-import { EnvironmentRepository } from './environment.repository';
+import { EnvironmentRepository } from './entities/environment.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([EnvironmentRepository])],

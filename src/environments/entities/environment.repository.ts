@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Environment } from './environment.entity';
 import { ConflictException, NotFoundException } from '@nestjs/common';
+import { Environment } from './environment.entity';
 
 @EntityRepository(Environment)
 export class EnvironmentRepository extends Repository<Environment> {

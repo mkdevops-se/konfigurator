@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentsService } from './environments.service';
-import { EnvironmentRepository } from './environment.repository';
+import { EnvironmentRepository } from './entities/environment.repository';
 
 describe('EnvironmentsService', () => {
   let service: EnvironmentsService;

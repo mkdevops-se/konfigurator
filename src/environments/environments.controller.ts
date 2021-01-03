@@ -14,7 +14,7 @@ import { ValidationPipe } from '../validation.pipe';
 import { CreateEnvironmentDto } from './dto/create-environment.dto';
 import { UpdateEnvironmentDto } from './dto/update-environment.dto';
 import { EnvironmentsService } from './environments.service';
-import { Environment } from './environment.entity';
+import { Environment } from './entities/environment.entity';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
@@ -38,20 +38,20 @@ export class EnvironmentsController {
     return newEnv;
   }
 
-  @Get(':name')
-  async get(@Param('name') name: string): Promise<Environment> {
-    this.logger.log(`Getting environment ${name} ...`);
-    const oneEnv = await this.environmentsService.getOne(name);
-    this.logger.debug(`Got one environment: ${JSON.stringify(oneEnv)}`);
-    return oneEnv;
-  }
-
   @Get()
   async getAll(): Promise<Environment[]> {
     this.logger.log(`Getting all environments ...`);
     const allEnvs = await this.environmentsService.getAll();
     this.logger.debug(`Got all environments: ${JSON.stringify(allEnvs)}`);
     return allEnvs;
+  }
+
+  @Get(':name')
+  async getOne(@Param('name') name: string): Promise<Environment> {
+    this.logger.log(`Getting environment ${name} ...`);
+    const oneEnv = await this.environmentsService.getOne(name);
+    this.logger.debug(`Got one environment: ${JSON.stringify(oneEnv)}`);
+    return oneEnv;
   }
 
   @Put(':name')

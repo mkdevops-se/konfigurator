@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EnvironmentRepository } from '../environments/entities/environment.repository';
+import { EnvironmentsModule } from '../environments/environments.module';
 import { DeploymentsController } from './deployments.controller';
 import { DeploymentsService } from './deployments.service';
-import { DeploymentRepository } from './deployment.repository';
-import { EnvironmentRepository } from '../environments/environment.repository';
-import { EnvironmentsModule } from '../environments/environments.module';
+import { DeploymentRepository } from './entities/deployment.repository';
 
 @Module({
   imports: [
     EnvironmentsModule,
-    TypeOrmModule.forFeature([EnvironmentRepository, DeploymentRepository]),
+    TypeOrmModule.forFeature([DeploymentRepository, EnvironmentRepository]),
   ],
   controllers: [DeploymentsController],
   providers: [DeploymentsService],

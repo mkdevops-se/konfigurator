@@ -1,6 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Deployment } from './deployment.entity';
+import { UpdateDeploymentDto } from '../dto/update-deployment.dto';
 
 @EntityRepository(Deployment)
 export class DeploymentRepository extends Repository<Deployment> {
@@ -20,7 +21,7 @@ export class DeploymentRepository extends Repository<Deployment> {
   async updateEntity(
     environment: string,
     name: string,
-    item: Partial<Deployment>,
+    item: UpdateDeploymentDto,
   ): Promise<Deployment> {
     const entity = await this.findEntity(environment, name);
     return await this.save({ ...entity, ...item });

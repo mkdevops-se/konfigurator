@@ -34,7 +34,7 @@ describe('EnvironmentsController', () => {
 
   describe('GET /environments/:id', () => {
     xit('should return "here are the environment with ID ..."', () => {
-      expect(controller.get('foo')).toBe(
+      expect(controller.getOne('foo')).toBe(
         'here are the environment with ID foo',
       );
     });
