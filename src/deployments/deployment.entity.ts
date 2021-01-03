@@ -21,6 +21,13 @@ export class Deployment {
   name: string;
 
   @Column({
+    type: 'boolean',
+    nullable: false,
+    default: false,
+  })
+  is_gateway: boolean;
+
+  @Column({
     type: 'varying character',
     nullable: true,
   })

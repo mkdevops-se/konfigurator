@@ -30,8 +30,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "mq_namespace": null,
   "db_url": null,
   "default_spring_profiles": "test",
-  "login_url": "https://frontend-kattla-slarvkatterna-utv.test.ocp.github.org",
-  "gateway_url": "https://api-gw-kattla-slarvkatterna-utv.test.ocp.github.org"
+  "login_url": "https://frontend-kattla-slarvkatterna-utv.test.ocp.github.org"
 }'
 
 echo ""

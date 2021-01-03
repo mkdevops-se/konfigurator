@@ -1,10 +1,20 @@
-import { IsString, IsOptional, IsNotEmpty, IsInt } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsInt,
+  IsBoolean,
+} from 'class-validator';
 
 export class UpdateDeploymentDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
   ocp_namespace?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  is_gateway?: boolean;
 
   @IsString()
   @IsNotEmpty()

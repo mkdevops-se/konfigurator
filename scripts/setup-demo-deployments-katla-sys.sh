@@ -5,6 +5,7 @@ echo "Creating api-gateway in SYS-Front"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "api-gateway",
   "ocp_namespace": "katla-front-sys",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -26,6 +27,7 @@ echo "Creating backend-gateway in SYS-Backend"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "backend-gateway",
   "ocp_namespace": "katla-backend-sys",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -37,7 +39,8 @@ echo ""
 echo "Creating surgrisen in SYS-Backend"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "surgrisen",
-  "ocp_namespace": "katla-backend-sys"
+  "ocp_namespace": "katla-backend-sys",
+  "is_gateway": false
 }'
 echo ""
 echo "Creating kalorikossan in SYS-Backend"
@@ -52,6 +55,7 @@ echo "Creating restricted-gateway in SYS-Restricted"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "restricted-gateway",
   "ocp_namespace": "katla-restricted-sys",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -62,7 +66,8 @@ echo ""
 echo "Creating rattighetsadministration in SYS-Restricted"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "rattighetsadministration",
-  "ocp_namespace": "katla-restricted-sys"
+  "ocp_namespace": "katla-restricted-sys",
+  "is_gateway": false
 }'
 
 ## DONE ####

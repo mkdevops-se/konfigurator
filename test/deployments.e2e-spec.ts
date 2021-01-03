@@ -17,10 +17,11 @@ describe('DeploymentsController (e2e)', () => {
   });
 
   describe('POST /environments/katla-utv/deployments', () => {
-    it('creates a valid deployment', () => {
+    it('creates a valid gateway deployment', () => {
       const newDeployment = {
         name: 'bff-gateway',
         ocp_namespace: 'front',
+        is_gateway: true,
       };
       return request(app.getHttpServer())
         .post('/environments/katla-utv/deployments')
@@ -29,6 +30,28 @@ describe('DeploymentsController (e2e)', () => {
         .expect({
           environment: 'katla-utv',
           ...newDeployment,
+          memory_min: null,
+          memory_max: null,
+          cpu_min: null,
+          cpu_max: null,
+          replicas_target: null,
+          replicas_current: null,
+        });
+    });
+
+    it('creates a valid backend deployment', () => {
+      const newDeployment = {
+        name: 'surgrisen',
+        ocp_namespace: 'backend',
+      };
+      return request(app.getHttpServer())
+        .post('/environments/katla-utv/deployments')
+        .send(newDeployment)
+        .expect(201)
+        .expect({
+          environment: 'katla-utv',
+          ...newDeployment,
+          is_gateway: false,
           memory_min: null,
           memory_max: null,
           cpu_min: null,
@@ -78,6 +101,7 @@ describe('DeploymentsController (e2e)', () => {
           environment: 'katla-utv',
           ocp_namespace: 'front',
           name: 'bff-gateway',
+          is_gateway: true,
           memory_min: null,
           memory_max: null,
           cpu_min: null,
@@ -100,8 +124,21 @@ describe('DeploymentsController (e2e)', () => {
         .expect([
           {
             environment: 'katla-utv',
+            ocp_namespace: 'backend',
+            name: 'surgrisen',
+            is_gateway: false,
+            memory_min: null,
+            memory_max: null,
+            cpu_min: null,
+            cpu_max: null,
+            replicas_target: null,
+            replicas_current: null,
+          },
+          {
+            environment: 'katla-utv',
             ocp_namespace: 'front',
             name: 'bff-gateway',
+            is_gateway: true,
             memory_min: null,
             memory_max: null,
             cpu_min: null,
@@ -127,6 +164,7 @@ describe('DeploymentsController (e2e)', () => {
           environment: 'katla-utv',
           ocp_namespace: 'front',
           name: 'bff-gateway',
+          is_gateway: true,
           memory_min: null,
           memory_max: null,
           cpu_min: '50m',
@@ -179,6 +217,7 @@ describe('DeploymentsController (e2e)', () => {
           environment: 'katla-utv',
           ocp_namespace: 'front',
           name: 'bff-gateway',
+          is_gateway: true,
           memory_min: null,
           memory_max: null,
           cpu_min: '50m',

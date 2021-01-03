@@ -5,6 +5,7 @@ echo "Creating api-gateway in UTV-Front"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "api-gateway",
   "ocp_namespace": "katla-front-utv",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -26,6 +27,7 @@ echo "Creating backend-gateway in UTV-Backend"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "backend-gateway",
   "ocp_namespace": "katla-backend-utv",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -38,13 +40,15 @@ echo "Creating munkfabriken in UTV-Backend"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "munkfabriken",
   "ocp_namespace": "katla-backend-utv",
+  "is_gateway": false,
   "replicas_target": 2
 }'
 echo ""
 echo "Creating surgrisen in UTV-Backend"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "surgrisen",
-  "ocp_namespace": "katla-backend-utv"
+  "ocp_namespace": "katla-backend-utv",
+  "is_gateway": false
 }'
 echo ""
 echo "Creating kalorikossan in UTV-Backend"
@@ -59,6 +63,7 @@ echo "Creating restricted-gateway in UTV-Restricted"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "restricted-gateway",
   "ocp_namespace": "katla-restricted-utv",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -69,7 +74,8 @@ echo ""
 echo "Creating rattighetsadministration in UTV-Restricted"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "rattighetsadministration",
-  "ocp_namespace": "katla-restricted-utv"
+  "ocp_namespace": "katla-restricted-utv",
+  "is_gateway": false
 }'
 
 ## DONE ####

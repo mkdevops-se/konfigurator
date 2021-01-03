@@ -5,6 +5,7 @@ echo "Creating api-gateway in Drakryttarna-UTV"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-drakryttarna-utv/deployments -d '{
   "name": "api-gateway",
   "ocp_namespace": "katla-drakryttarna-utv",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -26,6 +27,7 @@ echo "Creating backend-gateway in Drakryttarna-UTV"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-drakryttarna-utv/deployments -d '{
   "name": "backend-gateway",
   "ocp_namespace": "katla-drakryttarna-utv",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -38,13 +40,15 @@ echo "Creating munkfabriken in Drakryttarna-UTV"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-drakryttarna-utv/deployments -d '{
   "name": "munkfabriken",
   "ocp_namespace": "katla-drakryttarna-utv",
+  "is_gateway": false,
   "replicas_target": 1
 }'
 echo ""
 echo "Creating surgrisen in Drakryttarna-UTV"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-drakryttarna-utv/deployments -d '{
   "name": "surgrisen",
-  "ocp_namespace": "katla-drakryttarna-utv"
+  "ocp_namespace": "katla-drakryttarna-utv",
+  "is_gateway": false
 }'
 echo ""
 echo "Creating kalorikossan in Drakryttarna-UTV"
@@ -59,6 +63,7 @@ echo "Creating restricted-gateway in Drakryttarna-UTV"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-drakryttarna-utv/deployments -d '{
   "name": "restricted-gateway",
   "ocp_namespace": "katla-drakryttarna-utv",
+  "is_gateway": true,
   "memory_min": "200mb",
   "memory_max": "800mb",
   "cpu_min": "50m",
@@ -69,7 +74,8 @@ echo ""
 echo "Creating rattighetsadministration in Drakryttarna-UTV"
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-drakryttarna-utv/deployments -d '{
   "name": "rattighetsadministration",
-  "ocp_namespace": "katla-drakryttarna-utv"
+  "ocp_namespace": "katla-drakryttarna-utv",
+  "is_gateway": false
 }'
 
 ## DONE ####

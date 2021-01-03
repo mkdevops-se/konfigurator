@@ -11,5 +11,6 @@ export interface Environment {
   db_url?: string;
   default_spring_profiles?: string;
   login_url?: string;
+  gateway_url?: string;
   comment?: string;
 }

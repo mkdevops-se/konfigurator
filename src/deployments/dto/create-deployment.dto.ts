@@ -1,4 +1,10 @@
-import { IsString, IsOptional, IsNotEmpty, IsInt } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsInt,
+  IsBoolean,
+} from 'class-validator';
 
 export class CreateDeploymentDto {
   @IsString()
@@ -8,6 +14,10 @@ export class CreateDeploymentDto {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsBoolean()
+  @IsOptional()
+  is_gateway?: boolean;
 
   @IsString()
   @IsNotEmpty()
