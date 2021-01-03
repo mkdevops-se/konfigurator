@@ -3,6 +3,7 @@ export interface Deployment {
   ocp_namespace: string;
   name: string;
   is_gateway: boolean;
+  external_url?: string;
   memory_min?: string;
   memory_max?: string;
   cpu_min?: string;

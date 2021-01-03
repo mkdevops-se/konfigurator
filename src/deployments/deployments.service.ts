@@ -1,7 +1,10 @@
+import * as path from 'path';
 import { Injectable, Logger } from '@nestjs/common';
 import { DeploymentRepository } from './deployment.repository';
 import { Deployment } from './deployment.entity';
+import { Deployment as DeploymentInterface } from '../interfaces/deployment.interface';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
+import { Environment } from '../interfaces/environment.interface';
 
 @Injectable()
 export class DeploymentsService {
@@ -26,6 +29,33 @@ export class DeploymentsService {
 
   async getAllIn(environment: string): Promise<Deployment[]> {
     return await this.deploymentsRepository.find({ environment });
+  }
+
+  async getAllInEnvWithExternalUrls(
+    environment: Environment,
+  ): Promise<DeploymentInterface[]> {
+    const deployments: DeploymentInterface[] = await this.getAllIn(
+      environment.name,
+    );
+
+    for (const deployment of deployments) {
+      if (deployment.is_gateway) {
+        deployment.external_url = `https://${deployment.name}-${deployment.ocp_namespace}.${environment.ocp_tenant_domain}`;
+      }
+    }
+
+    if (environment.gateway_url) {
+      for (const deployment of deployments) {
+        if (!deployment.is_gateway) {
+          deployment.external_url = path.join(
+            environment.gateway_url,
+            `/${deployment.name}/`,
+          );
+        }
+      }
+    }
+
+    return deployments;
   }
 
   async update(

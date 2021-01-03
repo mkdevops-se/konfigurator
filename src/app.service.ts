@@ -29,8 +29,8 @@ export class AppService {
         ...environment,
         ocp_namespaces: [],
       };
-      const deployments = await this.deploymentsService.getAllIn(
-        environment.name,
+      const deployments = await this.deploymentsService.getAllInEnvWithExternalUrls(
+        environment,
       );
 
       const [front_deployments, non_front_deployments] = partition(

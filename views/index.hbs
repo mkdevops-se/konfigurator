@@ -58,7 +58,7 @@
           <tbody>
           {{#each this.deployments }}
           <tr>
-            <td>{{#if this.name }}<pre>{{ this.name }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td><pre>{{ this.name }}<sup>{{#if this.external_url }}{{#if this.is_gateway }}†{{/if}}<a href="{{ this.external_url }}" target="_blank">→</a>{{else}}<small>N/A</small>{{/if}}</sup></pre></td>
             <td>{{#if this.memory_min }}<pre>{{ this.memory_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.memory_max }}<pre>{{ this.memory_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.cpu_min }}<pre>{{ this.cpu_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
@@ -77,6 +77,7 @@
     {{/each}}
     </tbody>
   </table>
+  <p align="center"><small>Symbols: <sup>#</sup> – sidankare / <sup>†</sup> – deployment av gateway-typ / <sup>→</sup> – direktlänk</small></p>
 {{/each}}
 </body>
 </html>
