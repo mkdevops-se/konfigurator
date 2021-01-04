@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppModule } from './app.module';
+import { BuildsModule } from './builds/builds.module';
 import { DeploymentsModule } from './deployments/deployments.module';
 import { EnvironmentsModule } from './environments/environments.module';
 
@@ -10,7 +11,7 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, DeploymentsModule, EnvironmentsModule],
+      imports: [AppModule, BuildsModule, DeploymentsModule, EnvironmentsModule],
       controllers: [AppController],
       providers: [AppService],
     }).compile();

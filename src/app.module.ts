@@ -4,6 +4,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BuildsModule } from './builds/builds.module';
+import { Build } from './builds/entities/build.entity';
 import { DeploymentsModule } from './deployments/deployments.module';
 import { Deployment } from './deployments/entities/deployment.entity';
 import { EnvironmentsModule } from './environments/environments.module';
@@ -25,10 +27,11 @@ import { HeartbeatsService } from './heartbeats/heartbeats.service';
       location: process.env.DATABASE_URL,
       autoSave: true,
       dropSchema: process.env.DATABASE_DROP_SCHEMA === 'true',
-      entities: [Deployment, Environment],
+      entities: [Build, Deployment, Environment],
       keepConnectionAlive: true,
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
     }),
+    BuildsModule,
     DeploymentsModule,
     EnvironmentsModule,
   ],
