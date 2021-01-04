@@ -5,9 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DeploymentsModule } from './deployments/deployments.module';
-import { Deployment } from './deployments/deployment.entity';
+import { Deployment } from './deployments/entities/deployment.entity';
 import { EnvironmentsModule } from './environments/environments.module';
-import { Environment } from './environments/environment.entity';
+import { Environment } from './environments/entities/environment.entity';
 import { HeartbeatsService } from './heartbeats/heartbeats.service';
 
 @Module({
@@ -21,8 +21,9 @@ import { HeartbeatsService } from './heartbeats/heartbeats.service';
     }),
     ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: process.env.DATABASE_URL,
+      type: 'sqljs',
+      location: process.env.DATABASE_URL,
+      autoSave: true,
       dropSchema: process.env.DATABASE_DROP_SCHEMA === 'true',
       entities: [Deployment, Environment],
       keepConnectionAlive: true,
