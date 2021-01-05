@@ -11,6 +11,7 @@ import { Deployment } from './deployments/entities/deployment.entity';
 import { EnvironmentsModule } from './environments/environments.module';
 import { Environment } from './environments/entities/environment.entity';
 import { HeartbeatsService } from './heartbeats/heartbeats.service';
+import { MockBuildInfoModule } from './mock-build-info/mock-build-info.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { HeartbeatsService } from './heartbeats/heartbeats.service';
     BuildsModule,
     DeploymentsModule,
     EnvironmentsModule,
+    MockBuildInfoModule,
   ],
   controllers: [AppController],
   providers: [AppService, HeartbeatsService],
