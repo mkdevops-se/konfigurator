@@ -12,6 +12,8 @@ import { EnvironmentsModule } from './environments/environments.module';
 import { Environment } from './environments/entities/environment.entity';
 import { HeartbeatsService } from './heartbeats/heartbeats.service';
 import { MockBuildInfoModule } from './mock-build-info/mock-build-info.module';
+import { TasksModule } from './tasks/tasks.module';
+import { Task } from './tasks/entities/task.entity';
 
 @Module({
   imports: [
@@ -28,7 +30,7 @@ import { MockBuildInfoModule } from './mock-build-info/mock-build-info.module';
       location: process.env.DATABASE_URL,
       autoSave: true,
       dropSchema: process.env.DATABASE_DROP_SCHEMA === 'true',
-      entities: [Build, Deployment, Environment],
+      entities: [Build, Deployment, Environment, Task],
       keepConnectionAlive: true,
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
     }),
@@ -36,6 +38,7 @@ import { MockBuildInfoModule } from './mock-build-info/mock-build-info.module';
     DeploymentsModule,
     EnvironmentsModule,
     MockBuildInfoModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService, HeartbeatsService],
