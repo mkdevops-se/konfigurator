@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../app.module';
+import { DeploymentsModule } from '../deployments/deployments.module';
 import { MockBuildInfoController } from './mock-build-info.controller';
 import { MockBuildInfoService } from './mock-build-info.service';
-import { DeploymentsModule } from '../deployments/deployments.module';
-import { AppModule } from '../app.module';
 
 describe('MockBuildInfoController', () => {
   let controller: MockBuildInfoController;

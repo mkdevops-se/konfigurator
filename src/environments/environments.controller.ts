@@ -33,7 +33,11 @@ export class EnvironmentsController {
         createEnvDto,
       )} ...`,
     );
-    const newEnv = await this.environmentsService.create(createEnvDto);
+    const {
+      updated_at,
+      created_at,
+      ...newEnv
+    } = await this.environmentsService.create(createEnvDto);
     this.logger.debug(`Created environment: ${JSON.stringify(newEnv)}`);
     return newEnv;
   }
@@ -62,7 +66,7 @@ export class EnvironmentsController {
     this.logger.log(
       `Updating environment ${name} with ${JSON.stringify(updateEnvDto)} ...`,
     );
-    const updatedEnv = await this.environmentsService.update(
+    const { updated_at, ...updatedEnv } = await this.environmentsService.update(
       name,
       updateEnvDto,
     );

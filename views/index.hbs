@@ -35,7 +35,7 @@
         <small><a href="{{ this.ocp_console_url }}" target="_blank">Visa i OCP-konsollen</a></small>
       </th>
       <td>
-        <table border="1px" cellspacing="2px" cellpadding="4px">
+        <table border="1px" cellspacing="2px" cellpadding="4px" width="100%">
           <thead>
           <tr>
             <th rowspan="2">Deployment</th>
@@ -44,7 +44,8 @@
             <th colspan="2">Replicas/Pods</th>
             <th rowspan="2">Spring Profiles</th>
             <th rowspan="2">Current Image</th>
-            <th rowspan="2">Status Refreshed</th>
+            <th rowspan="2">Build Timestamp</th>
+            <th rowspan="2">Last Status Update</th>
           </tr>
           <tr>
             <td>Min</td>
@@ -65,9 +66,10 @@
             <td>{{#if this.cpu_max }}<pre>{{ this.cpu_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.replicas_target }}<pre>{{ this.replicas_target }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.replicas_current }}<pre>{{ this.replicas_current }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
-            <td>{{#if this.spring_profiles }}<pre>{{ this.spring_profiles }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
-            <td>{{#if this.image_current }}<pre>{{ this.image_current }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
-            <td>{{#if this.updated_at }}<pre>{{ this.updated_at }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.spring_profiles_active }}<pre>{{ this.spring_profiles_active }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.image_tag }}<pre>{{ this.image_tag }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.build_timestamp }}<pre>{{ this.build_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.update_timestamp }}<pre>{{ this.update_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
           </tr>
           {{/each}}
           </tbody>

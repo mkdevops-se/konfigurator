@@ -45,4 +45,19 @@ export class UpdateDeploymentDto {
   @IsNotEmpty()
   @IsOptional()
   replicas_current?: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  spring_profiles_active?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  image_tag?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  build_timestamp?: string;
 }

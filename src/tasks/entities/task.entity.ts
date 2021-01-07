@@ -49,9 +49,9 @@ export class Task {
     };
   };
 
-  @CreateDateColumn()
-  created_at: string;
+  @CreateDateColumn({ select: true })
+  created_at?: Date;
 
-  @UpdateDateColumn()
-  updated_at: string;
+  @UpdateDateColumn({ select: true })
+  updated_at?: Date;
 }

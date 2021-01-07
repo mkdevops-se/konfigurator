@@ -36,6 +36,9 @@ describe('DeploymentsController (e2e)', () => {
           cpu_max: null,
           replicas_target: null,
           replicas_current: null,
+          spring_profiles_active: null,
+          image_tag: null,
+          build_timestamp: null,
         });
     });
 
@@ -58,6 +61,9 @@ describe('DeploymentsController (e2e)', () => {
           cpu_max: null,
           replicas_target: null,
           replicas_current: null,
+          spring_profiles_active: null,
+          image_tag: null,
+          build_timestamp: null,
         });
     });
 
@@ -108,6 +114,9 @@ describe('DeploymentsController (e2e)', () => {
           cpu_max: null,
           replicas_target: null,
           replicas_current: null,
+          spring_profiles_active: null,
+          image_tag: null,
+          build_timestamp: null,
         });
     });
 
@@ -133,6 +142,9 @@ describe('DeploymentsController (e2e)', () => {
             cpu_max: null,
             replicas_target: null,
             replicas_current: null,
+            spring_profiles_active: null,
+            image_tag: null,
+            build_timestamp: null,
           },
           {
             environment: 'katla-utv',
@@ -145,6 +157,9 @@ describe('DeploymentsController (e2e)', () => {
             cpu_max: null,
             replicas_target: null,
             replicas_current: null,
+            spring_profiles_active: null,
+            image_tag: null,
+            build_timestamp: null,
           },
         ]);
     });
@@ -171,6 +186,9 @@ describe('DeploymentsController (e2e)', () => {
           cpu_max: '400m',
           replicas_target: 2,
           replicas_current: null,
+          spring_profiles_active: null,
+          image_tag: null,
+          build_timestamp: null,
         });
     });
 
@@ -224,6 +242,9 @@ describe('DeploymentsController (e2e)', () => {
           cpu_max: '400m',
           replicas_target: 2,
           replicas_current: null,
+          spring_profiles_active: null,
+          image_tag: null,
+          build_timestamp: null,
         });
     });
 

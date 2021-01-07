@@ -33,10 +33,11 @@ export class BuildsController {
         createBuildDto,
       )} ...`,
     );
-    const newBuild = await this.buildsService.create(
-      image_name,
-      createBuildDto,
-    );
+    const {
+      updated_at,
+      created_at,
+      ...newBuild
+    } = await this.buildsService.create(image_name, createBuildDto);
     this.logger.debug(`Created build: ${JSON.stringify(newBuild)}`);
     return newBuild;
   }
@@ -73,7 +74,7 @@ export class BuildsController {
         updateBuildDto,
       )} ...`,
     );
-    const updatedBuild = await this.buildsService.update(
+    const { updated_at, ...updatedBuild } = await this.buildsService.update(
       image_name,
       image_tag,
       updateBuildDto,

@@ -36,10 +36,11 @@ export class DeploymentsController {
         createDeployDto,
       )} ...`,
     );
-    const newDeployment = await this.deploymentsService.create(
-      environment,
-      createDeployDto,
-    );
+    const {
+      created_at,
+      updated_at,
+      ...newDeployment
+    } = await this.deploymentsService.create(environment, createDeployDto);
     this.logger.debug(`Created deployment: ${JSON.stringify(newDeployment)}`);
     return newDeployment;
   }
@@ -78,7 +79,10 @@ export class DeploymentsController {
         updateDeployDto,
       )} ...`,
     );
-    const updatedDeploy = await this.deploymentsService.update(
+    const {
+      updated_at,
+      ...updatedDeploy
+    } = await this.deploymentsService.update(
       environment,
       name,
       updateDeployDto,

@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 enum BuildType {
   LATEST = 'latest',
@@ -61,4 +67,10 @@ export class Build {
     nullable: true,
   })
   operator_id?: string; // Who initiated the build?
+
+  @CreateDateColumn({ select: false })
+  created_at?: Date;
+
+  @UpdateDateColumn({ select: false })
+  updated_at?: Date;
 }

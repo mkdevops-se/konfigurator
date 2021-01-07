@@ -31,9 +31,35 @@ export class DeploymentsService {
   async getAllInEnvWithExternalUrls(
     environment: Environment,
   ): Promise<DeploymentInterface[]> {
-    const deployments: DeploymentInterface[] = await this.getAllIn(
-      environment.name,
+    const deployments: DeploymentInterface[] = await this.deploymentsRepository.find(
+      {
+        where: { environment: environment.name },
+        select: [
+          'environment',
+          'ocp_namespace',
+          'name',
+          'is_gateway',
+          'memory_min',
+          'memory_max',
+          'cpu_min',
+          'cpu_max',
+          'replicas_target',
+          'replicas_current',
+          'spring_profiles_active',
+          'image_tag',
+          'build_timestamp',
+          'updated_at',
+        ],
+      },
     );
+
+    for (const deployment of deployments) {
+      if (deployment.updated_at) {
+        deployment.update_timestamp = deployment.updated_at
+          .toISOString()
+          .replace(/.000Z$/, 'Z');
+      }
+    }
 
     for (const deployment of deployments) {
       if (deployment.is_gateway) {

@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({
   orderBy: {
@@ -62,4 +68,28 @@ export class Deployment {
     nullable: true,
   })
   replicas_current?: number;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  spring_profiles_active?: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  image_tag?: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  build_timestamp?: string;
+
+  @CreateDateColumn({ select: false })
+  created_at?: Date;
+
+  @UpdateDateColumn({ select: false })
+  updated_at?: Date;
 }

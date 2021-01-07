@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({
   orderBy: {
@@ -87,4 +93,10 @@ export class Environment {
     nullable: true,
   })
   comment?: string;
+
+  @CreateDateColumn({ select: false })
+  created_at?: Date;
+
+  @UpdateDateColumn({ select: false })
+  updated_at?: Date;
 }
