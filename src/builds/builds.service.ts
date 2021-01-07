@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { BuildRepository } from './entities/build.repository';
 import { Build } from './entities/build.entity';
 import { CreateBuildDto } from './dto/create-build.dto';
@@ -10,7 +10,7 @@ export class BuildsService {
 
   constructor(private buildsRepository: BuildRepository) {}
 
-  async create(image_name: string, build: CreateBuildDto) {
+  async create(image_name: string, build: CreateBuildDto): Promise<Build> {
     return await this.buildsRepository.insertEntity({
       image_name,
       ...build,
@@ -23,6 +23,26 @@ export class BuildsService {
 
   async getOne(image_name: string, image_tag: string): Promise<Build> {
     return await this.buildsRepository.findEntity(image_name, image_tag);
+  }
+
+  async getOrCreate(
+    image_name: string,
+    build: CreateBuildDto,
+  ): Promise<[Build, boolean]> {
+    let buildEntity: Build;
+    let created = false;
+    try {
+      buildEntity = await this.getOne(image_name, build.image_tag);
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        buildEntity = await this.create(image_name, build);
+        this.logger.debug(`Created new build ${JSON.stringify(buildEntity)}`);
+        created = true;
+      } else {
+        throw err;
+      }
+    }
+    return [buildEntity, created];
   }
 
   async update(

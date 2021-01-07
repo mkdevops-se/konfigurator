@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { CreateBuildDto } from '../../builds/dto/create-build.dto';
 
 export class MockBuildInfoDto {
   @IsString()
@@ -37,4 +38,14 @@ export class MockBuildInfoDto {
   @IsNotEmpty()
   @IsOptional()
   OPERATOR_ID?: string;
+
+  public static toCreateBuildDto(
+    mockBuildInfoDto: MockBuildInfoDto,
+  ): CreateBuildDto {
+    const createBuildDto = {};
+    Object.keys(mockBuildInfoDto).forEach((key) => {
+      createBuildDto[key.toLowerCase()] = mockBuildInfoDto[key];
+    });
+    return createBuildDto as CreateBuildDto;
+  }
 }

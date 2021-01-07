@@ -8,5 +8,6 @@ import { BuildRepository } from './entities/build.repository';
   imports: [TypeOrmModule.forFeature([BuildRepository])],
   controllers: [BuildsController],
   providers: [BuildsService],
+  exports: [BuildsService],
 })
 export class BuildsModule {}

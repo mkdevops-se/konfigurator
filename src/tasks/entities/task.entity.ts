@@ -6,11 +6,11 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-enum Action {
+export enum Action {
   FETCH_BUILD_INFO = 'fetch_build_info',
 }
 
-enum State {
+export enum State {
   PENDING = 'pending',
   RUNNING = 'running',
   SUCCESS = 'success',
@@ -47,6 +47,7 @@ export class Task {
       deployment: string;
       external_url: string;
     };
+    result?: any;
   };
 
   @CreateDateColumn({ select: true })

@@ -1,8 +1,17 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpService,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
+import { DeploymentsService } from '../deployments/deployments.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskRepository } from './entities/task.repository';
+import { Action, State, Task } from './entities/task.entity';
+import { BuildsService } from '../builds/builds.service';
+import { MockBuildInfoDto } from '../mock-build-info/dto/mock-build-info.dto';
 
 @Injectable()
 export class TasksService {
@@ -11,17 +20,92 @@ export class TasksService {
   constructor(
     private tasksRepository: TaskRepository,
     private schedulerRegistry: SchedulerRegistry,
+    private httpService: HttpService,
+    private buildsService: BuildsService,
+    private deploymentsService: DeploymentsService,
   ) {}
+
+  private static getTimeoutName(taskId: number) {
+    return `tasks-${taskId}`;
+  }
 
   runInBackground(taskId: number) {
     const callback = async () => {
-      this.schedulerRegistry.deleteTimeout(`tasks-${taskId}`);
+      this.schedulerRegistry.deleteTimeout(TasksService.getTimeoutName(taskId));
       const task = await this.tasksRepository.findEntity(taskId);
-      this.logger.warn(`Executing task ${JSON.stringify(task)} after 2000 ms!`);
+      this.logger.log(`Executing task ${JSON.stringify(task)}`);
+      task.state = State.RUNNING;
+      await this.tasksRepository.save(task);
+      try {
+        let result: any;
+        if (task.action === Action.FETCH_BUILD_INFO) {
+          result = await this.executeFetchBuildInfoTask(task);
+        } else {
+          throw new BadRequestException(`Unsupported action ${task.action}`);
+        }
+        task.data.result = result;
+        task.state = State.SUCCESS;
+        this.logger.debug(
+          `Task ${JSON.stringify(task)} execution success: ${JSON.stringify(
+            result,
+          )}`,
+        );
+      } catch (err) {
+        task.data.result = err.toString();
+        task.state = State.FAILURE;
+        this.logger.error(
+          `Task ${JSON.stringify(task)} execution failure: ${err.toString()}`,
+        );
+      } finally {
+        await this.tasksRepository.save(task);
+      }
     };
 
-    let timeout = setTimeout(callback, 2000);
-    this.schedulerRegistry.addTimeout(`tasks-${taskId}`, timeout);
+    let timeout = setTimeout(callback, 1000);
+    this.schedulerRegistry.addTimeout(
+      TasksService.getTimeoutName(taskId),
+      timeout,
+    );
+  }
+
+  async executeFetchBuildInfoTask(task: Task) {
+    const deployment = await this.deploymentsService.getOne(
+      task.data.target.environment,
+      task.data.target.deployment,
+    );
+    const buildInfoUrl = `${task.data.target.external_url.replace(
+      /\/$/,
+      '',
+    )}/byggInfo`;
+    const buildInfoRes = await this.httpService
+      .get(buildInfoUrl, {
+        timeout: 5000,
+      })
+      .toPromise();
+    const buildInfoData: MockBuildInfoDto = buildInfoRes.data;
+    this.logger.debug(`Build info received: ${JSON.stringify(buildInfoData)}`);
+
+    const [build, created] = await this.buildsService.getOrCreate(
+      task.data.target.deployment,
+      MockBuildInfoDto.toCreateBuildDto(buildInfoData),
+    );
+
+    if (deployment.image_tag !== build.image_tag) {
+      await this.deploymentsService.update(
+        deployment.environment,
+        deployment.name,
+        {
+          ...build,
+        },
+      );
+      return `Deployment ${deployment.name} in ${
+        deployment.environment
+      } now running ${
+        created ? 'newly discovered' : 'known'
+      } build with image_tag=${build.image_tag}`;
+    } else {
+      return `Nothing to do, image_tag=${deployment.image_tag} already up-to-date for ${deployment.name} in ${deployment.environment}`;
+    }
   }
 
   async create(createTaskDto: CreateTaskDto) {
