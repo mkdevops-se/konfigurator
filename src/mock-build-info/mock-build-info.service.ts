@@ -152,6 +152,8 @@ export class MockBuildInfoService {
     '0c23d143844a35f8e6da0a2c480d4f57e10bf7ee',
     '178cbd0117ec78caac808304ef478a172c19e569',
   ];
+  private static sampleBuildTimestampStartDate = new Date(2020, 9, 11);
+  private static sampleBuildTimestampEndDate = new Date(2021, 1, 8);
 
   private static getRandomImageTag(): string {
     const baseVersion = this.sampleVersionNumbers[
@@ -163,6 +165,16 @@ export class MockBuildInfoService {
     return `${baseVersion}${buildSuffix}`;
   }
 
+  private static getRandomBuildTimestamp(): string {
+    return new Date(
+      this.sampleBuildTimestampStartDate.getTime() +
+        Math.random() *
+          (this.sampleBuildTimestampEndDate.getTime() -
+            this.sampleBuildTimestampStartDate.getTime()),
+    )
+      .toISOString()
+      .replace(/.\d{3}Z$/, 'Z');
+  }
   private static getRandomCommitLink(): string {
     const commitSha = this.sampleCommitSha[
       Math.floor(Math.random() * this.sampleCommitSha.length)
@@ -176,7 +188,7 @@ export class MockBuildInfoService {
       for (const deployment of deployments) {
         const mockBuildInfos = {
           IMAGE_TAG: MockBuildInfoService.getRandomImageTag(),
-          BUILD_TIMESTAMP: 'make random',
+          BUILD_TIMESTAMP: MockBuildInfoService.getRandomBuildTimestamp(),
           COMMIT_LINK: MockBuildInfoService.getRandomCommitLink(),
         };
         images.push(`${deployment.name}-${mockBuildInfos.IMAGE_TAG}`);
