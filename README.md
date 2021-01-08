@@ -63,8 +63,22 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Produktions-deployment
+## Demo-deployment
 
-TBD
+Starta applikationen, kör sedan Bash-scriptet som innehåller setup av demo-miljön:
 
+```bash
+bash scripts/setup-demo.sh
+```
+
+Öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
+visar fyra komplexa matriser med miljöinformation.
+
+
+## Changelog
+
+### `v0.1.0` – Initial implementation
+
+- Första version redo för integrering via OpenShift CI/CD pipeline och deployment i testkluster
+- Fullt fungerande bakgrundsinläsning av mockad bygginfo för demo-deployments 
 
