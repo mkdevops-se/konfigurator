@@ -20,7 +20,9 @@ export class ValidationPipe implements PipeTransform<any> {
       forbidUnknownValues: true,
     });
     if (errors.length > 0) {
-      throw new BadRequestException('Validation failed');
+      throw new BadRequestException(
+        `Validation failed, errors: ${JSON.stringify(errors)}`,
+      );
     }
     return value;
   }
