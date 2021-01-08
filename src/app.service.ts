@@ -45,6 +45,9 @@ export class AppService {
             environment.ocp_namespace_front,
           ),
           deployments: front_deployments,
+          deployments_that_have_external_urls: front_deployments.filter(
+            (v) => v.external_url,
+          ),
         });
       }
 
@@ -60,6 +63,9 @@ export class AppService {
             environment.ocp_namespace_backend,
           ),
           deployments: backend_deployments,
+          deployments_that_have_external_urls: backend_deployments.filter(
+            (v) => v.external_url,
+          ),
         });
       }
 
@@ -75,6 +81,9 @@ export class AppService {
             environment.ocp_namespace_restricted,
           ),
           deployments: restricted_deployments,
+          deployments_that_have_external_urls: restricted_deployments.filter(
+            (v) => v.external_url,
+          ),
         });
       }
 
@@ -93,6 +102,9 @@ export class AppService {
             environment.ocp_namespace_public,
           ),
           deployments: public_deployments,
+          deployments_that_have_external_urls: public_deployments.filter(
+            (v) => v.external_url,
+          ),
         });
       }
 

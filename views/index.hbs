@@ -46,6 +46,7 @@
             <th rowspan="2">Current Image</th>
             <th rowspan="2">Build Timestamp</th>
             <th rowspan="2">Last Status Update</th>
+            <th rowspan="1">⚙️</th>
           </tr>
           <tr>
             <td>Min</td>
@@ -54,6 +55,15 @@
             <td>Max</td>
             <td>Target</td>
             <td>Current</td>
+            <td>
+              <form method="post" action="/tasks/bulk">
+                <input type="hidden" name="ocp_namespace" value="{{ this.ocp_namespace }}">
+                <input type="hidden" name="deployments" value="{{#each this.deployments_that_have_external_urls }}{{ this.name }},{{/each}}">
+                <input type="hidden" name="external_urls" value="{{#each this.deployments_that_have_external_urls }}{{ this.external_url }},{{/each}}">
+                <input type="hidden" name="action" value="fetch_build_info">
+                <input type="submit" value="↻ {{ this.deployments_that_have_external_urls.length }}">
+              </form>
+            </td>
           </tr>
           </thead>
           <tbody>
@@ -70,6 +80,16 @@
             <td>{{#if this.image_tag }}<pre>{{ this.image_tag }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.build_timestamp }}<pre>{{ this.build_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.update_timestamp }}<pre>{{ this.update_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>
+              <form method="post" action="/tasks">
+                <input type="hidden" name="data.target.environment" value="{{ this.environment }}">
+                <input type="hidden" name="data.target.ocp_namespace" value="{{ this.ocp_namespace }}">
+                <input type="hidden" name="data.target.deployment" value="{{ this.name }}">
+                <input type="hidden" name="data.target.external_url" value="{{ this.external_url }}">
+                <input type="hidden" name="action" value="fetch_build_info">
+                <input type="submit" value="↻ 1" {{#if this.external_url }}{{else}}disabled="disabled"{{/if}}>
+              </form>
+            </td>
           </tr>
           {{/each}}
           </tbody>

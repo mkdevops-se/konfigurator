@@ -43,7 +43,8 @@ export class Task {
   @Column('simple-json')
   data: {
     target: {
-      environment: string;
+      environment?: string;
+      ocp_namespace: string;
       deployment: string;
       external_url: string;
     };

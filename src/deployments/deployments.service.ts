@@ -24,7 +24,7 @@ export class DeploymentsService {
     return await this.deploymentsRepository.find();
   }
 
-  async getAllIn(environment: string): Promise<Deployment[]> {
+  async getAllInEnv(environment: string): Promise<Deployment[]> {
     return await this.deploymentsRepository.find({ environment });
   }
 
@@ -70,10 +70,10 @@ export class DeploymentsService {
     if (environment.gateway_url) {
       for (const deployment of deployments) {
         if (!deployment.is_gateway) {
-          deployment.external_url = path.join(
-            environment.gateway_url,
-            `/${deployment.name}/`,
-          );
+          deployment.external_url = `${environment.gateway_url.replace(
+            /\/$/,
+            '',
+          )}/${deployment.name}/`;
         }
       }
     }
@@ -81,29 +81,45 @@ export class DeploymentsService {
     return deployments;
   }
 
-  async getOne(environment: string, name: string): Promise<Deployment> {
-    return await this.deploymentsRepository.findEntity(environment, name);
+  async getOne(
+    environment: string | null,
+    ocp_namespace: string | null,
+    name: string,
+  ): Promise<Deployment> {
+    return await this.deploymentsRepository.findEntity(
+      environment,
+      ocp_namespace,
+      name,
+    );
   }
 
   async update(
-    environment: string,
+    environment: string | null,
+    ocp_namespace: string | null,
     name: string,
     partialEnv: UpdateDeploymentDto,
   ): Promise<Deployment> {
     this.logger.debug(`Updating with ${JSON.stringify(partialEnv)}`);
     return await this.deploymentsRepository.updateEntity(
       environment,
+      ocp_namespace,
       name,
       partialEnv,
     );
   }
 
-  async delete(environment: string, name: string): Promise<Deployment> {
+  async delete(
+    environment: string | null,
+    ocp_namespace: string | null,
+    name: string,
+  ): Promise<Deployment> {
     const deletedEnv = await this.deploymentsRepository.removeEntity(
       environment,
+      ocp_namespace,
       name,
     );
-    deletedEnv.environment = environment;
+    deletedEnv.environment = deletedEnv.environment || environment;
+    deletedEnv.ocp_namespace = deletedEnv.ocp_namespace || ocp_namespace;
     deletedEnv.name = name;
     return deletedEnv;
   }

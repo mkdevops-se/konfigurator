@@ -13,7 +13,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "db_url": null,
   "default_spring_profiles": "test",
   "login_url": "https://honeypots-for-free.dot.com",
-  "gateway_url": "https://post-credentials-here.i-am-a-gateway.co.uk",
+  "gateway_url": "http://localhost:3000/mock-api/",
   "comment": "Mats was here"
 }'
 
@@ -37,7 +37,7 @@ echo ""
 echo "Creating katla-drakryttarna-utv environment ..."
 curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
   "name": "katla-drakryttarna-utv",
-  "rank": 903,
+  "rank": 902,
   "ocp_tenant_domain": "test.ocp.github.org",
   "ocp_namespace_front": "katla-drakryttarna-utv",
   "ocp_namespace_backend": "katla-drakryttarna-utv",
@@ -64,7 +64,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
   "db_url": null,
   "default_spring_profiles": "test",
   "login_url": "https://work-it.system-integration-tests.dot.com/login/unauthenticated",
-  "gateway_url": "https://here-i-come.openapi.com",
+  "gateway_url": "http://localhost:3000/mock-api/",
   "comment": "Nothing gets past here."
 }'
 

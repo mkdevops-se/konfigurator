@@ -53,7 +53,11 @@ export class DeploymentsController {
     this.logger.log(
       `Getting deployment ${name} in environment ${environment} ...`,
     );
-    const oneDeploy = await this.deploymentsService.getOne(environment, name);
+    const oneDeploy = await this.deploymentsService.getOne(
+      environment,
+      null,
+      name,
+    );
     this.logger.debug(`Got one deployment: ${JSON.stringify(oneDeploy)}`);
     return oneDeploy;
   }
@@ -63,7 +67,7 @@ export class DeploymentsController {
     @Param('environment') environment: string,
   ): Promise<Deployment[]> {
     this.logger.log(`Getting all deployments ...`);
-    const deploysInEnv = await this.deploymentsService.getAllIn(environment);
+    const deploysInEnv = await this.deploymentsService.getAllInEnv(environment);
     this.logger.debug(`Got all deployments: ${JSON.stringify(deploysInEnv)}`);
     return deploysInEnv;
   }
@@ -84,6 +88,7 @@ export class DeploymentsController {
       ...updatedDeploy
     } = await this.deploymentsService.update(
       environment,
+      null,
       name,
       updateDeployDto,
     );
@@ -99,6 +104,7 @@ export class DeploymentsController {
     this.logger.log(`Deleting deployment ${name} in ${environment} ...`);
     const deletedDeploy = await this.deploymentsService.delete(
       environment,
+      null,
       name,
     );
     this.logger.debug(`Deleted deployment: ${JSON.stringify(deletedDeploy)}`);

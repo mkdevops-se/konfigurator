@@ -8,7 +8,8 @@ export class UpdateTaskDto {
   @IsObject()
   data: {
     target: {
-      environment: string;
+      environment?: string;
+      ocp_namespace: string;
       deployment: string;
       external_url: string;
     };

@@ -61,7 +61,7 @@ export class TasksService {
       }
     };
 
-    let timeout = setTimeout(callback, 1000);
+    let timeout = setTimeout(callback, 500);
     this.schedulerRegistry.addTimeout(
       TasksService.getTimeoutName(taskId),
       timeout,
@@ -71,6 +71,7 @@ export class TasksService {
   async executeFetchBuildInfoTask(task: Task) {
     const deployment = await this.deploymentsService.getOne(
       task.data.target.environment,
+      task.data.target.ocp_namespace,
       task.data.target.deployment,
     );
     const buildInfoUrl = `${task.data.target.external_url.replace(
@@ -93,6 +94,7 @@ export class TasksService {
     if (deployment.image_tag !== build.image_tag) {
       await this.deploymentsService.update(
         deployment.environment,
+        deployment.ocp_namespace,
         deployment.name,
         {
           ...build,
