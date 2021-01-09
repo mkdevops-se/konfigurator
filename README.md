@@ -1,6 +1,6 @@
 # `konfigurator` – Ordning och reda i OpenShift
 
-En webbtjänst för att spåra och rekonfigurera vad som körs i dina OpenShift-miljöer.
+En webbtjänst för att spåra och rekonfigurera vad som körs i dina OpenShift-miljöer. [![Docker Repository on Quay](https://quay.io/repository/mkdevops/konfigurator/status "Docker Repository on Quay")](https://quay.io/repository/mkdevops/konfigurator)
 
 
 ## Ramverk
@@ -63,12 +63,35 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Bygg och publicera
+
+Installera [Source-to-Image (S2I)](https://github.com/openshift/source-to-image) och bygg senaste master-grenen:
+
+```bash
+$ s2i build https://github.com/mkdevops-se/konfigurator \
+  quay.io/centos7/nodejs-12-centos7 quay.io/mkdevops/konfigurator
+```
+
+Publicera Docker-imagen:
+
+```bash
+docker push quay.io/mkdevops/konfigurator
+```
+
+## Starta via Docker Compose
+
+För mer permanent bruk kan Konfigurator deployas som en Docker-container:
+
+```bash
+$ docker-compose up -d konfigurator
+```
+
 ## Demo-deployment
 
 Starta applikationen, kör sedan Bash-scriptet som innehåller setup av demo-miljön:
 
 ```bash
-bash scripts/setup-demo.sh
+$ bash scripts/setup-demo.sh
 ```
 
 Öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
@@ -76,6 +99,12 @@ visar fyra komplexa matriser med miljöinformation.
 
 
 ## Changelog
+
+### `v0.1.1` – Buggfixar för Docker-deployment
+
+- S2I-stöd tillagt och dokumenterat tillsammans med publiceringssteg
+- `package.json`-dependencies rättade för produktions-runtime
+- Docker Compose-fil för enkel deployment på hq.mkdevops.se
 
 ### `v0.1.0` – Initial implementation
 

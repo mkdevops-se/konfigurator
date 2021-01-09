@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  konfigurator:
+    container_name: konfigurator
+    image: quay.io/mkdevops/konfigurator
+    environment:
+      - DATABASE_URL=/data/konfigurator.db
+    ports:
+      - "3000:3000"
+    volumes:
+      - $PWD/data:/data
