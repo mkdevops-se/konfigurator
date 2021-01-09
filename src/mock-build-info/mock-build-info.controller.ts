@@ -20,7 +20,7 @@ export class MockBuildInfoController {
 
   constructor(private readonly mockBuildInfoService: MockBuildInfoService) {}
 
-  @Post(':service/byggInfo')
+  @Post(':service/bygginfo')
   create(
     @Param('service') service: string,
     @Body(new ValidationPipe()) mockBuildInfoDto: MockBuildInfoDto,
@@ -31,7 +31,7 @@ export class MockBuildInfoController {
     return this.mockBuildInfoService.put(service, mockBuildInfoDto);
   }
 
-  @Get(':service/byggInfo')
+  @Get(':service/bygginfo')
   get(@Param('service') service: string): MockBuildInfoDto {
     const mockBuildInfo = this.mockBuildInfoService.get(service);
     this.logger.log(
@@ -40,7 +40,7 @@ export class MockBuildInfoController {
     return mockBuildInfo;
   }
 
-  @Delete(':service/byggInfo')
+  @Delete(':service/bygginfo')
   delete(@Param('service') service: string): MockBuildInfoDto {
     const mockBuildInfo = this.mockBuildInfoService.delete(service);
     this.logger.log(

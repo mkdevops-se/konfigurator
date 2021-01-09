@@ -15,7 +15,7 @@ export class AppController {
   }
 
   @Get('overview')
-  @Render('index')
+  @Render('overview')
   async getOverview() {
     const environments = await this.appService.getEnvironmentsOverview();
     this.logger.log(
@@ -23,7 +23,7 @@ export class AppController {
     );
     return {
       title: this.title,
-      message: `Aktuell status: Miljöinformation visas baserat på databasinnehåll, ingen dynamisk inläsning ännu.`,
+      message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
       environments,
     };
   }

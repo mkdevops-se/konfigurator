@@ -77,7 +77,7 @@ export class TasksService {
     const buildInfoUrl = `${task.data.target.external_url.replace(
       /\/$/,
       '',
-    )}/byggInfo`;
+    )}/bygginfo`;
     const buildInfoRes = await this.httpService
       .get(buildInfoUrl, {
         timeout: 5000,
