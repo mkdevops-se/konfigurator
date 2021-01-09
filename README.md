@@ -94,7 +94,8 @@ Starta applikationen, kör sedan Bash-scriptet som innehåller setup av demo-mil
 $ bash scripts/setup-demo.sh
 ```
 
-Öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
+Därefter behöver applikationen startas om en första gång, sedan kan man gå vidare med att
+öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
 visar fyra komplexa matriser med miljöinformation.
 
 
