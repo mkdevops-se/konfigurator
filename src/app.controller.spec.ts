@@ -29,7 +29,8 @@ describe('AppController', () => {
     it('should return "konfigurator" overview page', async () => {
       expect(await appController.getOverview()).toMatchObject({
         title: 'konfigurator',
-        message: `Aktuell status: Miljöinformation visas baserat på databasinnehåll, ingen dynamisk inläsning ännu.`,
+        message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
+        SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
         environments: [],
       });
     });

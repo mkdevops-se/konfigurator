@@ -24,6 +24,7 @@ export class AppController {
     return {
       title: this.title,
       message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
+      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
       environments,
     };
   }

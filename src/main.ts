@@ -5,6 +5,10 @@ import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  process.env.SERVER_STARTUP_TIMESTAMP = new Date()
+    .toISOString()
+    .replace(/\.\d{3}Z/, 'Z');
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
