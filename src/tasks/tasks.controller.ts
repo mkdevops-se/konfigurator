@@ -39,7 +39,12 @@ export class TasksController {
     const contentType = req.headers['content-type'];
     const newTask = this.tasksService.create(createTaskDto);
     if (contentType.startsWith('application/x-www-form-urlencoded')) {
-      return { statusCode: 302, url: req.headers.referer || '/' };
+      let redirectUrl = '/';
+      if (req.headers.referer) {
+        // Practicality beats purity.
+        redirectUrl = `${req.headers.referer}#${createTaskDto.data.target.ocp_namespace}/${createTaskDto.data.target.deployment}`;
+      }
+      return { statusCode: 302, url: redirectUrl };
     } else {
       return newTask;
     }
@@ -61,7 +66,12 @@ export class TasksController {
       newTasks.push(await this.tasksService.create(createTaskDto));
     }
     if (contentType.startsWith('application/x-www-form-urlencoded')) {
-      return { statusCode: 302, url: req.headers.referer || '/' };
+      let redirectUrl = '/';
+      if (req.headers.referer) {
+        // Practicality beats purity.
+        redirectUrl = `${req.headers.referer}#${bulkCreateFetchBuildInfoTasksDto.ocp_namespace}`;
+      }
+      return { statusCode: 302, url: redirectUrl };
     } else {
       return newTasks;
     }

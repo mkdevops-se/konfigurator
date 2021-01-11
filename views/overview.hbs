@@ -27,8 +27,8 @@
     </thead>
     <tbody>
     {{#each this.ocp_namespaces }}
-    <tr>
-      <th id="{{ this.ocp_namespace }}">
+    <tr id="{{ this.ocp_namespace }}">
+      <th>
         <pre>{{ this.ocp_namespace }}<sup><small><a href="#{{ this.ocp_namespace }}">#</a></small></sup></pre>
 <!--        <br/>-->
 <!--        <a href="#{{ this.ocp_namespace }}">Sidankare</a>-->
@@ -68,7 +68,7 @@
           </thead>
           <tbody>
           {{#each this.deployments }}
-          <tr>
+          <tr id="{{ this.ocp_namespace }}/{{ this.name }}">
             <td><pre>{{ this.name }}<sup>{{#if this.external_url }}{{#if this.is_gateway }}†{{/if}}<a href="{{ this.external_url }}" target="_blank">→</a>{{else}}<small>N/A</small>{{/if}}</sup></pre></td>
             <td>{{#if this.memory_min }}<pre>{{ this.memory_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.memory_max }}<pre>{{ this.memory_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
