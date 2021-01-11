@@ -101,6 +101,10 @@ visar fyra komplexa matriser med miljöinformation.
 
 ## Changelog
 
+### `v0.2.0` – Inkrementella förbättringar
+
+- `/health`-endpoint tillagd
+
 ### `v0.1.1` – Buggfixar för Docker-deployment
 
 - S2I-stöd tillagt och dokumenterat tillsammans med publiceringssteg
