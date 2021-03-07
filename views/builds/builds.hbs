@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>{{ title }}</title>
+</head>
+<body>
+<h1>Kända mikrotjänst-byggen från OpenShift</h1>
+<p>{{ message }}</p>
+<table border="1px" cellspacing="2px" cellpadding="4px" width="100%">
+  <thead>
+    <tr>
+      <th>Build Timestamp</th>
+      <th>Image Name</th>
+      <th>Build Version</th>
+      <th>Commit Link</th>
+      <th>Build Type</th>
+      <th>Artifactory Path</th>
+      <th>Jenkins Host</th>
+      <th>Commit Author</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each builds}}
+    <tr id="{{ this.image_name }}-{{ this.image_tag }}">
+      <td>{{#if this.build_timestamp }}<pre>{{ this.build_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.image_name }}<pre>{{ this.image_name }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.image_tag }}<pre>{{ this.image_tag }}<sup><small><a href="#{{ this.image_name }}-{{ this.image_tag }}">#</a></small></sup></pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.commit_link }}<pre><a href="{{ this.commit_link }}" target="_blank">{{ this.image_name }}@{{ this.commit_sha }}</a></pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.build_type }}<pre>{{ this.build_type }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.artifactory_path }}<pre>{{ this.artifactory_path }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.jenkins_host }}<pre>{{ this.jenkins_host }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+      <td>{{#if this.operator_id }}<pre>{{ this.operator_id }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<hr>
+<p align="center"><small>&gt;&gt;&gt; Running since {{ SERVER_STARTUP_TIMESTAMP }}{{#if IMAGE_TAG}}, using build {{ IMAGE_TAG }} from <a href="{{ COMMIT_LINK }}">{{ COMMIT_LINK }}</a> ({{ BUILD_TIMESTAMP }}){{/if}} &lt;&lt;&lt;</small></p>
+</body>
+</html>

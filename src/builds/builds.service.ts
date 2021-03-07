@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Build as BuildInterface } from '../interfaces/build.interface';
 import { BuildRepository } from './entities/build.repository';
 import { Build } from './entities/build.entity';
 import { CreateBuildDto } from './dto/create-build.dto';
@@ -17,7 +18,17 @@ export class BuildsService {
     } as Build);
   }
 
-  async getAll(image_name: string): Promise<Build[]> {
+  async getAll(): Promise<BuildInterface[]> {
+    const builds: BuildInterface[] = await this.buildsRepository.find();
+    for (const build of builds) {
+        if (build.commit_link) {
+            build.commit_sha = build.commit_link.match(/.+\/commit\/(\w+)/)[1];
+        }
+    }
+    return builds;
+  }
+
+  async getAllFor(image_name: string): Promise<Build[]> {
     return await this.buildsRepository.find({ image_name });
   }
 
