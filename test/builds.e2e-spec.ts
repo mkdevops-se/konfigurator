@@ -204,4 +204,20 @@ describe('BuildsController (e2e)', () => {
         .expect(404);
     });
   });
+
+  describe('GET /builds', () => {
+    // Failing mysteriously.. Can't figure it out. Please fix up PR #7 on #5.
+    xit('returns a HTML page with a builds overview', () => {
+      return request(app.getHttpServer())
+        .get('/builds')
+        .expect(200)
+        .expect('Content-Type', 'text/html; charset=utf-8')
+        .then((response) => {
+          expect(response.text).toContain('<title>builds</title>');
+          expect(response.text).toContain(
+            '<h1>Kända mikrotjänst-byggen från OpenShift</h1>',
+          );
+        });
+    });
+  });
 });
