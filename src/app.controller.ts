@@ -25,6 +25,9 @@ export class AppController {
       title: this.title,
       message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
       SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
+      IMAGE_TAG: process.env.IMAGE_TAG,
+      COMMIT_LINK: process.env.COMMIT_LINK,
+      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
       environments,
     };
   }

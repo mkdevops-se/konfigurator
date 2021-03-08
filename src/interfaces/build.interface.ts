@@ -1,4 +1,5 @@
 export interface Build {
+    image_name: string;
     image_tag: string;
     build_timestamp: string;
     commit_link: string;
