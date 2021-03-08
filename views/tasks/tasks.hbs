@@ -5,7 +5,7 @@
   <title>{{ title }}</title>
 </head>
 <body>
-<h1>Kända bakgrundsjobb från OpenShift</h1>
+<h1>Översikt av bakgrundsjobb</h1>
 <p>{{ message }}</p>
 <hr>
 <table border="1px" cellspacing="2px" cellpadding="4px" width="100%">
@@ -19,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    {{#each tasks}} 
+    {{#each tasks}}
     <tr id="{{ this.image_name }}-{{ this.image_tag }}">
       <td>{{#if this.id }}<pre>{{ this.id }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
       <td>{{#if this.action }}<pre>{{ this.action }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
@@ -31,7 +31,7 @@
   </tbody>
 </table>
 <hr>
-<p align="center"><small>&gt;&gt;&gt; Running since {{ SERVER_STARTUP_TIMESTAMP }}{{#if IMAGE_TAG}}, using build {{ IMAGE_TAG }} from <a href="{{ COMMIT_LINK }}">{{ COMMIT_LINK }}</a> ({{ BUILD_TIMESTAMP }}){{/if}} &lt;&lt;&lt;</small></p>
+<p align="center"><small>&gt;&gt;&gt; Running since {{ SERVER_STARTUP_TIMESTAMP }}{{#if IMAGE_TAG }}, using build {{ IMAGE_TAG }} from <a href="{{ COMMIT_LINK }}">{{ COMMIT_LINK }}</a> ({{ BUILD_TIMESTAMP }}){{/if}} &lt;&lt;&lt;</small></p>
 <hr>
 </body>
 </html>
