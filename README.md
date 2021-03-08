@@ -105,6 +105,7 @@ visar fyra komplexa matriser med miljöinformation.
 
 - `/health`-endpoint tillagd
 - Översiktssida för kända byggen från OpenShift under `/builds`
+- Översiktssida med Konfiguratorns historik av bakgrundsjobb under `/tasks`
 
 ### `v0.1.1` – Buggfixar för Docker-deployment
 
