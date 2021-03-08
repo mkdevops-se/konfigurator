@@ -1,11 +1,12 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
+import { Test, TestingModule } from '@nestjs/testing';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { AppModule } from '../src/app.module';
 import { BuildsModule } from '../src/builds/builds.module';
 
 describe('BuildsController (e2e)', () => {
-  let app: INestApplication;
+  let app: NestExpressApplication;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -13,6 +14,9 @@ describe('BuildsController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useStaticAssets(join(__dirname, '..', 'public'));
+    app.setBaseViewsDir(join(__dirname, '..', 'views'));
+    app.setViewEngine('hbs');
     await app.init();
   });
 
@@ -206,17 +210,16 @@ describe('BuildsController (e2e)', () => {
   });
 
   describe('GET /builds', () => {
-    // Failing mysteriously.. Can't figure it out. Please fix up PR #7 on #5.
-    xit('returns a HTML page with a builds overview', () => {
+    it('returns a HTML page with a builds overview', () => {
       return request(app.getHttpServer())
         .get('/builds')
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
         .then((response) => {
-          expect(response.text).toContain('<title>builds</title>');
-          expect(response.text).toContain(
-            '<h1>Kända mikrotjänst-byggen från OpenShift</h1>',
-          );
+         expect(response.text).toContain('<title>builds</title>');
+         expect(response.text).toContain(
+           '<h1>Kända mikrotjänst-byggen från OpenShift</h1>',
+         );
         });
     });
   });
