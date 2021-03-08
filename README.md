@@ -104,6 +104,7 @@ visar fyra komplexa matriser med miljöinformation.
 ### `v0.2.0` – Inkrementella förbättringar
 
 - `/health`-endpoint tillagd
+- Översiktssida för kända byggen från OpenShift under `/builds`
 
 ### `v0.1.1` – Buggfixar för Docker-deployment
 
@@ -114,5 +115,5 @@ visar fyra komplexa matriser med miljöinformation.
 ### `v0.1.0` – Initial implementation
 
 - Första version redo för integrering via OpenShift CI/CD pipeline och deployment i testkluster
-- Fullt fungerande bakgrundsinläsning av mockad bygginfo för demo-deployments 
+- Fullt fungerande bakgrundsinläsning av mockad bygginfo för demo-deployments
 
