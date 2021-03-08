@@ -12,6 +12,7 @@ import { TaskRepository } from './entities/task.repository';
 import { Action, State, Task } from './entities/task.entity';
 import { BuildsService } from '../builds/builds.service';
 import { MockBuildInfoDto } from '../mock-build-info/dto/mock-build-info.dto';
+import { ITask } from '../interfaces/task.interface';
 
 @Injectable()
 export class TasksService {
@@ -117,8 +118,21 @@ export class TasksService {
     return newTask;
   }
 
-  getAll() {
-    return this.tasksRepository.find();
+  async getAll() {
+    const tasks: ITask[]  = await this.tasksRepository.find();
+    for (const task of tasks) {
+      if (task.updated_at) {
+        task.update_timestamp = task.updated_at
+          .toISOString()
+          .replace(/.000Z$/, 'Z');
+      }
+      if (task.updated_at) {
+        task.create_timestamp = task.created_at
+          .toISOString()
+          .replace(/.000Z$/, 'Z');
+      }
+    }
+    return tasks;
   }
 
   getOne(id: number) {
