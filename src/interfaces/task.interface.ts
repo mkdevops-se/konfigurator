@@ -7,4 +7,6 @@ export interface ITask {
     update_timestamp?: string;
     create_timestamp?: string;
     data: any;
+    data_target?: string;
+    data_result?: string;
 }

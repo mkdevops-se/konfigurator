@@ -119,7 +119,7 @@ export class TasksService {
   }
 
   async getAll() {
-    const tasks: ITask[]  = await this.tasksRepository.find();
+    const tasks: ITask[] = await this.tasksRepository.find();
     for (const task of tasks) {
       if (task.updated_at) {
         task.update_timestamp = task.updated_at
@@ -130,6 +130,12 @@ export class TasksService {
         task.create_timestamp = task.created_at
           .toISOString()
           .replace(/.000Z$/, 'Z');
+      }
+      if (task.data.target) {
+        task.data_target = JSON.stringify(task.data.target);
+      }
+      if (task.data.result) {
+        task.data_result = task.data.result;
       }
     }
     return tasks;
