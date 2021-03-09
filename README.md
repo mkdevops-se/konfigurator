@@ -50,6 +50,18 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
+### Lokal demo-deployment
+
+Starta applikationen, kör sedan Bash-scriptet som innehåller setup av demo-miljön:
+
+```bash
+$ bash scripts/setup-demo.sh
+```
+
+Därefter behöver applikationen startas om en första gång, sedan kan man gå vidare med att
+öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
+visar fyra komplexa matriser med miljöinformation.
+
 ## Kör testerna
 
 ```bash
@@ -85,19 +97,6 @@ För mer permanent bruk kan Konfigurator deployas som en Docker-container:
 ```bash
 $ docker-compose up -d konfigurator
 ```
-
-## Demo-deployment
-
-Starta applikationen, kör sedan Bash-scriptet som innehåller setup av demo-miljön:
-
-```bash
-$ bash scripts/setup-demo.sh
-```
-
-Därefter behöver applikationen startas om en första gång, sedan kan man gå vidare med att
-öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
-visar fyra komplexa matriser med miljöinformation.
-
 
 ## Changelog
 
