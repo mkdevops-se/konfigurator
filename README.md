@@ -2,6 +2,7 @@
 
 En webbtjänst för att spåra och rekonfigurera vad som körs i dina OpenShift-miljöer. [![Docker Repository on Quay](https://quay.io/repository/mkdevops/konfigurator/status "Docker Repository on Quay")](https://quay.io/repository/mkdevops/konfigurator)
 
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/mkdevops-se/konfigurator)
 
 ## Ramverk
 
