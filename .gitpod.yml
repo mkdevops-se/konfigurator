@@ -1,0 +1,4 @@
+image: node:12-alpine
+tasks:
+  - init: npm install && npm run build
+    command: npm run start:dev
