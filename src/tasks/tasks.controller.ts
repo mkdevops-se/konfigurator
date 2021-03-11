@@ -81,18 +81,18 @@ export class TasksController {
   @Get()
   @Render('tasks/tasks')
   async findAll() {
-      this.logger.log(`Getting all tasks ...`);
-      const allTasks = await this.tasksService.getAll();
-      this.logger.debug(`Got all tasks: ${JSON.stringify(allTasks)}`);
-      return {
-          title: 'tasks',
-          message: `Nedan listas alla bakgrundsjobb som Konfigurator-tjänsten schedulerat.`,
-          SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
-          IMAGE_TAG: process.env.IMAGE_TAG,
-          COMMIT_LINK: process.env.COMMIT_LINK,
-          BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
-          tasks: allTasks
-      };
+    this.logger.log(`Getting all tasks ...`);
+    const allTasks = await this.tasksService.getAll();
+    this.logger.debug(`Got all tasks: ${JSON.stringify(allTasks)}`);
+    return {
+      title: 'tasks',
+      message: `Nedan listas alla bakgrundsjobb som Konfigurator-tjänsten schedulerat.`,
+      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
+      IMAGE_TAG: process.env.IMAGE_TAG,
+      COMMIT_LINK: process.env.COMMIT_LINK,
+      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+      tasks: allTasks,
+    };
   }
 
   @Get(':id')

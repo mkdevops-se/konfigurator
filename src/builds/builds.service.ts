@@ -21,9 +21,11 @@ export class BuildsService {
   async getAll(): Promise<BuildInterface[]> {
     const builds: BuildInterface[] = await this.buildsRepository.find();
     for (const build of builds) {
-        if (build.commit_link) {
-            build.commit_sha = build.commit_link.match(/.+\/commit\/(\w+)/)[1].substr(0, 7);
-        }
+      if (build.commit_link) {
+        build.commit_sha = build.commit_link
+          .match(/.+\/commit\/(\w+)/)[1]
+          .substr(0, 7);
+      }
     }
     return builds;
   }

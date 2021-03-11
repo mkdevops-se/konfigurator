@@ -46,18 +46,18 @@ export class BuildsController {
   @Get()
   @Render('builds/builds')
   async findAll() {
-      this.logger.log(`Getting all builds ...`);
-      const allBuilds = await this.buildsService.getAll();
-      this.logger.debug(`Got all builds: ${JSON.stringify(allBuilds)}`);
-      return {
-          title: 'builds',
-          message: `Nedan listas alla byggen som Konfigurator-tjänsten identifierat.`,
-          SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
-          IMAGE_TAG: process.env.IMAGE_TAG,
-          COMMIT_LINK: process.env.COMMIT_LINK,
-          BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
-          builds: allBuilds
-      };
+    this.logger.log(`Getting all builds ...`);
+    const allBuilds = await this.buildsService.getAll();
+    this.logger.debug(`Got all builds: ${JSON.stringify(allBuilds)}`);
+    return {
+      title: 'builds',
+      message: `Nedan listas alla byggen som Konfigurator-tjänsten identifierat.`,
+      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
+      IMAGE_TAG: process.env.IMAGE_TAG,
+      COMMIT_LINK: process.env.COMMIT_LINK,
+      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+      builds: allBuilds,
+    };
   }
 
   @Get(':image_name')

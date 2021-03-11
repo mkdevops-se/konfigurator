@@ -27,10 +27,8 @@ describe('TasksController (e2e)', () => {
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
         .then((response) => {
-         expect(response.text).toContain('<title>tasks</title>');
-         expect(response.text).toContain(
-           '<h1>Översikt av bakgrundsjobb</h1>',
-         );
+          expect(response.text).toContain('<title>tasks</title>');
+          expect(response.text).toContain('<h1>Översikt av bakgrundsjobb</h1>');
         });
     });
   });
