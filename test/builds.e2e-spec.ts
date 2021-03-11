@@ -216,10 +216,10 @@ describe('BuildsController (e2e)', () => {
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
         .then((response) => {
-         expect(response.text).toContain('<title>builds</title>');
-         expect(response.text).toContain(
-           '<h1>Kända mikrotjänst-byggen från OpenShift</h1>',
-         );
+          expect(response.text).toContain('<title>builds</title>');
+          expect(response.text).toContain(
+            '<h1>Kända mikrotjänst-byggen från OpenShift</h1>',
+          );
         });
     });
   });
