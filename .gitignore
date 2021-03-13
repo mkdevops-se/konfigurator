@@ -36,5 +36,10 @@ lerna-debug.log*
 # Dev workspace
 /tmp
 
+# Secrets
+.env
+.env.test
+docker-compose.yml
+
 # Prod runtime
 /data

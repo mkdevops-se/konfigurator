@@ -1,8 +1,13 @@
+import {
+  ExecutionContext,
+  INestApplication,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { DeploymentsModule } from '../src/deployments/deployments.module';
+import { JwtAuthGuard } from '../src/auth/jwt-auth.guard';
 
 describe('DeploymentsController (e2e)', () => {
   let app: INestApplication;
@@ -10,10 +15,31 @@ describe('DeploymentsController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, DeploymentsModule],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({
+        canActivate: (context: ExecutionContext) => {
+          const req = context.switchToHttp().getRequest();
+          if (!req.headers.authorization) {
+            throw new UnauthorizedException();
+          }
+          return true;
+        },
+      })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
+  });
+
+  it('GET /environments/katla-utv/protected', () => {
+    return request(app.getHttpServer())
+      .get('/environments/katla-utv/protected')
+      .auth('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...-ptvwvFcab_K5B4q1EEpTQc', {
+        type: 'bearer',
+      })
+      .expect(200)
+      .expect('a secret string');
   });
 
   describe('POST /environments/katla-utv/deployments', () => {

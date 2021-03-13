@@ -9,6 +9,7 @@ import {
   UseFilters,
   Logger,
   Render,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
@@ -16,6 +17,7 @@ import { BuildsService } from './builds.service';
 import { CreateBuildDto } from './dto/create-build.dto';
 import { UpdateBuildDto } from './dto/update-build.dto';
 import { Build } from './entities/build.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('builds')
 @UseFilters(HttpExceptionFilter)
@@ -23,6 +25,12 @@ export class BuildsController {
   private readonly logger = new Logger(BuildsController.name);
 
   constructor(private readonly buildsService: BuildsService) {}
+
+  @Get('protected')
+  @UseGuards(JwtAuthGuard)
+  protected() {
+    return 'a secret string';
+  }
 
   @Post(':image_name')
   async create(

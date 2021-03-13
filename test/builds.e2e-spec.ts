@@ -1,9 +1,11 @@
 import * as request from 'supertest';
+import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { AppModule } from '../src/app.module';
 import { BuildsModule } from '../src/builds/builds.module';
+import { JwtAuthGuard } from '../src/auth/jwt-auth.guard';
 
 describe('BuildsController (e2e)', () => {
   let app: NestExpressApplication;
@@ -11,13 +13,34 @@ describe('BuildsController (e2e)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, BuildsModule],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({
+        canActivate: (context: ExecutionContext) => {
+          const req = context.switchToHttp().getRequest();
+          if (!req.headers.authorization) {
+            throw new UnauthorizedException();
+          }
+          return true;
+        },
+      })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     app.useStaticAssets(join(__dirname, '..', 'public'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
     app.setViewEngine('hbs');
     await app.init();
+  });
+
+  it('GET /builds/protected', () => {
+    return request(app.getHttpServer())
+      .get('/builds/protected')
+      .auth('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...-ptvwvFcab_K5B4q1EEpTQc', {
+        type: 'bearer',
+      })
+      .expect(200)
+      .expect('a secret string');
   });
 
   describe('POST /builds/surgrisen/0.3.2_feature.THEFARM.321.dev1', () => {

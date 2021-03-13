@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
@@ -15,6 +16,7 @@ import { CreateEnvironmentDto } from './dto/create-environment.dto';
 import { UpdateEnvironmentDto } from './dto/update-environment.dto';
 import { EnvironmentsService } from './environments.service';
 import { Environment } from './entities/environment.entity';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
@@ -22,6 +24,12 @@ export class EnvironmentsController {
   private readonly logger = new Logger(EnvironmentsController.name);
 
   constructor(private environmentsService: EnvironmentsService) {}
+
+  @Get('protected')
+  @UseGuards(JwtAuthGuard)
+  protected() {
+    return 'a secret string';
+  }
 
   @Post()
   async create(

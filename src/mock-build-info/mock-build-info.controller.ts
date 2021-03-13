@@ -7,11 +7,13 @@ import {
   UseFilters,
   Logger,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
 import { MockBuildInfoDto } from './dto/mock-build-info.dto';
 import { MockBuildInfoService } from './mock-build-info.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('mock-api')
 @UseFilters(HttpExceptionFilter)
@@ -19,6 +21,12 @@ export class MockBuildInfoController {
   private readonly logger = new Logger(MockBuildInfoController.name);
 
   constructor(private readonly mockBuildInfoService: MockBuildInfoService) {}
+
+  @Get('protected')
+  @UseGuards(JwtAuthGuard)
+  protected() {
+    return 'a secret string';
+  }
 
   @Post(':service/bygginfo')
   create(

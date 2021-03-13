@@ -1,5 +1,13 @@
-import { Controller, Get, Logger, Redirect, Render } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Logger,
+  Redirect,
+  Render,
+  UseGuards,
+} from '@nestjs/common';
 import { AppService } from './app.service';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -7,6 +15,12 @@ export class AppController {
   private readonly title = 'konfigurator';
 
   constructor(private readonly appService: AppService) {}
+
+  @Get('protected')
+  @UseGuards(JwtAuthGuard)
+  protected() {
+    return 'a secret string';
+  }
 
   @Get()
   @Redirect('/overview', 302)
