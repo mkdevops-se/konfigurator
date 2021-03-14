@@ -1,13 +1,6 @@
-import {
-  Controller,
-  Get,
-  Logger,
-  Redirect,
-  Render,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Logger, Redirect, Render } from '@nestjs/common';
 import { AppService } from './app.service';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Public } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
@@ -16,18 +9,14 @@ export class AppController {
 
   constructor(private readonly appService: AppService) {}
 
-  @Get('protected')
-  @UseGuards(JwtAuthGuard)
-  protected() {
-    return 'a secret string';
-  }
-
+  @Public()
   @Get()
   @Redirect('/overview', 302)
   root() {
     return { url: '/overview' };
   }
 
+  @Public()
   @Get('overview')
   @Render('overview')
   async getOverview() {
@@ -46,7 +35,7 @@ export class AppController {
     };
   }
 
-  @Get('hello')
+  @Get('protected-hello')
   getHello(): string {
     return this.appService.getHello();
   }

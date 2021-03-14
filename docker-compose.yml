@@ -10,6 +10,7 @@ services:
       - OAUTH2_AUDIENCE=https://konfigurator.mkdevops.se/
       - OAUTH2_SIGNING_SECRET=1X****************************ZA
       - OAUTH2_SIGNING_ALGORITHM=HS256
+      - OAUTH2_LOCAL_ACCESS_TOKEN=/tmp/access_token.txt
     ports:
       - "3000:3000"
     volumes:

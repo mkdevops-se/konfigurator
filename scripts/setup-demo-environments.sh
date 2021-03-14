@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Creating katla-utv environment ..."
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
   "name": "katla-utv",
   "rank": 1000,
   "ocp_tenant_domain": "test.ocp.github.org",
@@ -19,7 +19,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 
 echo ""
 echo "Creating katla-slarvkatterna-utv environment ..."
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
   "name": "katla-slarvkatterna-utv",
   "rank": 903,
   "ocp_tenant_domain": "test.ocp.github.org",
@@ -35,7 +35,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 
 echo ""
 echo "Creating katla-drakryttarna-utv environment ..."
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
   "name": "katla-drakryttarna-utv",
   "rank": 902,
   "ocp_tenant_domain": "test.ocp.github.org",
@@ -52,7 +52,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 
 echo ""
 echo "Creating katla-sys environment ..."
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments -d '{
   "name": "katla-sys",
   "rank": 800,
   "ocp_tenant_domain": "test.ocp.github.org",

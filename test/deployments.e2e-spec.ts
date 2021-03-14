@@ -1,45 +1,33 @@
-import {
-  ExecutionContext,
-  INestApplication,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
+import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { DeploymentsModule } from '../src/deployments/deployments.module';
-import { JwtAuthGuard } from '../src/auth/jwt-auth.guard';
 
 describe('DeploymentsController (e2e)', () => {
   let app: INestApplication;
+  let accessToken: string;
 
   beforeAll(async () => {
+    accessToken = jwt.sign(
+      {
+        iss: process.env.OAUTH2_ISSUER,
+        sub: 'mr-end2end@clients',
+        aud: process.env.OAUTH2_AUDIENCE,
+        iat: Math.floor(Date.now() / 1000 - 60), // Now-60s
+        exp: Math.floor(Date.now() / 1000 + 86400), // Now+24h
+        azp: 'self.authorized.',
+        gty: 'client-credentials',
+      },
+      process.env.OAUTH2_SIGNING_SECRET,
+    );
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, DeploymentsModule],
-    })
-      .overrideGuard(JwtAuthGuard)
-      .useValue({
-        canActivate: (context: ExecutionContext) => {
-          const req = context.switchToHttp().getRequest();
-          if (!req.headers.authorization) {
-            throw new UnauthorizedException();
-          }
-          return true;
-        },
-      })
-      .compile();
+    }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
-  });
-
-  it('GET /environments/katla-utv/protected', () => {
-    return request(app.getHttpServer())
-      .get('/environments/katla-utv/protected')
-      .auth('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...-ptvwvFcab_K5B4q1EEpTQc', {
-        type: 'bearer',
-      })
-      .expect(200)
-      .expect('a secret string');
   });
 
   describe('POST /environments/katla-utv/deployments', () => {
@@ -51,6 +39,7 @@ describe('DeploymentsController (e2e)', () => {
       };
       return request(app.getHttpServer())
         .post('/environments/katla-utv/deployments')
+        .auth(accessToken, { type: 'bearer' })
         .send(newDeployment)
         .expect(201)
         .expect({
@@ -75,6 +64,7 @@ describe('DeploymentsController (e2e)', () => {
       };
       return request(app.getHttpServer())
         .post('/environments/katla-utv/deployments')
+        .auth(accessToken, { type: 'bearer' })
         .send(newDeployment)
         .expect(201)
         .expect({
@@ -100,6 +90,7 @@ describe('DeploymentsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/environments/katla-utv/deployments')
+        .auth(accessToken, { type: 'bearer' })
         .send(duplicateDeployment)
         .expect(409);
 
@@ -109,6 +100,7 @@ describe('DeploymentsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/environments/katla-utv/deployments')
+        .auth(accessToken, { type: 'bearer' })
         .send(badDeployment1)
         .expect(400);
 
@@ -119,12 +111,13 @@ describe('DeploymentsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/environments/katla-utv/deployments')
+        .auth(accessToken, { type: 'bearer' })
         .send(badDeployment2)
         .expect(400);
     });
   });
 
-  describe('GET /environments/katla-utv/deployments', () => {
+  describe('@Public: GET /environments/katla-utv/deployments', () => {
     it('returns a specific /environments/katla-utv/deployments/:name', () => {
       return request(app.getHttpServer())
         .get('/environments/katla-utv/deployments/bff-gateway')
@@ -195,6 +188,7 @@ describe('DeploymentsController (e2e)', () => {
     it('updates defined-and-writeable properties of an entity', () => {
       return request(app.getHttpServer())
         .put('/environments/katla-utv/deployments/bff-gateway')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           cpu_min: '50m',
           cpu_max: '400m',
@@ -221,6 +215,7 @@ describe('DeploymentsController (e2e)', () => {
     it('returns a 404 error for incorrect /environments/katla-utv/deployments/:name', () => {
       return request(app.getHttpServer())
         .put('/environments/katla-utv/deployments/one-no-yet-created')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           memory_min: '32mb',
         })
@@ -230,6 +225,7 @@ describe('DeploymentsController (e2e)', () => {
     it('rejects updates to undefined-or-non-writeable properties', async () => {
       await request(app.getHttpServer())
         .put('/environments/katla-utv/deployments/bff-gateway')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           made_up_today: 'not okay',
         })
@@ -237,6 +233,7 @@ describe('DeploymentsController (e2e)', () => {
 
       await request(app.getHttpServer())
         .put('/environments/katla-utv/deployments/bff-gateway')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           name: 'cannot-be-changed',
           environment: 'is-immutable',
@@ -245,6 +242,7 @@ describe('DeploymentsController (e2e)', () => {
 
       await request(app.getHttpServer())
         .put('/environments/katla-utv/deployments/bff-gateway')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           ocp_namespace: '',
         })
@@ -256,6 +254,7 @@ describe('DeploymentsController (e2e)', () => {
     it('deletes specific deployment by name', () => {
       return request(app.getHttpServer())
         .delete('/environments/katla-utv/deployments/bff-gateway')
+        .auth(accessToken, { type: 'bearer' })
         .expect(200)
         .expect({
           environment: 'katla-utv',
@@ -277,6 +276,7 @@ describe('DeploymentsController (e2e)', () => {
     it('returns a 404 error for incorrect /environments/katla-utv/deployments/:name', () => {
       return request(app.getHttpServer())
         .delete('/environments/katla-utv/deployments/one-yet-to-be-created')
+        .auth(accessToken, { type: 'bearer' })
         .expect(404);
     });
   });

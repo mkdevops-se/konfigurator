@@ -2,7 +2,7 @@
 
 ## UTV-Front ####
 echo "Creating api-gateway in UTV-Front"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "api-gateway",
   "ocp_namespace": "katla-front-utv",
   "is_gateway": true,
@@ -15,7 +15,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating frontend in UTV-Front"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "frontend",
   "ocp_namespace": "katla-front-utv",
   "replicas_target": 2
@@ -24,7 +24,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 ## UTV-Backend ####
 echo ""
 echo "Creating backend-gateway in UTV-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "backend-gateway",
   "ocp_namespace": "katla-backend-utv",
   "is_gateway": true,
@@ -37,7 +37,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating munkfabriken in UTV-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "munkfabriken",
   "ocp_namespace": "katla-backend-utv",
   "is_gateway": false,
@@ -45,14 +45,14 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating surgrisen in UTV-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "surgrisen",
   "ocp_namespace": "katla-backend-utv",
   "is_gateway": false
 }'
 echo ""
 echo "Creating kalorikossan in UTV-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "kalorikossan",
   "ocp_namespace": "katla-backend-utv"
 }'
@@ -60,7 +60,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 ## UTV-Restricted ####
 echo ""
 echo "Creating restricted-gateway in UTV-Restricted"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "restricted-gateway",
   "ocp_namespace": "katla-restricted-utv",
   "is_gateway": true,
@@ -72,7 +72,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 
 echo ""
 echo "Creating rattighetsadministration in UTV-Restricted"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-utv/deployments -d '{
   "name": "rattighetsadministration",
   "ocp_namespace": "katla-restricted-utv",
   "is_gateway": false

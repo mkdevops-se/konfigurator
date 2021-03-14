@@ -2,7 +2,7 @@
 
 ## SYS-Front ####
 echo "Creating api-gateway in SYS-Front"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "api-gateway",
   "ocp_namespace": "katla-front-sys",
   "is_gateway": true,
@@ -15,7 +15,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating frontend in SYS-Front"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "frontend",
   "ocp_namespace": "katla-front-sys",
   "replicas_target": 2
@@ -24,7 +24,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 ## SYS-Backend ####
 echo ""
 echo "Creating backend-gateway in SYS-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "backend-gateway",
   "ocp_namespace": "katla-backend-sys",
   "is_gateway": true,
@@ -37,14 +37,14 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating surgrisen in SYS-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "surgrisen",
   "ocp_namespace": "katla-backend-sys",
   "is_gateway": false
 }'
 echo ""
 echo "Creating kalorikossan in SYS-Backend"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "kalorikossan",
   "ocp_namespace": "katla-backend-sys"
 }'
@@ -52,7 +52,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 ## SYS-Restricted ####
 echo ""
 echo "Creating restricted-gateway in SYS-Restricted"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "restricted-gateway",
   "ocp_namespace": "katla-restricted-sys",
   "is_gateway": true,
@@ -64,7 +64,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 
 echo ""
 echo "Creating rattighetsadministration in SYS-Restricted"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-sys/deployments -d '{
   "name": "rattighetsadministration",
   "ocp_namespace": "katla-restricted-sys",
   "is_gateway": false

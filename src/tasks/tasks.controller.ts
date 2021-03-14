@@ -11,7 +11,6 @@ import {
   Req,
   Redirect,
   Render,
-  UseGuards,
 } from '@nestjs/common';
 import { RedirectResponse } from '@nestjs/core/router/router-response-controller';
 import { Request } from 'express';
@@ -23,7 +22,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { BulkCreateFetchBuildInfoTasksDto } from './dto/bulk-create-fetch-build-info-tasks.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Public } from '../auth/jwt-auth.guard';
 
 @Controller('tasks')
 @UseFilters(HttpExceptionFilter)
@@ -31,12 +30,6 @@ export class TasksController {
   private readonly logger = new Logger(TasksController.name);
 
   constructor(private readonly tasksService: TasksService) {}
-
-  @Get('protected')
-  @UseGuards(JwtAuthGuard)
-  protected() {
-    return 'a secret string';
-  }
 
   @Post()
   @Redirect()
@@ -86,6 +79,7 @@ export class TasksController {
     }
   }
 
+  @Public()
   @Get()
   @Render('tasks/tasks')
   async findAll() {
@@ -103,6 +97,7 @@ export class TasksController {
     };
   }
 
+  @Public()
   @Get(':id')
   getOne(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getOne(+id);

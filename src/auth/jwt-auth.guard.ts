@@ -2,13 +2,22 @@ import {
   ExecutionContext,
   Injectable,
   Logger,
+  SetMetadata,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
+
+export const IS_PUBLIC_KEY = 'isPublic';
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   private readonly logger = new Logger(JwtAuthGuard.name);
+
+  constructor(private reflector: Reflector) {
+    super();
+  }
 
   canActivate(context: ExecutionContext) {
     // Add your custom authentication logic here
@@ -18,6 +27,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         context.getArgs()[0].url
       }`,
     );
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) {
+      return true;
+    }
     return super.canActivate(context);
   }
 

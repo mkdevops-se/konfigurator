@@ -8,7 +8,6 @@ import {
   Post,
   Put,
   UseFilters,
-  UseGuards,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
@@ -16,7 +15,7 @@ import { DeploymentsService } from './deployments.service';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
 import { UpdateDeploymentDto } from './dto/update-deployment.dto';
 import { Deployment } from './entities/deployment.entity';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Public } from '../auth/jwt-auth.guard';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
@@ -24,12 +23,6 @@ export class DeploymentsController {
   private readonly logger = new Logger(DeploymentsController.name);
 
   constructor(private deploymentsService: DeploymentsService) {}
-
-  @Get(':environment/protected')
-  @UseGuards(JwtAuthGuard)
-  protected() {
-    return 'a secret string';
-  }
 
   @Post(':environment/deployments')
   async create(
@@ -53,6 +46,7 @@ export class DeploymentsController {
     return newDeployment;
   }
 
+  @Public()
   @Get(':environment/deployments/:name')
   async getOne(
     @Param('environment') environment: string,
@@ -70,6 +64,7 @@ export class DeploymentsController {
     return oneDeploy;
   }
 
+  @Public()
   @Get(':environment/deployments')
   async getAll(
     @Param('environment') environment: string,

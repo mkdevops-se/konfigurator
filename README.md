@@ -53,9 +53,11 @@ $ npm run start:prod
 
 ### Lokal demo-deployment
 
-Starta applikationen, kör sedan Bash-scriptet som innehåller setup av demo-miljön:
+Starta applikationen, exportera den biljett/JWT som applikationen autogenerer, och kör sedan Bash-scriptet som
+innehåller cURL-kommandon för setup av demo-miljön:
 
 ```bash
+$ export ACCESS_TOKEN=$(cat ./tmp/access_token.txt)  # Default OAUTH2_LOCAL_ACCESS_TOKEN path.
 $ bash scripts/setup-demo.sh
 ```
 
@@ -100,6 +102,12 @@ $ docker-compose up -d konfigurator
 ```
 
 ## Changelog
+
+### `v0.3.0` – Grundläggande säkerhet med autentiseringskrav
+
+- API-endpoints som tillhandahåller skriv-access begränsade till klienter med
+  giltig biljett i _`Authorization`_-headern
+- README-instruktionen för _Lokal demo-deployment_ uppdaterad med nytt förfarande
 
 ### `v0.2.0` – Inkrementella förbättringar
 
