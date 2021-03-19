@@ -16,6 +16,9 @@ import { HeartbeatsService } from './heartbeats/heartbeats.service';
 import { MockBuildInfoModule } from './mock-build-info/mock-build-info.module';
 import { TasksModule } from './tasks/tasks.module';
 import { Task } from './tasks/entities/task.entity';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -33,7 +36,7 @@ import { Task } from './tasks/entities/task.entity';
       location: process.env.DATABASE_URL,
       autoSave: true,
       dropSchema: process.env.DATABASE_DROP_SCHEMA === 'true',
-      entities: [Build, Deployment, Environment, Task],
+      entities: [Build, Deployment, Environment, Task, User],
       keepConnectionAlive: true,
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
     }),
@@ -42,6 +45,8 @@ import { Task } from './tasks/entities/task.entity';
     EnvironmentsModule,
     MockBuildInfoModule,
     TasksModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController, HealthController],
   providers: [AppService, HeartbeatsService],

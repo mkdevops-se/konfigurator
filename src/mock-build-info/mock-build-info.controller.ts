@@ -8,8 +8,8 @@ import {
   Logger,
   Post,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { ValidationPipe } from '../validation.pipe';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { MockBuildInfoDto } from './dto/mock-build-info.dto';
 import { MockBuildInfoService } from './mock-build-info.service';
 

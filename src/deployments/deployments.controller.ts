@@ -9,8 +9,8 @@ import {
   Put,
   UseFilters,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { ValidationPipe } from '../validation.pipe';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { DeploymentsService } from './deployments.service';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
 import { UpdateDeploymentDto } from './dto/update-deployment.dto';

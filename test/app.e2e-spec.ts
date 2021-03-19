@@ -1,3 +1,4 @@
+import * as exphbs from 'express-handlebars';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -15,6 +16,7 @@ describe('AppController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     app.useStaticAssets(join(__dirname, '..', 'public'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
+    app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'main' }));
     app.setViewEngine('hbs');
     await app.init();
   });
@@ -32,7 +34,9 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Content-Type', 'text/html; charset=utf-8')
       .then((response) => {
-        expect(response.text).toContain('<title>konfigurator</title>');
+        expect(response.text).toContain(
+          '<title>Konfigurator: Miljööversikt</title>',
+        );
         expect(response.text).toContain(
           '<h1>Översikt av miljökonfigurationer i OpenShift</h1>',
         );
