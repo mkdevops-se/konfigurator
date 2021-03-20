@@ -1,13 +1,27 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
+import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { EnvironmentsModule } from '../src/environments/environments.module';
 
 describe('EnvironmentsController (e2e)', () => {
   let app: INestApplication;
+  let accessToken: string;
 
   beforeAll(async () => {
+    accessToken = jwt.sign(
+      {
+        iss: process.env.OAUTH2_ISSUER,
+        sub: 'mr-end2end@clients',
+        aud: process.env.OAUTH2_AUDIENCE,
+        iat: Math.floor(Date.now() / 1000 - 60), // Now-60s
+        exp: Math.floor(Date.now() / 1000 + 86400), // Now+24h
+        azp: 'self.authorized.',
+        gty: 'client-credentials',
+      },
+      process.env.OAUTH2_SIGNING_SECRET,
+    );
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, EnvironmentsModule],
     }).compile();
@@ -28,6 +42,7 @@ describe('EnvironmentsController (e2e)', () => {
       };
       return request(app.getHttpServer())
         .post('/environments')
+        .auth(accessToken, { type: 'bearer' })
         .send(newEnvironment)
         .expect(201)
         .expect({
@@ -54,6 +69,7 @@ describe('EnvironmentsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/environments')
+        .auth(accessToken, { type: 'bearer' })
         .send(duplicateEnvironment)
         .expect(409);
 
@@ -67,6 +83,7 @@ describe('EnvironmentsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/environments')
+        .auth(accessToken, { type: 'bearer' })
         .send(badEnvironment1)
         .expect(400);
 
@@ -81,12 +98,13 @@ describe('EnvironmentsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post('/environments')
+        .auth(accessToken, { type: 'bearer' })
         .send(badEnvironment2)
         .expect(400);
     });
   });
 
-  describe('GET /environments', () => {
+  describe('@Public: GET /environments', () => {
     it('returns a specific /environments/:name', () => {
       return request(app.getHttpServer())
         .get('/environments/katla-utv')
@@ -144,6 +162,7 @@ describe('EnvironmentsController (e2e)', () => {
     it('updates defined-and-writeable properties of an entity', () => {
       return request(app.getHttpServer())
         .put('/environments/katla-utv')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           rank: 1000,
           default_spring_profiles: 'prod',
@@ -173,6 +192,7 @@ describe('EnvironmentsController (e2e)', () => {
     it('returns a 404 error for incorrect /environments/:name', () => {
       return request(app.getHttpServer())
         .put('/environments/katla-utv-is-not-there')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           default_spring_profiles: 'prod',
           comment: 'Mats was here',
@@ -183,6 +203,7 @@ describe('EnvironmentsController (e2e)', () => {
     it('rejects updates to undefined-or-non-writeable properties', async () => {
       await request(app.getHttpServer())
         .put('/environments/katla-utv')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           made_up_today: 'not okay',
           comment: 'Mats was here',
@@ -191,6 +212,7 @@ describe('EnvironmentsController (e2e)', () => {
 
       await request(app.getHttpServer())
         .put('/environments/katla-utv')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           name: 'cannot-be-changed',
           comment: 'Mats was here',
@@ -199,6 +221,7 @@ describe('EnvironmentsController (e2e)', () => {
 
       await request(app.getHttpServer())
         .put('/environments/katla-utv')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           comment: '',
         })
@@ -210,6 +233,7 @@ describe('EnvironmentsController (e2e)', () => {
     it('deletes specific environment by name', () => {
       return request(app.getHttpServer())
         .delete('/environments/katla-utv')
+        .auth(accessToken, { type: 'bearer' })
         .expect(200)
         .expect({
           name: 'katla-utv',
@@ -232,6 +256,7 @@ describe('EnvironmentsController (e2e)', () => {
     it('returns a 404 error for incorrect /environments/:name', () => {
       return request(app.getHttpServer())
         .delete('/environments/katla-utv-is-not-there')
+        .auth(accessToken, { type: 'bearer' })
         .expect(404);
     });
   });

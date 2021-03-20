@@ -1,3 +1,4 @@
+import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
@@ -19,6 +20,7 @@ import { Task } from './tasks/entities/task.entity';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { AuthenticatedGuard } from './common/guards/authenticated.guard';
 
 @Module({
   imports: [
@@ -49,6 +51,13 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
   controllers: [AppController, HealthController],
-  providers: [AppService, HeartbeatsService],
+  providers: [
+    AppService,
+    HeartbeatsService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthenticatedGuard,
+    },
+  ],
 })
 export class AppModule {}

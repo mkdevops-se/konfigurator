@@ -15,6 +15,7 @@ import { DeploymentsService } from './deployments.service';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
 import { UpdateDeploymentDto } from './dto/update-deployment.dto';
 import { Deployment } from './entities/deployment.entity';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
@@ -45,6 +46,7 @@ export class DeploymentsController {
     return newDeployment;
   }
 
+  @Public()
   @Get(':environment/deployments/:name')
   async getOne(
     @Param('environment') environment: string,
@@ -62,6 +64,7 @@ export class DeploymentsController {
     return oneDeploy;
   }
 
+  @Public()
   @Get(':environment/deployments')
   async getAll(
     @Param('environment') environment: string,

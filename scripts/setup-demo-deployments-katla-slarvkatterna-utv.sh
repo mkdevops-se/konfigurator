@@ -2,7 +2,7 @@
 
 ## Slarvkatterna-UTV ####
 echo "Creating api-gateway in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "api-gateway",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "is_gateway": true,
@@ -15,7 +15,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating frontend in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "frontend",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "replicas_target": 1
@@ -24,7 +24,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 ## Slarvkatterna-UTV ####
 echo ""
 echo "Creating backend-gateway in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "backend-gateway",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "is_gateway": true,
@@ -37,7 +37,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating munkfabriken in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "munkfabriken",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "is_gateway": false,
@@ -45,14 +45,14 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 }'
 echo ""
 echo "Creating surgrisen in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "surgrisen",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "is_gateway": false
 }'
 echo ""
 echo "Creating kalorikossan in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "kalorikossan",
   "ocp_namespace": "katla-slarvkatterna-utv"
 }'
@@ -60,7 +60,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 ## Slarvkatterna-UTV ####
 echo ""
 echo "Creating restricted-gateway in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "restricted-gateway",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "is_gateway": true,
@@ -72,7 +72,7 @@ curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environmen
 
 echo ""
 echo "Creating rattighetsadministration in Slarvkatterna-UTV"
-curl -XPOST -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
+curl -XPOST -H "$AUTH_HEADER" -H 'Content-Type: application/json' http://localhost:3000/environments/katla-slarvkatterna-utv/deployments -d '{
   "name": "rattighetsadministration",
   "ocp_namespace": "katla-slarvkatterna-utv",
   "is_gateway": false

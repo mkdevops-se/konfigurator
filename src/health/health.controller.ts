@@ -5,6 +5,7 @@ import {
   HealthCheckService,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('health')
 export class HealthController {
@@ -14,6 +15,7 @@ export class HealthController {
     private typeorm: TypeOrmHealthIndicator,
   ) {}
 
+  @Public()
   @Get()
   @HealthCheck()
   check() {

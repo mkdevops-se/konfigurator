@@ -13,9 +13,9 @@ import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { Response, Request } from 'express';
 
-import { LoginGuard } from './common/guards/login.guard';
-import { AuthenticatedGuard } from './common/guards/authenticated.guard';
 import { AuthExceptionFilter } from './common/filters/auth-exceptions.filter';
+import { LoginGuard } from './common/guards/login.guard';
+import { Public } from './common/guards/authenticated.guard';
 
 @Controller()
 @UseFilters(AuthExceptionFilter)
@@ -35,12 +35,14 @@ export class AppController {
     };
   }
 
+  @Public()
   @Get()
   @Redirect('/overview', 302)
   root() {
     return { url: '/overview' };
   }
 
+  @Public()
   @Get('overview')
   @Render('overview')
   async getOverview(@Req() req) {
@@ -57,7 +59,7 @@ export class AppController {
     };
   }
 
-  @Get('hello')
+  @Get('protected-hello')
   getHello(): string {
     return this.appService.getHello();
   }
@@ -67,17 +69,18 @@ export class AppController {
     return this.authService.signJwt();
   }
 
+  @Public()
   @UseGuards(LoginGuard)
   @Get('/login')
   getLogin() {}
 
+  @Public()
   @UseGuards(LoginGuard)
   @Get('/callback')
   getCallback(@Req() req: Request, @Res() res: Response) {
     res.redirect('/');
   }
 
-  @UseGuards(AuthenticatedGuard)
   @Get('/profile')
   @Render('profile')
   getProfile(@Req() req: Request) {

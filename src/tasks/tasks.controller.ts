@@ -11,7 +11,6 @@ import {
   Req,
   Redirect,
   Render,
-  UseGuards,
 } from '@nestjs/common';
 import { RedirectResponse } from '@nestjs/core/router/router-response-controller';
 import { Request } from 'express';
@@ -23,8 +22,8 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { BulkCreateFetchBuildInfoTasksDto } from './dto/bulk-create-fetch-build-info-tasks.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
-import { AuthenticatedGuard } from '../common/guards/authenticated.guard';
 import { AuthExceptionFilter } from '../common/filters/auth-exceptions.filter';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('tasks')
 @UseFilters(HttpExceptionFilter, AuthExceptionFilter)
@@ -41,7 +40,6 @@ export class TasksController {
     };
   }
 
-  @UseGuards(AuthenticatedGuard)
   @Post()
   @Redirect()
   create(
@@ -63,7 +61,6 @@ export class TasksController {
     }
   }
 
-  @UseGuards(AuthenticatedGuard)
   @Post('bulk')
   @Redirect()
   async bulkCreate(
@@ -91,6 +88,7 @@ export class TasksController {
     }
   }
 
+  @Public()
   @Get()
   @Render('tasks/tasks')
   async findAll(@Req() req: Request) {
@@ -106,6 +104,7 @@ export class TasksController {
     };
   }
 
+  @Public()
   @Get(':id')
   getOne(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getOne(+id);
