@@ -1,6 +1,6 @@
 ## Description
 
-Please write a summary if the change.
+Please write a summary of the change.
 
 Fixes # (issue)
 
