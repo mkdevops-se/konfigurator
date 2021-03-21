@@ -41,14 +41,13 @@ $ npm install
 ## Starta applikationen
 
 ```bash
-# development
-$ npm run start
+# create development env and start in watch mode
+$ cp -v .env.template .env.development
+$ NODE_ENV=development npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# create prod env and start in production mode
+$ cp -v .env.template .env.production
+$ NODE_ENV=production npm run start:prod
 ```
 
 ### Lokal demo-deployment
@@ -108,6 +107,7 @@ $ docker-compose up -d konfigurator
 - API-endpoints som tillhandahåller skriv-access begränsade till klienter med
   en giltig biljett i _`Authorization`_-headern eller en inloggad OpenID Connect-session med Auth0
 - README-instruktionen för _Lokal demo-deployment_ uppdaterad med nytt förfarande
+- Refaktorerad konfigurationshantering för utveckling och produktion
 
 ### `v0.2.0` – Inkrementella förbättringar
 
