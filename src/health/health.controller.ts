@@ -5,7 +5,7 @@ import {
   HealthCheckService,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
-import { Public } from '../auth/jwt-auth.guard';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('health')
 export class HealthController {

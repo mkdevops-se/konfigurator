@@ -1,3 +1,4 @@
+import * as exphbs from 'express-handlebars';
 import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -30,6 +31,7 @@ describe('TasksController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     app.useStaticAssets(join(__dirname, '..', 'public'));
     app.setBaseViewsDir(join(__dirname, '..', 'views'));
+    app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'main' }));
     app.setViewEngine('hbs');
     await app.init();
   });
@@ -41,7 +43,9 @@ describe('TasksController (e2e)', () => {
         .expect(200)
         .expect('Content-Type', 'text/html; charset=utf-8')
         .then((response) => {
-          expect(response.text).toContain('<title>tasks</title>');
+          expect(response.text).toContain(
+            '<title>Konfigurator: Bakgrundsjobb</title>',
+          );
           expect(response.text).toContain('<h1>Översikt av bakgrundsjobb</h1>');
         });
     });

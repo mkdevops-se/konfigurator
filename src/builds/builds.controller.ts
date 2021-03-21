@@ -9,21 +9,31 @@ import {
   UseFilters,
   Logger,
   Render,
+  Req,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { ValidationPipe } from '../validation.pipe';
+import { Request } from 'express';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { BuildsService } from './builds.service';
 import { CreateBuildDto } from './dto/create-build.dto';
 import { UpdateBuildDto } from './dto/update-build.dto';
 import { Build } from './entities/build.entity';
-import { Public } from '../auth/jwt-auth.guard';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('builds')
 @UseFilters(HttpExceptionFilter)
 export class BuildsController {
   private readonly logger = new Logger(BuildsController.name);
+  private readonly processEnv;
 
-  constructor(private readonly buildsService: BuildsService) {}
+  constructor(private readonly buildsService: BuildsService) {
+    this.processEnv = {
+      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
+      IMAGE_TAG: process.env.IMAGE_TAG,
+      COMMIT_LINK: process.env.COMMIT_LINK,
+      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+    };
+  }
 
   @Post(':image_name')
   async create(
@@ -47,17 +57,15 @@ export class BuildsController {
   @Public()
   @Get()
   @Render('builds/builds')
-  async findAll() {
+  async findAll(@Req() req: Request) {
     this.logger.log(`Getting all builds ...`);
     const allBuilds = await this.buildsService.getAll();
     this.logger.debug(`Got all builds: ${JSON.stringify(allBuilds)}`);
     return {
-      title: 'builds',
+      user: req.user,
+      title: 'Byggartefakter',
       message: `Nedan listas alla byggen som Konfigurator-tjänsten identifierat.`,
-      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
-      IMAGE_TAG: process.env.IMAGE_TAG,
-      COMMIT_LINK: process.env.COMMIT_LINK,
-      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+      processEnv: this.processEnv,
       builds: allBuilds,
     };
   }

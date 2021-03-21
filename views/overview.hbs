@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>{{ title }}</title>
-</head>
-<body>
+<!-- views/overview.hbs -->
+<main>
 <h1>Översikt av miljökonfigurationer i OpenShift</h1>
 <p>{{ message }}</p>
 <p>Miljöer:<br>
@@ -53,7 +48,9 @@
             <th rowspan="2">Current Image</th>
             <th rowspan="2">Build Timestamp</th>
             <th rowspan="2">Last Status Update</th>
+            {{#if @root.user }}
             <th rowspan="1">⚙️</th>
+            {{/if}}
           </tr>
           <tr>
             <td>Min</td>
@@ -62,6 +59,7 @@
             <td>Max</td>
             <td>Target</td>
             <td>Current</td>
+            {{#if @root.user }}
             <td>
               <form method="post" action="/tasks/bulk">
                 <input type="hidden" name="ocp_namespace" value="{{ this.ocp_namespace }}">
@@ -71,6 +69,7 @@
                 <input type="submit" value="↻ {{ this.deployments_that_have_external_urls.length }}">
               </form>
             </td>
+            {{/if}}
           </tr>
           </thead>
           <tbody>
@@ -87,6 +86,7 @@
             <td>{{#if this.image_tag }}<pre><a href="/builds#{{ this.name }}-{{ this.image_tag }}">{{ this.image_tag }}</a></pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.build_timestamp }}<pre>{{ this.build_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.update_timestamp }}<pre>{{ this.update_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            {{#if @root.user }}
             <td>
               <form method="post" action="/tasks">
                 <input type="hidden" name="data.target.environment" value="{{ this.environment }}">
@@ -97,6 +97,7 @@
                 <input type="submit" value="↻ 1" {{#if this.external_url }}{{else}}disabled="disabled"{{/if}}>
               </form>
             </td>
+            {{/if}}
           </tr>
           {{/each}}
           </tbody>
@@ -108,8 +109,4 @@
   </table>
   <p align="center"><small>Symbols: <sup>#</sup> – sidankare / <sup>†</sup> – deployment av gateway-typ / <sup>→</sup> – direktlänk</small></p>
 {{/each}}
-<hr>
-<p align="center"><small>&gt;&gt;&gt; Running since {{ SERVER_STARTUP_TIMESTAMP }}{{#if IMAGE_TAG }}, using build {{ IMAGE_TAG }} from <a href="{{ COMMIT_LINK }}">{{ COMMIT_LINK }}</a> ({{ BUILD_TIMESTAMP }}){{/if}} &lt;&lt;&lt;</small></p>
-<hr>
-</body>
-</html>
+</main>

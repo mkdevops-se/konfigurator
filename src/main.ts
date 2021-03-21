@@ -1,3 +1,7 @@
+import * as exphbs from 'express-handlebars';
+import * as passport from 'passport';
+import * as session from 'express-session';
+import flash = require('connect-flash');
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
@@ -14,7 +18,20 @@ async function bootstrap() {
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.engine('.hbs', exphbs({ extname: '.hbs', defaultLayout: 'main' }));
   app.setViewEngine('hbs');
+
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(flash());
 
   await app.listen(
     +configService.get<string>('WEB_SERVER_PORT', '3000'),

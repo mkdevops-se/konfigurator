@@ -7,10 +7,15 @@ services:
     environment:
       - DATABASE_URL=/data/konfigurator.db
       - OAUTH2_ISSUER=https://mkdevops.eu.auth0.com/
-      - OAUTH2_AUDIENCE=https://konfigurator.mkdevops.se/
-      - OAUTH2_SIGNING_SECRET=1X****************************ZA
+      - OAUTH2_AUDIENCE=urn:mkdevops:konfigurator
+      - OAUTH2_AUTH0_TENANT_DOMAIN=mkdevops.eu.auth0.com
+      - OAUTH2_AUTH0_CLIENT_ID=ZTu**************************H8V
+      - OAUTH2_AUTH0_CLIENT_SECRET=lxf**********************************************************nCT
+      - OAUTH2_AUTH0_CALLBACK_URL=http://localhost:3000/callback
+      - OAUTH2_SIGNING_SECRET=siW**************************xzQ
       - OAUTH2_SIGNING_ALGORITHM=HS256
-      - OAUTH2_LOCAL_ACCESS_TOKEN=/tmp/access_token.txt
+      - OAUTH2_LOCAL_ACCESS_TOKEN=tmp/access_token.txt
+      - SESSION_SECRET=xfI**************************f56
     ports:
       - "3000:3000"
     volumes:

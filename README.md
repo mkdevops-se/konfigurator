@@ -106,7 +106,7 @@ $ docker-compose up -d konfigurator
 ### `v0.3.0` – Grundläggande säkerhet med autentiseringskrav
 
 - API-endpoints som tillhandahåller skriv-access begränsade till klienter med
-  giltig biljett i _`Authorization`_-headern
+  en giltig biljett i _`Authorization`_-headern eller en inloggad OpenID Connect-session med Auth0
 - README-instruktionen för _Lokal demo-deployment_ uppdaterad med nytt förfarande
 
 ### `v0.2.0` – Inkrementella förbättringar

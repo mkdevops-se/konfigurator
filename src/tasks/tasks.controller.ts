@@ -14,22 +14,31 @@ import {
 } from '@nestjs/common';
 import { RedirectResponse } from '@nestjs/core/router/router-response-controller';
 import { Request } from 'express';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { TransformFormPipe } from '../transform-form.pipe';
-import { ValidationPipe } from '../validation.pipe';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { TransformFormPipe } from '../common/pipes/transform-form.pipe';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { BulkCreateFetchBuildInfoTasksDto } from './dto/bulk-create-fetch-build-info-tasks.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
-import { Public } from '../auth/jwt-auth.guard';
+import { AuthExceptionFilter } from '../common/filters/auth-exceptions.filter';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('tasks')
-@UseFilters(HttpExceptionFilter)
+@UseFilters(HttpExceptionFilter, AuthExceptionFilter)
 export class TasksController {
   private readonly logger = new Logger(TasksController.name);
+  private readonly processEnv;
 
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(private readonly tasksService: TasksService) {
+    this.processEnv = {
+      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
+      IMAGE_TAG: process.env.IMAGE_TAG,
+      COMMIT_LINK: process.env.COMMIT_LINK,
+      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+    };
+  }
 
   @Post()
   @Redirect()
@@ -82,17 +91,15 @@ export class TasksController {
   @Public()
   @Get()
   @Render('tasks/tasks')
-  async findAll() {
+  async findAll(@Req() req: Request) {
     this.logger.log(`Getting all tasks ...`);
     const allTasks = await this.tasksService.getAll();
     this.logger.debug(`Got all tasks: ${JSON.stringify(allTasks)}`);
     return {
-      title: 'tasks',
+      user: req.user,
+      title: 'Bakgrundsjobb',
       message: `Nedan listas alla bakgrundsjobb som Konfigurator-tjänsten schedulerat.`,
-      SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
-      IMAGE_TAG: process.env.IMAGE_TAG,
-      COMMIT_LINK: process.env.COMMIT_LINK,
-      BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+      processEnv: this.processEnv,
       tasks: allTasks,
     };
   }

@@ -5,15 +5,25 @@ import { AppModule } from './app.module';
 import { BuildsModule } from './builds/builds.module';
 import { DeploymentsModule } from './deployments/deployments.module';
 import { EnvironmentsModule } from './environments/environments.module';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 describe('AppController', () => {
   let appController: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, BuildsModule, DeploymentsModule, EnvironmentsModule],
+      imports: [
+        AppModule,
+        AuthModule,
+        BuildsModule,
+        DeploymentsModule,
+        EnvironmentsModule,
+        UsersModule,
+      ],
       controllers: [AppController],
-      providers: [AppService],
+      providers: [AppService, AuthService],
     }).compile();
 
     appController = app.get<AppController>(AppController);
@@ -27,13 +37,16 @@ describe('AppController', () => {
 
   describe('GET /overview', () => {
     it('should return "konfigurator" overview page', async () => {
-      expect(await appController.getOverview()).toMatchObject({
-        title: 'konfigurator',
+      expect(await appController.getOverview({})).toMatchObject({
+        user: undefined,
+        title: 'Miljööversikt',
         message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
-        SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
-        IMAGE_TAG: process.env.IMAGE_TAG,
-        COMMIT_LINK: process.env.COMMIT_LINK,
-        BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+        processEnv: {
+          SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
+          IMAGE_TAG: process.env.IMAGE_TAG,
+          COMMIT_LINK: process.env.COMMIT_LINK,
+          BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
+        },
         environments: [],
       });
     });

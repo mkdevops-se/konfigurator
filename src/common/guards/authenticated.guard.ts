@@ -1,4 +1,5 @@
 import {
+  CanActivate,
   ExecutionContext,
   Injectable,
   Logger,
@@ -12,8 +13,10 @@ export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
-  private readonly logger = new Logger(JwtAuthGuard.name);
+export class AuthenticatedGuard
+  extends AuthGuard('jwt')
+  implements CanActivate {
+  private readonly logger = new Logger(AuthenticatedGuard.name);
 
   constructor(private reflector: Reflector) {
     super();
@@ -22,11 +25,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   canActivate(context: ExecutionContext) {
     // Add your custom authentication logic here
     // for example, call super.logIn(request) to establish a session.
-    this.logger.log(
-      `JwtAuthGuard.canActivate: context.args[0].url=${
-        context.getArgs()[0].url
-      }`,
-    );
+    const request = context.switchToHttp().getRequest();
+    this.logger.debug(`canActivate: request.url=${request.url}`);
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
@@ -34,13 +34,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (isPublic) {
       return true;
     }
-    return super.canActivate(context);
+    if (request.isAuthenticated()) {
+      return request.isAuthenticated();
+    } else {
+      return super.canActivate(context);
+    }
   }
 
   handleRequest(err, user, info) {
     // You can throw an exception based on either "info" or "err" arguments
     this.logger.log(
-      `JwtAuthGuard.handleRequest: err=${JSON.stringify(
+      `handleRequest ('jwt' auth guard): err=${JSON.stringify(
         err,
       )}, user=${JSON.stringify(user)}, info=${JSON.stringify(info)}`,
     );

@@ -1,13 +1,15 @@
-import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
+import { Auth0Strategy } from './auth0.strategy';
+import { SessionSerializer } from './session.serializer';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Module({
   imports: [
+    UsersModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.OAUTH2_SIGNING_SECRET,
@@ -19,14 +21,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
       },
     }),
   ],
-  providers: [
-    AuthService,
-    JwtStrategy,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
-  exports: [AuthService, JwtModule],
+  providers: [AuthService, JwtStrategy, Auth0Strategy, SessionSerializer],
+  exports: [AuthService],
 })
 export class AuthModule {}

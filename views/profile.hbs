@@ -1,0 +1,15 @@
+<!-- views/profile.hbs -->
+<main>
+<h1>Information för användarprofil "{{ user.user_id }}"</h1>
+<p>ID: {{ user.id }}</p>
+<p>Leverantör: {{ user.provider }}</p>
+<p>Visningsnamn: {{ user.display_name }}</p>
+<p>Efternamn: {{ user.family_name }}</p>
+<p>Förnamn: {{ user.given_name }}</p>
+<p>E-post: {{ user.email }}</p>
+<p>Avatar:<br><img src="{{ user.picture_url }}"/></p>
+<p>Locale-inställning: {{ user.locale }}</p>
+<p>Smeknamn: {{ user.nickname }}</p>
+<p>Konfigurator-superadmin: {{ user.konfigurator_super_admin }}</p>
+<p>Konfigurator-inloggningar: {{ user.konfigurator_login_count }}</p>
+</main>

@@ -9,13 +9,13 @@ import {
   Put,
   UseFilters,
 } from '@nestjs/common';
-import { HttpExceptionFilter } from '../http-exception.filter';
-import { ValidationPipe } from '../validation.pipe';
+import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
+import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { DeploymentsService } from './deployments.service';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
 import { UpdateDeploymentDto } from './dto/update-deployment.dto';
 import { Deployment } from './entities/deployment.entity';
-import { Public } from '../auth/jwt-auth.guard';
+import { Public } from '../common/guards/authenticated.guard';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)

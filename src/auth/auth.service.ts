@@ -1,23 +1,37 @@
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import { Injectable, Logger } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
+  constructor(private readonly usersService: UsersService) {}
+
+  // async validateUser(username, pass): Promise<any> {
+  //   const user = await this.usersService.findOne(username);
+  //   if (user && user.password === pass) {
+  //     const { password, ...result } = user;
+  //     return result;
+  //   }
+  //   return null;
+  // }
+
   signJwt(subject = 'localhost@clients', accessTokenLifeTimeSec = 600) {
     return jwt.sign(
       {
-        iss: process.env.OAUTH2_ISSUER,
         sub: subject,
-        aud: process.env.OAUTH2_AUDIENCE,
-        iat: Math.floor(Date.now() / 1000), // Now
-        exp: Math.floor(Date.now() / 1000 + accessTokenLifeTimeSec), // Now + token duration
-        azp: 'self.authorized.',
-        gty: 'client-credentials',
+        fakeData: 'an important fact',
       },
       process.env.OAUTH2_SIGNING_SECRET,
+      {
+        issuer: process.env.OAUTH2_ISSUER,
+        audience: process.env.OAUTH2_AUDIENCE,
+        //@ts-ignore
+        algorithm: 'HS256',
+        expiresIn: `${accessTokenLifeTimeSec}s`,
+      },
     );
   }
 

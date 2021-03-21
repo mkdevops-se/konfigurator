@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SchedulerRegistry } from '@nestjs/schedule';
 import { HeartbeatsService } from './heartbeats.service';
-import { AuthService } from '../auth/auth.service';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { AppModule } from '../app.module';
+import { AuthModule } from '../auth/auth.module';
 
 describe('HeartbeatsService', () => {
   let service: HeartbeatsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AuthService, SchedulerRegistry, HeartbeatsService],
+      imports: [AppModule, AuthModule],
+      providers: [SchedulerRegistry, HeartbeatsService],
     }).compile();
 
     service = module.get<HeartbeatsService>(HeartbeatsService);
