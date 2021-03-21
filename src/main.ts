@@ -34,8 +34,8 @@ async function bootstrap() {
   app.use(flash());
 
   await app.listen(
-    +configService.get<string>('WEB_SERVER_PORT', '3000'),
-    configService.get<string>('WEB_SERVER_HOST', 'localhost'),
+    +configService.get<string>('WEB_SERVER_PORT'),
+    configService.get<string>('WEB_SERVER_HOST'),
   );
 }
 bootstrap();

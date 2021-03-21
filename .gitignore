@@ -37,8 +37,8 @@ lerna-debug.log*
 /tmp
 
 # Secrets
-.env
-.env.test
+.env.development
+.env.production
 docker-compose.yml
 
 # Prod runtime

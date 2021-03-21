@@ -1,3 +1,4 @@
+import * as Joi from 'joi';
 import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -27,9 +28,35 @@ import { AuthenticatedGuard } from './common/guards/authenticated.guard';
     TerminusModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env${
-        process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''
-      }`,
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'test', 'production')
+          .default('development'),
+        WEB_SERVER_PORT: Joi.number().default('3000'),
+        WEB_SERVER_HOST: Joi.string().hostname().default('localhost'),
+        DATABASE_URL: Joi.string().uri({ allowRelative: true }).required(),
+        DATABASE_DROP_SCHEMA: Joi.alternatives('true', 'false').default(
+          'false',
+        ),
+        DATABASE_SYNCHRONIZE: Joi.alternatives('true', 'false').default('true'),
+        OAUTH2_ISSUER: Joi.string().uri().required(),
+        OAUTH2_AUDIENCE: Joi.string()
+          .regex(/[a-z\-\/.]+/)
+          .required(),
+        OAUTH2_AUTH0_TENANT_DOMAIN: Joi.string().hostname().required(),
+        OAUTH2_AUTH0_CLIENT_ID: Joi.string().token().required(),
+        OAUTH2_AUTH0_CLIENT_SECRET: Joi.string()
+          .regex(/[a-zA-Z\-]+/)
+          .required(),
+        OAUTH2_AUTH0_CALLBACK_URL: Joi.string().uri().required(),
+        OAUTH2_SIGNING_SECRET: Joi.string().token().required(),
+        OAUTH2_SIGNING_ALGORITHM: Joi.string().valid('HS256').default('HS256'),
+        OAUTH2_LOCAL_ACCESS_TOKEN: Joi.string()
+          .uri({ allowRelative: true })
+          .required(),
+        SESSION_SECRET: Joi.string().token(),
+      }),
+      envFilePath: `.env.${process.env.NODE_ENV}`,
       expandVariables: true,
     }),
     ScheduleModule.forRoot(),
