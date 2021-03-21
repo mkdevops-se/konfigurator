@@ -12,6 +12,7 @@ import { HttpExceptionFilter } from '../http-exception.filter';
 import { ValidationPipe } from '../validation.pipe';
 import { MockBuildInfoDto } from './dto/mock-build-info.dto';
 import { MockBuildInfoService } from './mock-build-info.service';
+import { Public } from '../auth/jwt-auth.guard';
 
 @Controller('mock-api')
 @UseFilters(HttpExceptionFilter)
@@ -31,6 +32,7 @@ export class MockBuildInfoController {
     return this.mockBuildInfoService.put(service, mockBuildInfoDto);
   }
 
+  @Public()
   @Get(':service/bygginfo')
   get(@Param('service') service: string): MockBuildInfoDto {
     const mockBuildInfo = this.mockBuildInfoService.get(service);

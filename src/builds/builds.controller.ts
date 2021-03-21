@@ -16,6 +16,7 @@ import { BuildsService } from './builds.service';
 import { CreateBuildDto } from './dto/create-build.dto';
 import { UpdateBuildDto } from './dto/update-build.dto';
 import { Build } from './entities/build.entity';
+import { Public } from '../auth/jwt-auth.guard';
 
 @Controller('builds')
 @UseFilters(HttpExceptionFilter)
@@ -43,6 +44,7 @@ export class BuildsController {
     return newBuild;
   }
 
+  @Public()
   @Get()
   @Render('builds/builds')
   async findAll() {
@@ -60,6 +62,7 @@ export class BuildsController {
     };
   }
 
+  @Public()
   @Get(':image_name')
   async findAllFor(@Param('image_name') image_name: string): Promise<Build[]> {
     this.logger.log(`Getting all builds for ${image_name} ...`);
@@ -70,6 +73,7 @@ export class BuildsController {
     return allBuildsForImage;
   }
 
+  @Public()
   @Get(':image_name/:image_tag')
   async findOne(
     @Param('image_name') image_name: string,

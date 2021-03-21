@@ -15,6 +15,7 @@ import { CreateEnvironmentDto } from './dto/create-environment.dto';
 import { UpdateEnvironmentDto } from './dto/update-environment.dto';
 import { EnvironmentsService } from './environments.service';
 import { Environment } from './entities/environment.entity';
+import { Public } from '../auth/jwt-auth.guard';
 
 @Controller('environments')
 @UseFilters(HttpExceptionFilter)
@@ -42,6 +43,7 @@ export class EnvironmentsController {
     return newEnv;
   }
 
+  @Public()
   @Get()
   async getAll(): Promise<Environment[]> {
     this.logger.log(`Getting all environments ...`);
@@ -50,6 +52,7 @@ export class EnvironmentsController {
     return allEnvs;
   }
 
+  @Public()
   @Get(':name')
   async getOne(@Param('name') name: string): Promise<Environment> {
     this.logger.log(`Getting environment ${name} ...`);

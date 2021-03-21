@@ -1,13 +1,27 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
+import { INestApplication } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { MockBuildInfoModule } from '../src/mock-build-info/mock-build-info.module';
 
 describe('MockBuildInfoController (e2e)', () => {
   let app: INestApplication;
+  let accessToken: string;
 
   beforeAll(async () => {
+    accessToken = jwt.sign(
+      {
+        iss: process.env.OAUTH2_ISSUER,
+        sub: 'mr-end2end@clients',
+        aud: process.env.OAUTH2_AUDIENCE,
+        iat: Math.floor(Date.now() / 1000 - 60), // Now-60s
+        exp: Math.floor(Date.now() / 1000 + 86400), // Now+24h
+        azp: 'self.authorized.',
+        gty: 'client-credentials',
+      },
+      process.env.OAUTH2_SIGNING_SECRET,
+    );
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, MockBuildInfoModule],
     }).compile();
@@ -26,6 +40,7 @@ describe('MockBuildInfoController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post(`/mock-api/${mockServiceName}/byggInfo`)
+        .auth(accessToken, { type: 'bearer' })
         .send(mockBuildInfo)
         .expect(201)
         .expect({
@@ -47,6 +62,7 @@ describe('MockBuildInfoController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post(`/mock-api/${mockServiceName}/byggInfo`)
+        .auth(accessToken, { type: 'bearer' })
         .send(mockBuildInfo)
         .expect(201)
         .expect({
@@ -63,12 +79,13 @@ describe('MockBuildInfoController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post(`/mock-api/surgrisen/byggInfo`)
+        .auth(accessToken, { type: 'bearer' })
         .send(badMockBuild)
         .expect(400);
     });
   });
 
-  describe('GET /mock-api/surgrisen/byggInfo', () => {
+  describe('@Public: GET /mock-api/surgrisen/byggInfo', () => {
     it('returns the mock /mock-api/surgrisen/byggInfo', async () => {
       const mockServiceName = 'surgrisen';
 
@@ -109,6 +126,7 @@ describe('MockBuildInfoController (e2e)', () => {
     it('deletes mock build info for service', async () => {
       await request(app.getHttpServer())
         .delete('/mock-api/surgrisen/byggInfo')
+        .auth(accessToken, { type: 'bearer' })
         .expect(200)
         .expect({
           IMAGE_TAG: '0.3.2_feature.THEFARM.456.dev3',
@@ -124,6 +142,7 @@ describe('MockBuildInfoController (e2e)', () => {
 
       await request(app.getHttpServer())
         .delete('/mock-api/surgrisen/byggInfo')
+        .auth(accessToken, { type: 'bearer' })
         .expect(200)
         .expect({
           IMAGE_TAG: '0.3.2_feature.THEFARM.321.dev1',
@@ -136,6 +155,7 @@ describe('MockBuildInfoController (e2e)', () => {
     it('returns a 404 error for already deleted /mock-api/surgrisen/byggInfo', () => {
       return request(app.getHttpServer())
         .delete('/mock-api/surgrisen/byggInfo')
+        .auth(accessToken, { type: 'bearer' })
         .expect(404);
     });
   });

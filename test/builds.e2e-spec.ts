@@ -1,3 +1,4 @@
+import * as jwt from 'jsonwebtoken';
 import * as request from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -7,8 +8,21 @@ import { BuildsModule } from '../src/builds/builds.module';
 
 describe('BuildsController (e2e)', () => {
   let app: NestExpressApplication;
+  let accessToken: string;
 
   beforeAll(async () => {
+    accessToken = jwt.sign(
+      {
+        iss: process.env.OAUTH2_ISSUER,
+        sub: 'mr-end2end@clients',
+        aud: process.env.OAUTH2_AUDIENCE,
+        iat: Math.floor(Date.now() / 1000 - 60), // Now-60s
+        exp: Math.floor(Date.now() / 1000 + 86400), // Now+24h
+        azp: 'self.authorized.',
+        gty: 'client-credentials',
+      },
+      process.env.OAUTH2_SIGNING_SECRET,
+    );
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule, BuildsModule],
     }).compile();
@@ -31,6 +45,7 @@ describe('BuildsController (e2e)', () => {
       };
       return request(app.getHttpServer())
         .post(`/builds/${newBuildImageName}`)
+        .auth(accessToken, { type: 'bearer' })
         .send(newBuildProperties)
         .expect(201)
         .expect({
@@ -52,6 +67,7 @@ describe('BuildsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post(`/builds/${existingBuildImageName}`)
+        .auth(accessToken, { type: 'bearer' })
         .send(duplicateBuildProperties)
         .expect(409);
 
@@ -62,6 +78,7 @@ describe('BuildsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post(`/builds/${existingBuildImageName}`)
+        .auth(accessToken, { type: 'bearer' })
         .send(badBuild1)
         .expect(400);
 
@@ -73,12 +90,13 @@ describe('BuildsController (e2e)', () => {
       };
       await request(app.getHttpServer())
         .post(`/builds/${existingBuildImageName}`)
+        .auth(accessToken, { type: 'bearer' })
         .send(badBuild2)
         .expect(400);
     });
   });
 
-  describe('GET /builds/surgrisen', () => {
+  describe('@Public: GET /builds/surgrisen', () => {
     it('returns a specific /builds/surgrisen/:image_tag', () => {
       return request(app.getHttpServer())
         .get('/builds/surgrisen/0.3.2_feature.THEFARM.321.dev1')
@@ -128,6 +146,7 @@ describe('BuildsController (e2e)', () => {
     it('updates defined-and-writeable properties of an entity', () => {
       return request(app.getHttpServer())
         .put('/builds/surgrisen/0.3.2_feature.THEFARM.321.dev1')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           build_timestamp: '2021-01-05T09:00:00+0100',
           spring_profiles_active: 'test,test-acc',
@@ -153,6 +172,7 @@ describe('BuildsController (e2e)', () => {
     it('returns a 404 error for incorrect /builds/:image_name/:image_tag', () => {
       return request(app.getHttpServer())
         .put('/builds/surgrisen/tag-that-does-not-exist')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           spring_profiles_active: 'test',
         })
@@ -162,6 +182,7 @@ describe('BuildsController (e2e)', () => {
     it('rejects updates to undefined-or-non-writeable properties', async () => {
       await request(app.getHttpServer())
         .put('/builds/surgrisen/0.3.2_feature.THEFARM.321.dev1')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           made_up_today: 'not okay',
         })
@@ -169,6 +190,7 @@ describe('BuildsController (e2e)', () => {
 
       await request(app.getHttpServer())
         .put('/builds/surgrisen/0.3.2_feature.THEFARM.321.dev1')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           image_name: 'cannot-be-changed',
         })
@@ -176,6 +198,7 @@ describe('BuildsController (e2e)', () => {
 
       await request(app.getHttpServer())
         .put('/builds/surgrisen/0.3.2_feature.THEFARM.321.dev1')
+        .auth(accessToken, { type: 'bearer' })
         .send({
           image_tag: 'cannot-be-changed-either',
         })
@@ -187,6 +210,7 @@ describe('BuildsController (e2e)', () => {
     it('deletes specific deployment by name', () => {
       return request(app.getHttpServer())
         .delete('/builds/surgrisen/0.3.2_feature.THEFARM.321.dev1')
+        .auth(accessToken, { type: 'bearer' })
         .expect(200)
         .expect({
           image_name: 'surgrisen',
@@ -205,11 +229,12 @@ describe('BuildsController (e2e)', () => {
     it('returns a 404 error for incorrect /builds/:image_name/:image_tag', () => {
       return request(app.getHttpServer())
         .delete('/builds/fake-image/one-yet-to-be-created')
+        .auth(accessToken, { type: 'bearer' })
         .expect(404);
     });
   });
 
-  describe('GET /builds', () => {
+  describe('@Public: GET /builds', () => {
     it('returns a HTML page with a builds overview', () => {
       return request(app.getHttpServer())
         .get('/builds')
