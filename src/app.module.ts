@@ -29,31 +29,42 @@ import { AuthenticatedGuard } from './common/guards/authenticated.guard';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
+        // Node interpreter
         NODE_ENV: Joi.string()
           .valid('development', 'test', 'production')
           .default('development'),
+        // Web server
         WEB_SERVER_PORT: Joi.number().default('3000'),
         WEB_SERVER_HOST: Joi.string().hostname().default('localhost'),
+        // Database
         DATABASE_URL: Joi.string().uri({ allowRelative: true }).required(),
         DATABASE_DROP_SCHEMA: Joi.alternatives('true', 'false').default(
           'false',
         ),
         DATABASE_SYNCHRONIZE: Joi.alternatives('true', 'false').default('true'),
+        // OAuth2
+        OAUTH2_PROVIDER: Joi.string().valid('auth0', 'openshift').required(),
         OAUTH2_ISSUER: Joi.string().uri().required(),
         OAUTH2_AUDIENCE: Joi.string()
-          .regex(/[a-z\-\/.]+/)
+          .regex(/[a-z\-\/:]+/)
           .required(),
-        OAUTH2_AUTH0_TENANT_DOMAIN: Joi.string().hostname().required(),
-        OAUTH2_AUTH0_CLIENT_ID: Joi.string().token().required(),
-        OAUTH2_AUTH0_CLIENT_SECRET: Joi.string()
+        OAUTH2_TENANT_DOMAIN: Joi.string().hostname().required(),
+        OAUTH2_AUTHORIZATION_URL: Joi.string().uri().required(),
+        OAUTH2_TOKEN_URL: Joi.string().uri().required(),
+        OAUTH2_USERINFO_URL: Joi.string().uri().required(),
+        OAUTH2_CLIENT_ID: Joi.string()
+          .regex(/[a-z\-:]+/)
+          .required(),
+        OAUTH2_CLIENT_SECRET: Joi.string()
           .regex(/[a-zA-Z\-]+/)
           .required(),
-        OAUTH2_AUTH0_CALLBACK_URL: Joi.string().uri().required(),
+        OAUTH2_CALLBACK_URL: Joi.string().uri().required(),
         OAUTH2_SIGNING_SECRET: Joi.string().token().required(),
         OAUTH2_SIGNING_ALGORITHM: Joi.string().valid('HS256').default('HS256'),
         OAUTH2_LOCAL_ACCESS_TOKEN: Joi.string()
           .uri({ allowRelative: true })
           .required(),
+        // Session
         SESSION_SECRET: Joi.string().token(),
       }),
       envFilePath: `.env.${process.env.NODE_ENV}`,

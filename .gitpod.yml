@@ -1,4 +1,6 @@
 image: node:12
 tasks:
+  - init: create development env
+    command: cp -v .env.template .env.development
   - init: npm install && npm run build
-    command: npm run start:dev
+    command: NODE_ENV=development npm run start:dev

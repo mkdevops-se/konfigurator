@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsString,
   IsOptional,
   IsNotEmpty,
@@ -43,6 +44,14 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsOptional()
   email?: string;
+
+  @IsArray()
+  @IsOptional()
+  identities?: string[];
+
+  @IsArray()
+  @IsOptional()
+  groups?: string[];
 
   @IsString()
   @IsNotEmpty()

@@ -14,7 +14,8 @@ import { AuthService } from './auth/auth.service';
 import { Response, Request } from 'express';
 
 import { AuthExceptionFilter } from './common/filters/auth-exceptions.filter';
-import { LoginGuard } from './common/guards/login.guard';
+import { Auth0LoginGuard } from './common/guards/auth0-login.guard';
+import { OpenShiftLoginGuard } from './common/guards/openshift-login.guard';
 import { Public } from './common/guards/authenticated.guard';
 
 @Controller()
@@ -70,14 +71,32 @@ export class AppController {
   }
 
   @Public()
-  @UseGuards(LoginGuard)
   @Get('/login')
-  getLogin() {}
+  getLogin(@Res() res: Response) {
+    res.redirect(`/${process.env.OAUTH2_PROVIDER}-login`, 301);
+  }
 
   @Public()
-  @UseGuards(LoginGuard)
-  @Get('/callback')
-  getCallback(@Req() req: Request, @Res() res: Response) {
+  @UseGuards(Auth0LoginGuard)
+  @Get('/auth0-login')
+  getAuth0Login() {}
+
+  @Public()
+  @UseGuards(Auth0LoginGuard)
+  @Get('/auth0-oauth2-callback')
+  getAuth0Callback(@Req() req: Request, @Res() res: Response) {
+    res.redirect('/');
+  }
+
+  @Public()
+  @UseGuards(OpenShiftLoginGuard)
+  @Get('/openshift-login')
+  getOpenShiftLogin() {}
+
+  @Public()
+  @UseGuards(OpenShiftLoginGuard)
+  @Get('/openshift-oauth2-callback')
+  getOpenShiftCallback(@Req() req: Request, @Res() res: Response) {
     res.redirect('/');
   }
 

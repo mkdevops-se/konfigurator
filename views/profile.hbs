@@ -7,6 +7,8 @@
 <p>Efternamn: {{ user.family_name }}</p>
 <p>Förnamn: {{ user.given_name }}</p>
 <p>E-post: {{ user.email }}</p>
+<p>Identiteter:<ul>{{#each user.identities }}<li>{{ this }}</li>{{/each}}</ul></p>
+<p>Grupper:<ul>{{#each user.groups }}<li>{{ this }}</li>{{/each}}</ul></p>
 <p>Avatar:<br><img src="{{ user.picture_url }}"/></p>
 <p>Locale-inställning: {{ user.locale }}</p>
 <p>Smeknamn: {{ user.nickname }}</p>
