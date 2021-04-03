@@ -1,4 +1,4 @@
-export interface Environment {
+export interface EnvironmentInterface {
   name: string;
   rank: number;
   ocp_tenant_domain: string;

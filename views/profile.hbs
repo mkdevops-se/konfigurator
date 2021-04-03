@@ -14,4 +14,9 @@
 <p>Smeknamn: {{ user.nickname }}</p>
 <p>Konfigurator-superadmin: {{ user.konfigurator_super_admin }}</p>
 <p>Konfigurator-inloggningar: {{ user.konfigurator_login_count }}</p>
+<p>Konfigurator-actions:
+<ul>
+  <li><form method="post" action="/jwt"><input type="submit" value="Skapa JSON Web Token [JWT] för API-access"></form></li>
+</ul>
+</p>
 </main>

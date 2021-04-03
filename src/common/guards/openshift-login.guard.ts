@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class OpenShiftLoginGuard extends AuthGuard('oauth2') {
+export class OpenShiftLoginGuard extends AuthGuard('openshift') {
   private readonly logger = new Logger(OpenShiftLoginGuard.name);
 
   async canActivate(context: ExecutionContext) {

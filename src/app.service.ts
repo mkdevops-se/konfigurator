@@ -1,6 +1,6 @@
 import { partition } from 'lodash';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { EnvironmentWithNamespaceDeployments } from './interfaces/environment-with-namespace-deployments.interface';
+import { EnvironmentWithNamespaceDeploymentsI } from './interfaces/environment-with-namespace-deployments.interface';
 import { EnvironmentsService } from './environments/environments.service';
 import { DeploymentsService } from './deployments/deployments.service';
 
@@ -20,12 +20,12 @@ export class AppService {
   }
 
   async getEnvironmentsOverview(): Promise<
-    EnvironmentWithNamespaceDeployments[]
+    EnvironmentWithNamespaceDeploymentsI[]
   > {
     const plainEnvironments = await this.environmentsService.getAll();
-    const processedEnvironments = <EnvironmentWithNamespaceDeployments[]>[];
+    const processedEnvironments = <EnvironmentWithNamespaceDeploymentsI[]>[];
     for (const environment of plainEnvironments) {
-      const processedEnvironment: EnvironmentWithNamespaceDeployments = {
+      const processedEnvironment: EnvironmentWithNamespaceDeploymentsI = {
         ...environment,
         ocp_namespaces: [],
       };
