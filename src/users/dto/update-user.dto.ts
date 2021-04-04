@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsInt,
   IsNotEmpty,
@@ -41,6 +42,14 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @IsOptional()
   email?: string;
+
+  @IsArray()
+  @IsOptional()
+  identities?: string[];
+
+  @IsArray()
+  @IsOptional()
+  groups?: string[];
 
   @IsString()
   @IsNotEmpty()

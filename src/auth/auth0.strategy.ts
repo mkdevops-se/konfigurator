@@ -11,10 +11,10 @@ export class Auth0Strategy extends Strategy {
   constructor(private usersService: UsersService) {
     super(
       {
-        domain: process.env.OAUTH2_AUTH0_TENANT_DOMAIN,
-        clientID: process.env.OAUTH2_AUTH0_CLIENT_ID,
-        clientSecret: process.env.OAUTH2_AUTH0_CLIENT_SECRET,
-        callbackURL: process.env.OAUTH2_AUTH0_CALLBACK_URL,
+        domain: process.env.OAUTH2_TENANT_DOMAIN,
+        clientID: process.env.OAUTH2_CLIENT_ID,
+        clientSecret: process.env.OAUTH2_CLIENT_SECRET,
+        callbackURL: process.env.OAUTH2_CALLBACK_URL,
         state: true,
       },
       async (accessToken, refreshToken, extraParams, profile, done) => {
@@ -54,9 +54,8 @@ export class Auth0Strategy extends Strategy {
   }
 
   authenticate(request) {
-    super.authenticate(request, { scope: 'openid email profile' });
     this.logger.debug(
-      `Authenticating client from ${request.ip} (${request.headers['user-agent']}) ...`,
+      `Authenticating client from ${request.ip} (${request.headers['user-agent']}) on URL ${request.url} ...`,
     );
   }
 }

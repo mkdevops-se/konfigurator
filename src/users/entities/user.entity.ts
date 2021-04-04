@@ -58,6 +58,20 @@ export class User {
   email?: string;
 
   @Column({
+    type: 'simple-array',
+    array: true,
+    nullable: true,
+  })
+  identities?: string[];
+
+  @Column({
+    type: 'simple-array',
+    array: true,
+    nullable: true,
+  })
+  groups?: string[];
+
+  @Column({
     type: 'varying character',
     nullable: true,
   })
