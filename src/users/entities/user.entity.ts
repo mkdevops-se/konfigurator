@@ -59,14 +59,12 @@ export class User {
 
   @Column({
     type: 'simple-array',
-    array: true,
     nullable: true,
   })
   identities?: string[];
 
   @Column({
     type: 'simple-array',
-    array: true,
     nullable: true,
   })
   groups?: string[];

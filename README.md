@@ -64,6 +64,19 @@ Därefter behöver applikationen startas om en första gång, sedan kan man gå 
 öppna http://localhost:3000/ i Chrome och verifiera att man omdirigeras till en översiktssida som
 visar fyra komplexa matriser med miljöinformation.
 
+### Skapa nya databasmigrationer
+
+1. Starta appen i development-läge så att utvecklingsdatabas-schemat är up-to-date, stoppa sedan appen igen
+2. Backa upp utvecklingsdatabasen, `cp -v ./tmp/konfigurator.db ./tmp/pre-migrate-backup.db`
+3. Inför ändringarna i de entiteter som ska uppdateras och auto-generera en databas-migration:
+   ```bash
+   npx ts-node ./node_modules/typeorm/cli.js migration:generate --name NamnPaNyMigration
+   npm run format
+   ```
+5. Öppna `./src/migrations/<langt timestamp>-NamnPaNyMigration.ts` och granska/städa upp innehållet
+6. Starta appen i development-läge igen och testa igenom, kör igenom enhets- och _end-2-end_-testerna, o.s.v.
+7. Sälj in en vacker PR
+
 ## Kör testerna
 
 ```bash
@@ -101,6 +114,10 @@ $ docker-compose up -d konfigurator
 ```
 
 ## Changelog
+
+### `v0.4.0` - Databasmigrering och uppstädade modeller
+
+- Stöd för databas-migrationer via TypeORM och en README-instruktion för hur de skapas
 
 ### `v0.3.0` – Grundläggande säkerhet med autentiseringskrav
 

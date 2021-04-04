@@ -41,7 +41,12 @@ import { AuthenticatedGuard } from './common/guards/authenticated.guard';
         DATABASE_DROP_SCHEMA: Joi.alternatives('true', 'false').default(
           'false',
         ),
-        DATABASE_SYNCHRONIZE: Joi.alternatives('true', 'false').default('true'),
+        DATABASE_SYNCHRONIZE: Joi.alternatives('true', 'false').default(
+          'false',
+        ),
+        DATABASE_MIGRATIONS_RUN: Joi.alternatives('true', 'false').default(
+          'false',
+        ),
         // OAuth2
         OAUTH2_PROVIDER: Joi.string().valid('auth0', 'openshift').required(),
         OAUTH2_ISSUER: Joi.string().uri().required(),
@@ -78,6 +83,8 @@ import { AuthenticatedGuard } from './common/guards/authenticated.guard';
       dropSchema: process.env.DATABASE_DROP_SCHEMA === 'true',
       entities: [Build, Deployment, Environment, Task, User],
       keepConnectionAlive: true,
+      migrations: [__dirname + '/migrations/*.{ts,js}'],
+      migrationsRun: process.env.DATABASE_MIGRATIONS_RUN === 'true',
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
     }),
     BuildsModule,
