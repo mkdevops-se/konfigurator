@@ -7,6 +7,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import { User as UserModel } from './users/entities/user.entity';
+
+declare global {
+  namespace Express {
+    export interface User extends UserModel {}
+  }
+}
 
 async function bootstrap() {
   process.env.SERVER_STARTUP_TIMESTAMP = new Date()

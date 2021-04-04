@@ -1,42 +1,55 @@
 import { use } from 'passport';
-import { Strategy } from 'passport-auth0';
-import { Injectable, Logger } from '@nestjs/common';
+import * as OAuth2Strategy from 'passport-oauth2';
+import { HttpService, Injectable, Logger } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import { Auth0UserProfile } from '../interfaces/auth0-user-profile.interface';
+import { Auth0IdTokenInterface } from '../interfaces/auth0-id-token.interface';
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class Auth0Strategy extends Strategy {
+export class Auth0Strategy extends OAuth2Strategy {
+  public name = 'auth0';
   private readonly logger = new Logger(Auth0Strategy.name);
 
-  constructor(private usersService: UsersService) {
+  constructor(
+    private httpService: HttpService,
+    private authService: AuthService,
+    private usersService: UsersService,
+  ) {
     super(
       {
-        domain: process.env.OAUTH2_TENANT_DOMAIN,
+        authorizationURL: process.env.OAUTH2_AUTHORIZATION_URL,
+        tokenURL: process.env.OAUTH2_TOKEN_URL,
         clientID: process.env.OAUTH2_CLIENT_ID,
         clientSecret: process.env.OAUTH2_CLIENT_SECRET,
         callbackURL: process.env.OAUTH2_CALLBACK_URL,
+        scope: ['openid', 'email', 'profile'],
+        scopeSeparator: ' ',
         state: true,
+        sessionKey: process.env.SESSION_SECRET,
+        skipUserProfile: true,
       },
       async (accessToken, refreshToken, extraParams, profile, done) => {
-        const auth0UserProfile: Auth0UserProfile = profile;
+        const auth0IdToken: Partial<Auth0IdTokenInterface> = this.authService.decodeIdToken(
+          extraParams['id_token'],
+        ).payload;
         this.logger.debug(
           `User '${
-            auth0UserProfile.user_id
+            auth0IdToken.sub
           }' verified, with access_token=${accessToken}, refreshToken=${refreshToken}, extraParams=${JSON.stringify(
             extraParams,
-          )}, profile=${JSON.stringify(auth0UserProfile)}`,
+          )}, profile=${JSON.stringify(auth0IdToken)}`,
         );
         const [userEntity, created] = await this.usersService.getOrCreate({
-          user_id: auth0UserProfile.user_id,
-          id: auth0UserProfile.id,
-          display_name: auth0UserProfile.displayName,
-          provider: auth0UserProfile.provider,
-          family_name: auth0UserProfile.name.familyName,
-          given_name: auth0UserProfile.name.givenName,
-          email: auth0UserProfile.emails[0].value,
-          picture_url: auth0UserProfile.picture,
-          locale: auth0UserProfile.locale,
-          nickname: auth0UserProfile.nickname,
+          user_id: auth0IdToken.sub,
+          id: auth0IdToken.sub,
+          display_name: auth0IdToken.name,
+          provider: auth0IdToken.sub.split('|')[0],
+          family_name: auth0IdToken.family_name,
+          given_name: auth0IdToken.given_name,
+          email: auth0IdToken.email,
+          picture_url: auth0IdToken.picture,
+          locale: auth0IdToken.locale,
+          nickname: auth0IdToken.nickname,
         });
         await this.usersService.update(userEntity.user_id, {
           konfigurator_login_count: (userEntity.konfigurator_login_count += 1),
@@ -57,5 +70,6 @@ export class Auth0Strategy extends Strategy {
     this.logger.debug(
       `Authenticating client from ${request.ip} (${request.headers['user-agent']}) on URL ${request.url} ...`,
     );
+    super.authenticate(request);
   }
 }

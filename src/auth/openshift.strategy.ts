@@ -6,6 +6,7 @@ import { OpenShiftUserProfileInterface } from '../interfaces/openshift-user-prof
 
 @Injectable()
 export class OpenShiftStrategy extends OAuth2Strategy {
+  public name = 'openshift';
   private readonly logger = new Logger(OpenShiftStrategy.name);
 
   constructor(
@@ -55,7 +56,7 @@ export class OpenShiftStrategy extends OAuth2Strategy {
             created ? 'added to database' : 'retrieved from database'
           }, login count: ${userEntity.konfigurator_login_count}`,
         );
-        return await done(null, userEntity);
+        return done(null, userEntity);
       },
     );
     use(this);

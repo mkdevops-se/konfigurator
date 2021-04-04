@@ -12,7 +12,7 @@ import { TaskRepository } from './entities/task.repository';
 import { Action, State, Task } from './entities/task.entity';
 import { BuildsService } from '../builds/builds.service';
 import { MockBuildInfoDto } from '../mock-build-info/dto/mock-build-info.dto';
-import { ITask } from '../interfaces/task.interface';
+import { TaskInterface } from '../interfaces/task.interface';
 
 @Injectable()
 export class TasksService {
@@ -62,7 +62,7 @@ export class TasksService {
       }
     };
 
-    let timeout = setTimeout(callback, 500);
+    const timeout = setTimeout(callback, 500);
     this.schedulerRegistry.addTimeout(
       TasksService.getTimeoutName(taskId),
       timeout,
@@ -119,7 +119,7 @@ export class TasksService {
   }
 
   async getAll() {
-    const tasks: ITask[] = await this.tasksRepository.find();
+    const tasks: TaskInterface[] = await this.tasksRepository.find();
     for (const task of tasks) {
       if (task.updated_at) {
         task.update_timestamp = task.updated_at

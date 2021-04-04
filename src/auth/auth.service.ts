@@ -9,20 +9,19 @@ export class AuthService {
 
   constructor(private readonly usersService: UsersService) {}
 
-  // async validateUser(username, pass): Promise<any> {
-  //   const user = await this.usersService.findOne(username);
-  //   if (user && user.password === pass) {
-  //     const { password, ...result } = user;
-  //     return result;
-  //   }
-  //   return null;
-  // }
+  decodeIdToken(token) {
+    jwt.verify(token, process.env.OAUTH2_CLIENT_SECRET, {
+      issuer: process.env.OAUTH2_ISSUER,
+      audience: process.env.OAUTH2_CLIENT_ID,
+    });
+    return jwt.decode(token, { complete: true });
+  }
 
-  signJwt(subject = 'localhost@clients', accessTokenLifeTimeSec = 600) {
+  signJwt(subject = 'localhost', accessTokenLifeTimeSec = 600, extras = {}) {
     return jwt.sign(
       {
+        ...extras,
         sub: subject,
-        fakeData: 'an important fact',
       },
       process.env.OAUTH2_SIGNING_SECRET,
       {

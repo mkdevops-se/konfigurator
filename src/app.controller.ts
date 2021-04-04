@@ -8,6 +8,7 @@ import {
   Res,
   UseGuards,
   UseFilters,
+  Post,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
@@ -66,14 +67,28 @@ export class AppController {
   }
 
   @Get('jwt')
-  getJwt(): string {
-    return this.authService.signJwt();
+  getJwt(@Res() res: Response) {
+    res.redirect('/profile');
+  }
+
+  @Post('jwt')
+  createJwt(@Req() req: Request): string {
+    const user = req.user;
+    this.logger.log(
+      `Issuing JWT for '${user.user_id}' with 24 hours expiration time.`,
+    );
+    return this.authService.signJwt(user.user_id, 86400, {
+      given_name: user.given_name,
+      family_name: user.family_name,
+      groups: user.groups,
+      email: user.email,
+    });
   }
 
   @Public()
   @Get('/login')
   getLogin(@Res() res: Response) {
-    res.redirect(`/${process.env.OAUTH2_PROVIDER}-login`, 301);
+    res.redirect(`/${process.env.OAUTH2_PROVIDER}-login`);
   }
 
   @Public()
@@ -85,7 +100,7 @@ export class AppController {
   @UseGuards(Auth0LoginGuard)
   @Get('/auth0-oauth2-callback')
   getAuth0Callback(@Req() req: Request, @Res() res: Response) {
-    res.redirect('/');
+    res.redirect('/overview');
   }
 
   @Public()
@@ -97,7 +112,7 @@ export class AppController {
   @UseGuards(OpenShiftLoginGuard)
   @Get('/openshift-oauth2-callback')
   getOpenShiftCallback(@Req() req: Request, @Res() res: Response) {
-    res.redirect('/');
+    res.redirect('/overview');
   }
 
   @Get('/profile')
@@ -108,7 +123,8 @@ export class AppController {
 
   @Get('/logout')
   getLogout(@Req() req: Request, @Res() res: Response): void {
+    this.logger.log(`Logging out '${req.user.user_id}'`);
     req.logout();
-    res.redirect('/');
+    res.redirect('/overview');
   }
 }

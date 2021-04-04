@@ -1,7 +1,6 @@
-import * as path from 'path';
 import { Injectable, Logger } from '@nestjs/common';
-import { Environment } from '../interfaces/environment.interface';
-import { Deployment as DeploymentInterface } from '../interfaces/deployment.interface';
+import { EnvironmentInterface } from '../interfaces/environment.interface';
+import { DeploymentInterface } from '../interfaces/deployment.interface';
 import { DeploymentRepository } from './entities/deployment.repository';
 import { Deployment } from './entities/deployment.entity';
 import { CreateDeploymentDto } from './dto/create-deployment.dto';
@@ -29,7 +28,7 @@ export class DeploymentsService {
   }
 
   async getAllInEnvWithExternalUrls(
-    environment: Environment,
+    environment: EnvironmentInterface,
   ): Promise<DeploymentInterface[]> {
     const deployments: DeploymentInterface[] = await this.deploymentsRepository.find(
       {

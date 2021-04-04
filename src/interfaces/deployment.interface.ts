@@ -1,4 +1,4 @@
-export interface Deployment {
+export interface DeploymentInterface {
   environment: string;
   ocp_namespace: string;
   name: string;

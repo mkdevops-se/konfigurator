@@ -1,4 +1,4 @@
-export interface Build {
+export interface BuildInterface {
   image_name: string;
   image_tag: string;
   build_timestamp: string;

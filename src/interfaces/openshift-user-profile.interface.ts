@@ -1,4 +1,4 @@
-interface OpenShiftMetadata {
+interface OpenShiftMetadataInterface {
   name: string;
   selfLink: string;
   uid: string;
@@ -8,7 +8,7 @@ interface OpenShiftMetadata {
 export interface OpenShiftUserProfileInterface {
   kind: 'User';
   apiVersion: 'users.openshift.io/v1';
-  metadata: OpenShiftMetadata;
+  metadata: OpenShiftMetadataInterface;
   fullName: string;
   identities: string[];
   groups: string[];

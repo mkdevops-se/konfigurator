@@ -1,5 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { Build as BuildInterface } from '../interfaces/build.interface';
+import { BuildInterface } from '../interfaces/build.interface';
 import { BuildRepository } from './entities/build.repository';
 import { Build } from './entities/build.entity';
 import { CreateBuildDto } from './dto/create-build.dto';
