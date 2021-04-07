@@ -1,0 +1,10 @@
+{
+  "type": "sqljs",
+  "location": "tmp/konfigurator.db",
+  "autoSave": true,
+  "keepConnectionAlive": true,
+  "entities": ["src/**/entities/*.ts"],
+  "cli": {
+    "migrationsDir": ["src/migrations"]
+  }
+}
