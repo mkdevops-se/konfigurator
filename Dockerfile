@@ -1,8 +1,8 @@
 FROM quay.io/centos7/nodejs-12-centos7
 LABEL "io.openshift.s2i.scripts-url"="image:///usr/libexec/s2i" \
       "io.openshift.s2i.build.image"="quay.io/centos7/nodejs-12-centos7"
-ENV NODE_ICU_DATA="node_modules/full-icu" \
-    WEB_SERVER_HOST="0.0.0.0" \
+#ENV NODE_ICU_DATA="node_modules/full-icu"
+ENV WEB_SERVER_HOST="0.0.0.0" \
     WEB_SERVER_PORT="3000"
 USER root
 # Copying in source code
