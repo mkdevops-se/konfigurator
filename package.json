@@ -1,6 +1,6 @@
 {
   "name": "konfigurator",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "NestJS-baserad webbtjänst för att konfigurera OpenShift-miljöer",
   "author": "mblomdahl",
   "homepage": "https://github.com/mkdevops-se/konfigurator",
@@ -40,6 +40,7 @@
     "connect-flash": "^0.1.1",
     "express-handlebars": "^5.2.1",
     "express-session": "^1.17.1",
+    "full-icu": "^1.3.4",
     "hbs": "^4.1.1",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",

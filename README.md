@@ -70,10 +70,10 @@ visar fyra komplexa matriser med miljöinformation.
 2. Backa upp utvecklingsdatabasen, `cp -v ./tmp/konfigurator.db ./tmp/pre-migrate-backup.db`
 3. Inför ändringarna i de entiteter som ska uppdateras och auto-generera en databas-migration:
    ```bash
-   npx ts-node ./node_modules/typeorm/cli.js migration:generate --name NamnPaNyMigration
+   npx ts-node ./node_modules/typeorm/cli.js migration:generate --name NamnPaNyMigr
    npm run format
    ```
-5. Öppna `./src/migrations/<langt timestamp>-NamnPaNyMigration.ts` och granska/städa upp innehållet
+5. Öppna `./src/migrations/<langt timestamp>-NamnPaNyMigr.ts` och granska/städa upp innehållet
 6. Starta appen i development-läge igen och testa igenom, kör igenom enhets- och _end-2-end_-testerna, o.s.v.
 7. Sälj in en vacker PR
 
@@ -118,6 +118,8 @@ $ docker-compose up -d konfigurator
 ### `v0.4.0` - Databasmigrering och uppstädade modeller
 
 - Stöd för databas-migrationer via TypeORM och en README-instruktion för hur de skapas
+- Användargränssnitt uppdaterat för att dölja tilltänkt framtida funktionalitet
+- Miljööversikt uppdaterad med stöd för att uppdatera fritextkommentar om miljöstatus
 
 ### `v0.3.0` – Grundläggande säkerhet med autentiseringskrav
 

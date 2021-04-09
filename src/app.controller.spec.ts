@@ -40,7 +40,7 @@ describe('AppController', () => {
       expect(await appController.getOverview({})).toMatchObject({
         user: undefined,
         title: 'Miljööversikt',
-        message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
+        message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen.`,
         processEnv: {
           SERVER_STARTUP_TIMESTAMP: process.env.SERVER_STARTUP_TIMESTAMP,
           IMAGE_TAG: process.env.IMAGE_TAG,

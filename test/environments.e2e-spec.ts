@@ -55,6 +55,7 @@ describe('EnvironmentsController (e2e)', () => {
           login_url: null,
           gateway_url: null,
           comment: null,
+          comment_origin: null,
         });
     });
 
@@ -124,6 +125,7 @@ describe('EnvironmentsController (e2e)', () => {
           login_url: null,
           gateway_url: null,
           comment: null,
+          comment_origin: null,
         });
     });
 
@@ -153,6 +155,7 @@ describe('EnvironmentsController (e2e)', () => {
             login_url: null,
             gateway_url: null,
             comment: null,
+            comment_origin: null,
           },
         ]);
     });
@@ -186,6 +189,7 @@ describe('EnvironmentsController (e2e)', () => {
           login_url: 'https://honeypots-for-free.dot.com',
           gateway_url: 'https://the-gateway-takes-you-there.travel',
           comment: 'Mats was here',
+          comment_origin: null,
         });
     });
 
@@ -250,6 +254,7 @@ describe('EnvironmentsController (e2e)', () => {
           login_url: 'https://honeypots-for-free.dot.com',
           gateway_url: 'https://the-gateway-takes-you-there.travel',
           comment: 'Mats was here',
+          comment_origin: null,
         });
     });
 

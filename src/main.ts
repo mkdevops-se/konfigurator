@@ -15,6 +15,16 @@ declare global {
   }
 }
 
+const hasFullICU = () => {
+  try {
+    const january = new Date(9e8);
+    const spanish = new Intl.DateTimeFormat('es', { month: 'long' });
+    return spanish.format(january) === 'enero';
+  } catch (err) {
+    return false;
+  }
+};
+
 async function bootstrap() {
   process.env.SERVER_STARTUP_TIMESTAMP = new Date()
     .toISOString()
@@ -39,6 +49,10 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(flash());
+
+  if (!hasFullICU()) {
+    throw Error('ICU Check Failed');
+  }
 
   await app.listen(
     +configService.get<string>('WEB_SERVER_PORT'),

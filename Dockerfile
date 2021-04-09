@@ -1,11 +1,9 @@
 FROM quay.io/centos7/nodejs-12-centos7
 LABEL "io.openshift.s2i.scripts-url"="image:///usr/libexec/s2i" \
       "io.openshift.s2i.build.image"="quay.io/centos7/nodejs-12-centos7"
-ENV WEB_SERVER_HOST="0.0.0.0" \
-    WEB_SERVER_PORT="3000" \
-    DATABASE_URL="tmp/konfigurator.db" \
-    DATABASE_DROP_SCHEMA="false" \
-    DATABASE_SYNCHRONIZE="true"
+ENV NODE_ICU_DATA="node_modules/full-icu" \
+    WEB_SERVER_HOST="0.0.0.0" \
+    WEB_SERVER_PORT="3000"
 USER root
 # Copying in source code
 COPY . /tmp/src
