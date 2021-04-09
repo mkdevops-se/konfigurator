@@ -96,7 +96,9 @@ export class EnvironmentsController {
         updateEnvCommentDto,
       )} by ${req.user.user_id} ...`,
     );
-    const localTimestamp = `${new Date().toLocaleString('sv-SE')}`;
+    const localTimestamp = `${new Date().toLocaleString('sv-SE', {
+      timeZone: 'Europe/Stockholm',
+    })}`;
     const { updated_at, ...updatedEnv } = await this.environmentsService.update(
       name,
       {
