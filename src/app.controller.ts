@@ -55,7 +55,9 @@ export class AppController {
     return {
       user: req.user,
       title: 'Miljööversikt',
-      message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen, klicka på "↻"-knapparna för att uppdatera.`,
+      message: `Aktuell status: Miljöinformation visas baserat på senast inläst innehåll i databasen${
+        req.user ? ', klicka på "↻"-knapparna för att uppdatera' : ''
+      }.`,
       processEnv: this.processEnv,
       environments,
     };

@@ -8,7 +8,7 @@ services:
       - .env.production
     environment:
       - DATABASE_URL=/data/konfigurator.db
-      - OAUTH2_CALLBACK_URL=https://konfigurator.mkdevops.se/callback
+      - OAUTH2_CALLBACK_URL=https://konfigurator.mkdevops.se/auth0-oauth2-callback
       - OAUTH2_LOCAL_ACCESS_TOKEN=/tmp/access_token.txt
     ports:
       - "3000:3000"

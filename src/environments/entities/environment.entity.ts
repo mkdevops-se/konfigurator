@@ -94,6 +94,12 @@ export class Environment {
   })
   comment?: string;
 
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  comment_origin?: string;
+
   @CreateDateColumn({ select: false })
   created_at?: Date;
 

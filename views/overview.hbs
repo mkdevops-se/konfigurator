@@ -18,7 +18,16 @@
     / Gateway URL: <a href="{{ this.gateway_url }}">{{ this.gateway_url }}</a><br/>
   </p>
   <p>
-    Comment: {{#if this.comment }}{{ this.comment }}{{else}}N/A{{/if}}
+    {{#if @root.user }}
+    <form method="post" action="/environments/{{ this.name }}/comment">
+      Kommentar, miljöstatus ({{ this.comment_origin }}):
+      <br><textarea name="comment" cols="120" rows="3">{{ this.comment }}</textarea>
+      <br><input type="submit" value="Uppdatera">
+    </form>
+    {{else}}
+    Kommentar, miljöstatus ({{ this.comment_origin }}):
+    {{#if this.comment }}<br><textarea readonly cols="120" rows="3">{{ this.comment }}</textarea>{{else}}N/A{{/if}}
+    {{/if}}
   </p>
   <table border="1px" cellspacing="2px" cellpadding="4px">
     <thead>
@@ -41,9 +50,11 @@
           <thead>
           <tr>
             <th rowspan="2">Deployment</th>
+            {{#if @root.user }}
             <th colspan="2">Memory</th>
             <th colspan="2">CPU</th>
             <th colspan="2">Replicas/Pods</th>
+            {{/if}}
             <th rowspan="2">Spring Profiles</th>
             <th rowspan="2">Current Image</th>
             <th rowspan="2">Build Timestamp</th>
@@ -53,12 +64,14 @@
             {{/if}}
           </tr>
           <tr>
+            {{#if @root.user }}
             <td>Min</td>
             <td>Max</td>
             <td>Min</td>
             <td>Max</td>
             <td>Target</td>
             <td>Current</td>
+            {{/if}}
             {{#if @root.user }}
             <td>
               <form method="post" action="/tasks/bulk">
@@ -76,12 +89,14 @@
           {{#each this.deployments }}
           <tr id="{{ this.ocp_namespace }}/{{ this.name }}">
             <td><pre>{{ this.name }}<sup>{{#if this.external_url }}{{#if this.is_gateway }}†{{/if}}<a href="{{ this.external_url }}" target="_blank">→</a>{{else}}<small>N/A</small>{{/if}}</sup></pre></td>
+            {{#if @root.user }}
             <td>{{#if this.memory_min }}<pre>{{ this.memory_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.memory_max }}<pre>{{ this.memory_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.cpu_min }}<pre>{{ this.cpu_min }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.cpu_max }}<pre>{{ this.cpu_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.replicas_target }}<pre>{{ this.replicas_target }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.replicas_current }}<pre>{{ this.replicas_current }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            {{/if}}
             <td>{{#if this.spring_profiles_active }}<pre>{{ this.spring_profiles_active }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.image_tag }}<pre><a href="/builds#{{ this.name }}-{{ this.image_tag }}">{{ this.image_tag }}</a></pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.build_timestamp }}<pre>{{ this.build_timestamp }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
