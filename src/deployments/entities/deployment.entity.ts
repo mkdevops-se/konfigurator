@@ -71,6 +71,12 @@ export class Deployment {
 
   @Column({
     type: 'varying character',
+    default: '/bygginfo',
+  })
+  build_info_api_path: string;
+
+  @Column({
+    type: 'varying character',
     nullable: true,
   })
   spring_profiles_active?: string;

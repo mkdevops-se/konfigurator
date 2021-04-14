@@ -49,6 +49,11 @@ export class UpdateDeploymentDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
+  build_info_api_path?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
   spring_profiles_active?: string;
 
   @IsString()

@@ -23,6 +23,12 @@ export class Environment {
   rank: number;
 
   @Column({
+    type: 'boolean',
+    default: false,
+  })
+  is_hidden: boolean;
+
+  @Column({
     type: 'varying character',
     nullable: false,
   })
@@ -48,9 +54,33 @@ export class Environment {
 
   @Column({
     type: 'varying character',
+    nullable: false,
+  })
+  ocp_namespace_public: string;
+
+  @Column({
+    type: 'varying character',
     nullable: true,
   })
-  ocp_namespace_public?: string;
+  log_archive_index_front: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  log_archive_index_backend: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  log_archive_index_restricted: string;
+
+  @Column({
+    type: 'varying character',
+    nullable: true,
+  })
+  log_archive_index_public?: string;
 
   @Column({
     type: 'varying character',
@@ -81,6 +111,12 @@ export class Environment {
     nullable: true,
   })
   login_url?: string;
+
+  @Column({
+    type: 'simple-json',
+    nullable: true,
+  })
+  login_urls?: string[];
 
   @Column({
     type: 'varying character',
