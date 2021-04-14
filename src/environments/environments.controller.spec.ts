@@ -26,6 +26,7 @@ describe('EnvironmentsController', () => {
         ocp_namespace_front: 'front',
         ocp_namespace_backend: 'backend',
         ocp_namespace_restricted: 'restricted',
+        ocp_namespace_public: 'public',
         default_spring_profiles: 'test',
       };
       expect(await controller.create(newEnvironment)).toBe(newEnvironment);

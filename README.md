@@ -57,7 +57,7 @@ innehåller cURL-kommandon för setup av demo-miljön:
 
 ```bash
 $ export ACCESS_TOKEN=$(cat ./tmp/access_token.txt)  # Default OAUTH2_LOCAL_ACCESS_TOKEN path.
-$ bash scripts/setup-demo.sh
+$ bash scripts/setup-all.sh
 ```
 
 Därefter behöver applikationen startas om en första gång, sedan kan man gå vidare med att
@@ -115,7 +115,15 @@ $ docker-compose up -d konfigurator
 
 ## Changelog
 
-### `v0.4.0` - Databasmigrering och uppstädade modeller
+### `v0.5.0` – Rikare _Environment_-modell
+
+- _`Environment`_-entiteten uppdaterad med en rad nya attribut:
+  - Index-namn i OpenShift-plattformens loggarkiv (Kibana)
+  - Multipla inloggning-URL:er
+  - Stöd för att dölja en miljö från översiktssidan
+- _`Deployment`_-entiteten uppdaterad med ett nytt `build_info_api_path`-attribut som defaultar till `/bygginfo`
+
+### `v0.4.0` – Databasmigrering och uppstädade modeller
 
 - Stöd för databas-migrationer via TypeORM och en README-instruktion för hur de skapas
 - Användargränssnitt uppdaterat för att dölja tilltänkt framtida funktionalitet

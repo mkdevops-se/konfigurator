@@ -10,6 +10,7 @@ export interface DeploymentInterface {
   cpu_max?: string;
   replicas_target?: number;
   replicas_current?: number;
+  build_info_api_path?: string;
   spring_profiles_active?: string;
   image_tag?: string;
   build_timestamp?: string;

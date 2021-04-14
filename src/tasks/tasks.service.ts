@@ -75,10 +75,10 @@ export class TasksService {
       task.data.target.ocp_namespace,
       task.data.target.deployment,
     );
-    const buildInfoUrl = `${task.data.target.external_url.replace(
-      /\/$/,
-      '',
-    )}/bygginfo`;
+    const buildInfoUrl = `${task.data.target.external_url.replace(/\/$/, '')}${
+      deployment.build_info_api_path
+    }`;
+    console.log('buildinfoUrl:', buildInfoUrl);
     const buildInfoRes = await this.httpService
       .get(buildInfoUrl, {
         timeout: 5000,
