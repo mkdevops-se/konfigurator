@@ -54,6 +54,7 @@
             <th colspan="2">Memory</th>
             <th colspan="2">CPU</th>
             <th colspan="2">Replicas/Pods</th>
+            <th rowspan="2">Logs</th>
             {{/if}}
             <th rowspan="2">Spring Profiles</th>
             <th rowspan="2">Current Image</th>
@@ -96,6 +97,7 @@
             <td>{{#if this.cpu_max }}<pre>{{ this.cpu_max }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.replicas_target }}<pre>{{ this.replicas_target }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.replicas_current }}<pre>{{ this.replicas_current }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
+            <td>{{#if this.error_logs_redirect_url }}<pre><a href="{{ this.error_logs_redirect_url }}" target="_blank">err</a></pre>{{else}}<small>N/A</small>{{/if}}</td>
             {{/if}}
             <td>{{#if this.spring_profiles_active }}<pre>{{ this.spring_profiles_active }}</pre>{{else}}<small>N/A</small>{{/if}}</td>
             <td>{{#if this.image_tag }}<pre><a href="/builds#{{ this.name }}-{{ this.image_tag }}">{{ this.image_tag }}</a></pre>{{else}}<small>N/A</small>{{/if}}</td>

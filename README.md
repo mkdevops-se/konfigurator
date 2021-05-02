@@ -122,6 +122,7 @@ $ docker-compose up -d konfigurator
   - Multipla inloggning-URL:er
   - Stöd för att dölja en miljö från översiktssidan
 - _`Deployment`_-entiteten uppdaterad med ett nytt `build_info_api_path`-attribut som defaultar till `/bygginfo`
+- Översiktssidan med miljöinformation kompletterad med länkar till loggarkivet (för inloggade användare)
 
 ### `v0.4.0` – Databasmigrering och uppstädade modeller
 
