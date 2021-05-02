@@ -189,6 +189,56 @@ describe('DeploymentsController (e2e)', () => {
     });
   });
 
+  describe('@Public: GET /environments/katla-utv/deployments/:name/error_logs_redirect', () => {
+    beforeAll(() => {
+      const newEnvironment = {
+        name: 'katla-utv',
+        ocp_tenant_domain: 'test.ocp.github.org',
+        ocp_namespace_front: 'front',
+        ocp_namespace_backend: 'backend',
+        log_archive_index_backend: 'backend-kibana-index',
+        ocp_namespace_restricted: 'restricted',
+        ocp_namespace_public: 'public',
+      };
+      return request(app.getHttpServer())
+        .post('/environments')
+        .auth(accessToken, { type: 'bearer' })
+        .send(newEnvironment)
+        .expect(201);
+    });
+
+    afterAll(() => {
+      return request(app.getHttpServer())
+        .delete('/environments/katla-utv')
+        .auth(accessToken, { type: 'bearer' })
+        .expect(201);
+    });
+
+    it('returns a redirect to Kibana error log archive', () => {
+      return request(app.getHttpServer())
+        .get(
+          '/environments/katla-utv/deployments/surgrisen/error_logs_redirect',
+        )
+        .expect(302)
+        .expect(
+          "Found. Redirecting to https://kibana.test.ocp.github.org/app/kibana#/discover?_g=(time:(from:now-1w,mode:relative,to:now))&_a=(columns:!(_source),filters:!(('%24state':(store:appState),meta:(alias:!n,disabled:!f,index:'project.backend-kibana-index.*',key:level,negate:!f,params:!(warning,err),type:phrases,value:%5C'warning,%20err%5C'),query:(bool:(minimum_should_match:1,should:!((match_phrase:(level:warning)),(match_phrase:(level:err)))))),('%24state':(store:appState),meta:(alias:!n,disabled:!f,index:'project.backend-kibana-index.*',key:kubernetes.container_name.raw,negate:!f,type:phrase,value:surgrisen),query:(match:(kubernetes.container_name.raw:(query:surgrisen,type:phrase))))),index:'project.backend-kibana-index.*',interval:auto,query:(match_all:()),sort:!('@timestamp',desc))",
+        );
+    });
+
+    it('returns a 404 error if Kibana error log archive does not resolve', () => {
+      return request(app.getHttpServer())
+        .get(
+          '/environments/katla-utv/deployments/bff-gateway/error_logs_redirect',
+        )
+        .expect(404)
+        .expect((response) => {
+          expect(response.text).toContain(
+            "There's no log archive index matching ocp_namespace front",
+          );
+        });
+    });
+  });
+
   describe('PUT /environments/katla-utv/deployments/:name', () => {
     it('updates defined-and-writeable properties of an entity', () => {
       return request(app.getHttpServer())

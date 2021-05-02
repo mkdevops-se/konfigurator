@@ -7,8 +7,10 @@ import {
   Param,
   Post,
   Put,
+  Res,
   UseFilters,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { ValidationPipe } from '../common/pipes/validation.pipe';
 import { DeploymentsService } from './deployments.service';
@@ -62,6 +64,29 @@ export class DeploymentsController {
     );
     this.logger.debug(`Got one deployment: ${JSON.stringify(oneDeploy)}`);
     return oneDeploy;
+  }
+
+  @Public()
+  @Get(':environment/deployments/:name/error_logs_redirect')
+  async errorLogsRedirect(
+    @Param('environment') environment: string,
+    @Param('name') name: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    this.logger.log(
+      `Constructing log archive URL for deployment ${name} in environment ${environment} ...`,
+    );
+    const logArchiveErrorLogsUrl = await this.deploymentsService.getLogArchiveErrorLogsUrl(
+      environment,
+      null,
+      name,
+    );
+
+    this.logger.debug(
+      `Got log archive error logs URL: ${logArchiveErrorLogsUrl}`,
+    );
+
+    res.redirect(logArchiveErrorLogsUrl);
   }
 
   @Public()
