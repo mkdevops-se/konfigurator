@@ -9,11 +9,13 @@ import {
   UseGuards,
   UseFilters,
   Post,
+  Sse,
 } from '@nestjs/common';
+import { Response, Request } from 'express';
+import { interval, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
-import { Response, Request } from 'express';
-
 import { AuthExceptionFilter } from './common/filters/auth-exceptions.filter';
 import { Auth0LoginGuard } from './common/guards/auth0-login.guard';
 import { OpenShiftLoginGuard } from './common/guards/openshift-login.guard';
@@ -35,6 +37,42 @@ export class AppController {
       COMMIT_LINK: process.env.COMMIT_LINK,
       BUILD_TIMESTAMP: process.env.BUILD_TIMESTAMP,
     };
+  }
+
+  @Public()
+  @Sse('sse')
+  sse(): Promise<Observable<MessageEvent>> {
+    let eventCounter = 0;
+    let baselineEnvOverviewJson, latestEnvOverviewJson;
+    this.appService.getEnvironmentsOverview().then((result) => {
+      baselineEnvOverviewJson = JSON.stringify(result);
+    });
+
+    // @ts-ignore
+    return interval(1000).pipe(
+      map((_) => {
+        eventCounter += 1;
+
+        this.appService.getEnvironmentsOverview().then((result) => {
+          latestEnvOverviewJson = JSON.stringify(result);
+        });
+
+        if (
+          baselineEnvOverviewJson &&
+          latestEnvOverviewJson &&
+          latestEnvOverviewJson !== baselineEnvOverviewJson
+        ) {
+          this.logger.log(`Something changed in Environments' Overview`);
+          baselineEnvOverviewJson = latestEnvOverviewJson;
+          return { data: { event_name: 'overview_reload_required' } };
+        } else {
+          if (eventCounter % 60 === 0) {
+            this.logger.debug(`Sending keep_alive SSE, count ${eventCounter}`);
+            return { data: { event_name: 'keep_alive' } };
+          }
+        }
+      }),
+    );
   }
 
   @Public()

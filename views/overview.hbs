@@ -1,5 +1,15 @@
 <!-- views/overview.hbs -->
 <main>
+<script>
+  const eventSource = new EventSource('/sse');
+  eventSource.onmessage = (message) => {
+    const data = JSON.parse(message.data)
+    console.debug('Server-Side Event Recieved:', data);
+    if (data.event_name === 'overview_reload_required' && confirm(`Overview data updated; reload page?`)) {
+      window.location.reload();
+    }
+  };
+</script>
 <h1>Översikt av miljökonfigurationer i OpenShift</h1>
 <p>{{ message }}</p>
 <p>Miljöer:<br>
